@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:/Users/derek/code/MediaSuiteMate/VideoMate.xcodeproj">
+      location = "group:VideoMate.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
