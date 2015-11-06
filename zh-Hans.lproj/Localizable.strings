@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  MediaSuiteMate
+
+  Created by derek on 21/10/15.
+  Copyright © 2015 derek. All rights reserved.
+*/
+
+"ugc_page_title" = "视频上传";
+"channel_page_title" = "频道";
+"archive_page_title" = "媒体";
+"setting_page_title" = "设置";
+"my_media_page_title" = "我的视频";
+"favourite_page_title" = "收藏";
+"channel_page_title_text" = "频道:";
+"channel_follow_page_title" = "关注";
+"navigation_channel_follow" = "+关注";
+"navigation_upload_btn" = "上传";
+
+//setting placeholder text
+"server_address"="服务器地址";
+"user_name"="用户名";
+"user_password"="密码";
+"login_btn_text"="登录";
+
+"item_count"="视频";
+
+//ugc media file source
+"context_menu_item_new_capture"="新视频";
+"context_menu_item_exist_video"="已有视频";
+
+//follow channel page edit button
+"channel_follow_edit_btn_text"="排序";
+
+//sign out
+"sign_out_title"="登出";
+
+//upload media page
+"file_name_label_title"="标题:";
+"description_label_title"="说明:";
+"channel_label_title"="频道:";
+"channel_select_title"="选择频道";
+"upload_btn_title"="上传文件";

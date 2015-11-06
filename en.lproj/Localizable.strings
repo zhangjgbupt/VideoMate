@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  MediaSuiteMate
+
+  Created by derek on 21/10/15.
+  Copyright © 2015 derek. All rights reserved.
+*/
+
+"ugc_page_title" = "UGC";
+"channel_page_title" = "Channels";
+"archive_page_title" = "Archives";
+"setting_page_title" = "Setting";
+"my_media_page_title" = "My Medias";
+"favourite_page_title" = "Favourite";
+"channel_page_title_text" = "Channel:";
+"channel_follow_page_title" = "Follow";
+"navigation_channel_follow" = "+Follow";
+"navigation_upload_btn" = "UGC";
+
+
+//setting placeholder text
+"server_address"="Server Address";
+"user_name"="User Name";
+"user_password"="Password";
+"login_btn_text"="Login";
+"item_count"="items";
+
+//ugc media file source
+"context_menu_item_new_capture"="New Video";
+"context_menu_item_exist_video"="Exist Video";
+
+//follow channel page edit button
+"channel_follow_edit_btn_text"="Sort";
+
+//sign out
+"sign_out_title"="Sign Out";
+
+//upload media page
+"file_name_label_title"="FileName:";
+"description_label_title"="Description:";
+"channel_label_title"="Channels:";
+"channel_select_title"="Select Channels";
+"upload_btn_title"="UPLOAD";
