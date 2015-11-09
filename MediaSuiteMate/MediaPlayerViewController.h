@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface MediaPlayerViewController : UIViewController
@@ -29,6 +30,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *shareLabel;
 //@property (strong, nonatomic) IBOutlet UIButton *downloadBtn;
 //@property (strong, nonatomic) IBOutlet UILabel *downloadLabel;
+
+@property (strong, nonatomic) AppDelegate* appDelegate;
 
 - (void)setFiles:(NSMutableArray *)files;
 - (IBAction)likeBtnClick:(id)sender;

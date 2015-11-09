@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "ArchiveTableViewCell.h"
 #import "ChannelData.h"
 #import "ArchiveData.h"
@@ -16,4 +17,5 @@
 @property (nonatomic, retain) NSMutableArray* archiveList;
 @property (nonatomic, retain) NSString* archiveCount;
 @property (nonatomic, retain) ChannelData* channleData;
+@property (strong, nonatomic) AppDelegate* appDelegate;
 @end

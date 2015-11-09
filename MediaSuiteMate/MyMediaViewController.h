@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "ArchiveTableViewCell.h"
 #import "ChannelData.h"
 #import "ArchiveData.h"
@@ -28,6 +29,8 @@
 
 @property (nonatomic, strong) SDRefreshFooterView *refreshFooter;
 @property (nonatomic, strong) SDRefreshHeaderView *refreshHeader;
+
+@property (strong, nonatomic) AppDelegate* appDelegate;
 
 
 

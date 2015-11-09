@@ -8,7 +8,6 @@
 
 #import "MediaPlayerViewController.h"
 #import "ArchiveFileData.h"
-#import "AppDelegate.h"
 
 @interface MediaPlayerViewController ()
 
@@ -20,12 +19,14 @@
 @synthesize streamingURLlist;
 @synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator;
 @synthesize likeBtn, likeLabel, shareBtn, shareLabel, likeStatus, likeCount;
+@synthesize appDelegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
     ArchiveFileData* fileData = nil;
     self.streamingURLlist = [[NSMutableArray alloc]init];
-    NSURL *url = nil;
+   
     if ([self.episodeFiles count]==1) {
         fileData   = [self.episodeFiles objectAtIndex:0];
     }
@@ -203,8 +204,6 @@
 }
 
 -(void) doLike {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentLiked", appDelegate.svrAddr];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     
@@ -244,8 +243,6 @@
 }
 
 -(void) getLikeStatus {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentLiked/archiveId/%@/userId", appDelegate.svrAddr, self.archiveId];
     
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
@@ -279,8 +276,6 @@
 }
 
 - (void)getStreamingURL:(NSString*) archiveId withFileId:(NSString*) fileId {
-        AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
         NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/streaming/vods?archiveId=%@&archiveFileId=%@", appDelegate.svrAddr, archiveId, fileId];
         
         NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];

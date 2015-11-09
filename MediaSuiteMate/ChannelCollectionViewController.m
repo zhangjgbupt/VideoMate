@@ -8,13 +8,10 @@
 
 #import "ChannelCollectionViewController.h"
 #import "ChannelCollectionViewCell.h"
-#import "AppDelegate.h"
 #import "ChannelData.h"
 #import "AchiveListTableViewController.h"
 #import "LoginViewController.h"
 #import "FavouriteChannelTableViewController.h"
-
-#define isNSNull(value) [value isKindOfClass:[NSNull class]]
 
 @interface ChannelCollectionViewController ()
 
@@ -24,12 +21,13 @@
 @synthesize channelList, channelCount,sortedChannelList;
 @synthesize channelFollowButton;
 @synthesize refreshFooter, refreshHeader;
+@synthesize appDelegate;
 
 static NSString * const reuseChannelIdentifier = @"channelCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    appDelegate = [[UIApplication sharedApplication] delegate];
     channelList = [NSMutableArray array];
     sortedChannelList = [NSMutableArray array];
 
@@ -66,7 +64,6 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_page_title", nil)];
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = channelFollowButton;
     [appDelegate startNetworkConnectionMonitor];
     
@@ -195,8 +192,6 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 }
 
 -(void) getContributeChannle {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-
     if (self.channelCount == nil) {
         self.channelCount = @"10";
     }
@@ -255,8 +250,6 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 }
 
 -(void) getContributeChannleCount {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/count", appDelegate.svrAddr];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     

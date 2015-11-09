@@ -9,9 +9,6 @@
 #import "UploadMediaFiles.h"
 #import "AppDelegate.h"
 
-
-#define isNSNull(value) [value isKindOfClass:[NSNull class]]
-
 @implementation UploadMediaFiles
 
 @synthesize progressValue;

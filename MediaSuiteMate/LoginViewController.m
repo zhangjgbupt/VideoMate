@@ -7,7 +7,6 @@
 //
 
 #import "LoginViewController.h"
-#import "AppDelegate.h"
 #import "GlobalData.h"
 #import "GlobalMacroDefine.h"
 #import "SettingViewController.h"
@@ -19,9 +18,13 @@
 @implementation LoginViewController
 @synthesize userNameText, passwordText, serverAddrText, loginBtn;
 @synthesize activityIndicatorView;
+@synthesize appDelegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    
     [activityIndicatorView setHidden:YES];
     [activityIndicatorView setHidesWhenStopped:YES];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -110,8 +113,6 @@
     
     [activityIndicatorView setHidden:NO];
     [activityIndicatorView startAnimating];
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [appDelegate loginRestApi];
     });
@@ -240,7 +241,6 @@
     NSLog(@"Login success!");
     [activityIndicatorView stopAnimating];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate setupTabViewControllers];
     [self.navigationController pushViewController:appDelegate.tabBarController animated:YES];
 }

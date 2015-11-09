@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "UploadMediaFiles.h"
 #import "ArchiveData.h"
@@ -32,6 +33,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *seperator_1;
 @property (strong, nonatomic) IBOutlet UILabel *seperator_2;
 @property (strong, nonatomic) IBOutlet UIButton *btnChannelList;
+
+@property (strong, nonatomic) AppDelegate* appDelegate;
 
 - (IBAction)DropDownPressed:(id)sender;
 //- (IBAction)DropDownSingle:(id)sender;

@@ -19,5 +19,4 @@
 
 
 - (void) upLoadMediaFiles: (NSString*) desFileName From: (NSString*)srcFileUrl;
-- (void) getUploadMediaFilePath;
 @end

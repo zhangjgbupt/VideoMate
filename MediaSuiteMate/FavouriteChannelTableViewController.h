@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @interface FavouriteChannelTableViewController : UITableViewController
 @property (nonatomic, retain) NSString* channelCount;
@@ -16,6 +17,8 @@
 @property (nonatomic, retain) NSMutableArray* followedChannelObjectList;
 @property (nonatomic, retain) NSMutableArray* followChannelIdList;
 @property (nonatomic, retain) NSMutableArray* tableViewDataSourceList;
+
+@property (strong, nonatomic) AppDelegate* appDelegate;
 
 -(void) addChannel2FollowList:(NSString*)channelId;
 -(void) removeChannelFromeFollowList:(NSString*) channelId;

@@ -7,7 +7,6 @@
 //
 
 #import "UGCPlaybackViewController.h"
-#import "AppDelegate.h"
 #import "ChannelData.h"
 
 @interface UGCPlaybackViewController ()
@@ -20,6 +19,7 @@
 @synthesize textMediaFileName, textDescription,progressView, placeholderLabel;
 @synthesize channelList,channelListNameAndIdDict,channelDropListView,channelSelected;
 @synthesize seperator_1, seperator_2;
+@synthesize appDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,6 +33,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    
     self.channelList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
     self.textMediaFileName.delegate = self;
@@ -207,8 +209,6 @@
 
 - (void) getContributedChannels
 {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     NSString* userName = [appDelegate.userName stringByReplacingOccurrencesOfString:@"\\" withString:@" "];
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/user/%@/contributedChannels/?startIndex=0&pageSize=10000", appDelegate.svrAddr,userName];
     requestStr = [self escapeUrl:requestStr];
@@ -259,7 +259,6 @@
 
 - (void) getArchivePeroperty
 {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/upload/ugc/mediafile/property", appDelegate.svrAddr];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -306,7 +305,6 @@
 
 - (void) updateArchivePeroperty
 {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/content/archives/%@", appDelegate.svrAddr, self.ugcArchiveData.achiveId];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

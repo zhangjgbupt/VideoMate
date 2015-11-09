@@ -7,12 +7,9 @@
 //
 
 #import "MyMediaViewController.h"
-#import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "MediaPlayerViewController.h"
 #import "UGCPlaybackViewController.h"
-
-#define isNSNull(value) [value isKindOfClass:[NSNull class]]
 
 @interface MyMediaViewController ()
 
@@ -25,6 +22,7 @@
 @synthesize videoSourceSelectorMenu, isUploadClick;
 @synthesize refreshFooter, refreshHeader;
 @synthesize maxPageNumber, currentPageIndex;
+@synthesize appDelegate;
 
 static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
@@ -33,7 +31,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     self.currentPageIndex = 0;
     self.maxPageNumber = 0;
     
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     
@@ -217,8 +215,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 #pragma mark - restapi
 
 -(void) getMyArchives {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     if (self.archiveCount == nil) {
         self.archiveCount = @"3";
     }
@@ -267,6 +263,10 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                  NSNumber* likedCount = archiveOrigialData[@"likeCount"];
                  archiveObj.likeCount = [likedCount stringValue];
                  
+                 if (isNSNull(archiveObj.description)) {
+                     archiveObj.description = @"";
+                 }
+                 
                  if ((isNSNull(archiveOrigialData[@"archiveCoverURL"])) || archiveOrigialData[@"archiveCoverURL"]==nil) {
                      archiveObj.archiveCoverURL = nil;
                  } else {
@@ -311,9 +311,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 -(void) getMyArchiveCount {
-    
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     NSString* userName = [appDelegate.userName stringByReplacingOccurrencesOfString:@"\\" withString:@" "];
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/content/archives/%@/count?ownerPublic=2", appDelegate.svrAddr, userName];
     requestStr = [self escapeUrl:requestStr];
@@ -347,9 +344,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 -(void) deleteArchive:(NSString*) archiveId {
-    
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/content/archives/%@", appDelegate.svrAddr, archiveId];
     
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];

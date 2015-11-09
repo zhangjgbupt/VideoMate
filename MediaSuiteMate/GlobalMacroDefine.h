@@ -10,4 +10,7 @@
 #define GlobalMacroDefine_h
 
 #define NSLocalizedString(key, comment) [[NSBundle mainBundle] localizedStringForKey:(key) value:@"" table:nil]
+
+#define isNSNull(value) [value isKindOfClass:[NSNull class]]
+
 #endif /* GlobalMacroDefine_h */

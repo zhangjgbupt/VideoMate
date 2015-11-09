@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "SDRefresh.h"
 
 @interface ChannelCollectionViewController : UICollectionViewController
@@ -17,4 +18,6 @@
 
 @property (nonatomic, strong) SDRefreshFooterView *refreshFooter;
 @property (nonatomic, strong) SDRefreshHeaderView *refreshHeader;
+
+@property (strong, nonatomic) AppDelegate* appDelegate;
 @end

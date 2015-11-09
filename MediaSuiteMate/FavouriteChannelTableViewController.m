@@ -9,7 +9,6 @@
 #import "FavouriteChannelTableViewController.h"
 #import "ChannelFollowViewCell.h"
 #import "ChannelData.h"
-#import "AppDelegate.h"
 
 @interface FavouriteChannelTableViewController ()
 @end
@@ -24,10 +23,12 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 // followedChannelObjectList: followed channels array which save channel object, not just id.
 @synthesize channelCount, channelList, followChannelIdList,tableViewDataSourceList,followedChannelObjectList;
 @synthesize followBtnNormalBgImg,followBtnFollowedBgImg;
+@synthesize appDelegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
     followedChannelObjectList = [[NSMutableArray alloc]init];
     tableViewDataSourceList = channelList;
     [self readFollowChannelListFromFile];
@@ -62,7 +63,6 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate startNetworkConnectionMonitor];
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_follow_page_title", nil)];
 }

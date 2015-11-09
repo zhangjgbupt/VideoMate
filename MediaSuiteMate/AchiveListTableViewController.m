@@ -7,10 +7,7 @@
 //
 
 #import "AchiveListTableViewController.h"
-#import "AppDelegate.h"
 #import "MediaPlayerViewController.h"
-
-#define isNSNull(value) [value isKindOfClass:[NSNull class]]
 
 @interface AchiveListTableViewController ()
 
@@ -18,12 +15,14 @@
 
 @implementation AchiveListTableViewController
 @synthesize archiveCount, archiveList,channleData;
+@synthesize appDelegate;
 
 static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -37,7 +36,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate startNetworkConnectionMonitor];
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"archive_page_title", nil)];
     [self getArchiveCountInChannel];
@@ -177,8 +175,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 -(void) getArchivesInChannle {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     if (self.archiveCount == nil) {
         self.archiveCount = @"5";
     }
@@ -223,6 +219,10 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                  
                  NSNumber* likedCount = archiveOrigialData[@"likeCount"];
                  archiveObj.likeCount = [likedCount stringValue];
+                 
+                 if (isNSNull(archiveObj.description)) {
+                     archiveObj.description = @"";
+                 }
                  
                  if ((isNSNull(archiveOrigialData[@"archiveCoverURL"])) || archiveOrigialData[@"archiveCoverURL"]==nil) {
                      archiveObj.archiveCoverURL = nil;
@@ -272,8 +272,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     if(self.channleData == nil) {
         return;
     }
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/%@/archives/count", appDelegate.svrAddr, channleData.channelId];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     

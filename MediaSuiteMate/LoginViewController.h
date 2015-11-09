@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
 
@@ -23,6 +24,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *loginBtn;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (strong, nonatomic) IBOutlet UIImageView *appiconImag;
+
+@property (strong, nonatomic) AppDelegate* appDelegate;
 
 - (IBAction)doLogin:(id)sender;
 @end
