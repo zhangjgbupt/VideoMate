@@ -20,6 +20,7 @@
 @synthesize channelList,channelListNameAndIdDict,channelDropListView,channelSelected;
 @synthesize seperator_1, seperator_2;
 @synthesize appDelegate;
+@synthesize original_y_center;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,6 +43,8 @@
     self.videoController = [[MPMoviePlayerController alloc] init];
     self.uploadMediaFilesHandle = [[UploadMediaFiles alloc] init];
     self.ugcArchiveData = [[ArchiveData alloc]init];
+    
+    self.original_y_center = self.view.center.y;
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
@@ -68,7 +71,7 @@
     
     CGFloat title_x = 5;
     CGFloat title_y = progress_y + 16;
-    CGFloat title_w = player_w;
+    CGFloat title_w = player_w-10;
     CGFloat title_h = 40;
     [self.textMediaFileName setFrame:CGRectMake(title_x, title_y, title_w, title_h)];
     [self.textMediaFileName setPlaceholder:NSLocalizedString(@"file_name_label_title", nil)];
@@ -96,7 +99,7 @@
     CGFloat description_x = title_x;
     CGFloat description_y = seperator_2_y + seperator_2_h;
     CGFloat description_w = title_w;
-    CGFloat description_h = 100;
+    CGFloat description_h = 80;
     [self.textDescription setFrame:CGRectMake(description_x, description_y, description_w, description_h)];
     
     placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.textDescription.frame.size.width - 20.0, 34.0)];
@@ -140,13 +143,12 @@
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
-    [self.view setFrame:CGRectMake(0,-200,320,460)];
+    self.view.center = CGPointMake(self.view.center.x, self.view.center.y-200);
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    [self.view setFrame:CGRectMake(0,0,size.width,size.height)];
+    self.view.center = CGPointMake(self.view.center.x, self.original_y_center);
 }
 
 -(void)getProgressValue
@@ -174,6 +176,9 @@
 }
 
 - (IBAction)uploadMediaFile:(id)sender {
+    
+    [self.textDescription resignFirstResponder];
+    [self.textMediaFileName resignFirstResponder];
     
     if (self.textMediaFileName.text == nil || [self.textMediaFileName.text isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
@@ -440,13 +445,13 @@
     return size;
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    
-    if ([touch.view isKindOfClass:[UGCPlaybackViewController class]]) {
-        [channelDropListView fadeOut];
-    }
-}
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    UITouch *touch = [touches anyObject];
+//    
+//    if ([touch.view isKindOfClass:[UGCPlaybackViewController class]]) {
+//        [channelDropListView fadeOut];
+//    }
+//}
 
 
 - (void)textViewDidEndEditing:(UITextView *)theTextView
@@ -465,4 +470,5 @@
         self.placeholderLabel.hidden = YES;
     }
 }
+
 @end

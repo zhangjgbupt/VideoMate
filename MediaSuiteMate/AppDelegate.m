@@ -219,7 +219,7 @@
         plistDict = [[NSMutableDictionary alloc] init];
     }
     
-    NSLog(@"plist data: %@", [plistDict description]);
+    //NSLog(@"plist data: %@", [plistDict description]);
     
     // Step5: Set data in dictionary
     GlobalData* globalData = [GlobalData getInstance];

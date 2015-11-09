@@ -8,6 +8,7 @@
 
 #import "MediaPlayerViewController.h"
 #import "ArchiveFileData.h"
+#import "Utils.h"
 
 @interface MediaPlayerViewController ()
 
@@ -167,6 +168,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if ([self.episodeFiles count] == 0) {
+        [[Utils getInstance] invokeAlert:@"Error" message:@"There is no compatible video format" delegate:self];
+        //[self invokeAlert:@"Error" message:@"There is no compatible video format" delegate:self];
+        return;
+    }
     ArchiveFileData* file = [self.episodeFiles objectAtIndex:0];
     [self getStreamingURL:file.archiveId withFileId:file.fileId];
     [self getLikeStatus];
@@ -320,6 +326,7 @@
     [self.player setContentURL:[NSURL URLWithString:url]];
     [self.player play];
 }
+
 /*
 #pragma mark - Navigation
 

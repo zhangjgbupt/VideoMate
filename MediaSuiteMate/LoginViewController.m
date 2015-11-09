@@ -10,6 +10,7 @@
 #import "GlobalData.h"
 #import "GlobalMacroDefine.h"
 #import "SettingViewController.h"
+#import "Utils.h"
 
 @interface LoginViewController ()
 
@@ -104,7 +105,7 @@
     NSString* password = passwordText.text;
     NSString* serverAddr = serverAddrText.text;
     if (userName.length==0 || password.length == 0 || serverAddr.length == 0) {
-        [self popAlertDlg];
+        [[Utils getInstance] invokeAlert:@"error" message:@"You must input valid value for username, password and server adddress." delegate:self];
         return;
     }
     
@@ -150,7 +151,7 @@
         plistDict = [[NSMutableDictionary alloc] init];
     }
     
-    NSLog(@"plist data: %@", [plistDict description]);
+    //NSLog(@"plist data: %@", [plistDict description]);
     
     // Step5: Set data in dictionary
     GlobalData* globalData = [GlobalData getInstance];
@@ -187,7 +188,7 @@
         plistDict = [[NSMutableDictionary alloc] init];
     }
     
-    NSLog(@"user info plist data: %@", [plistDict description]);
+    //NSLog(@"user info plist data: %@", [plistDict description]);
     
     // Step5: Set data in dictionary
     NSString* name = userNameText.text;
@@ -219,23 +220,23 @@
     }
 }
 
-- (void)popAlertDlg {
-    UIAlertController * alert=   [UIAlertController
-                                  alertControllerWithTitle:@"Error:"
-                                  message:@"You must input valid value for username, password and server adddress."
-                                  preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    [alert dismissViewControllerAnimated:YES completion:nil];
-                                }];
-    
-    [alert addAction:yesButton];
-    [self presentViewController:alert animated:YES completion:nil];
-}
+//- (void)popAlertDlg {
+//    UIAlertController * alert=   [UIAlertController
+//                                  alertControllerWithTitle:@"Error:"
+//                                  message:@"You must input valid value for username, password and server adddress."
+//                                  preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    UIAlertAction* yesButton = [UIAlertAction
+//                                actionWithTitle:@"OK"
+//                                style:UIAlertActionStyleDefault
+//                                handler:^(UIAlertAction * action)
+//                                {
+//                                    [alert dismissViewControllerAnimated:YES completion:nil];
+//                                }];
+//    
+//    [alert addAction:yesButton];
+//    [self presentViewController:alert animated:YES completion:nil];
+//}
 
 - (void) onLoginSuccess {
     NSLog(@"Login success!");

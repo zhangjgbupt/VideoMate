@@ -331,8 +331,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              //for MediaSuit2.1, only api response only return countvalue;
              //for MediaSuit2.5, will return searchType, searchKey, count.
-             //self.archiveCount = [responseObject valueForKey:@"count"];
-             self.archiveCount = responseObject;
+             self.archiveCount = [responseObject valueForKey:@"count"];
              [self getMyArchives];
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){
@@ -542,7 +541,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     __weak SDRefreshHeaderView *weakRefreshHeader = refreshHeader;
     __weak typeof(self) weakSelf = self;
     refreshHeader.beginRefreshingOperation = ^{
-        [weakSelf getMyArchives];
+        //[weakSelf getMyArchives];
+        [weakSelf getMyArchiveCount];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
             [weakRefreshHeader endRefreshing];
@@ -565,7 +565,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         [weakSelf getMyArchives];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
-            [weakRefreshFooter endRefreshing];
+            [weakSelf getMyArchiveCount];
+            //[weakRefreshFooter endRefreshing];
         });
     };
 }

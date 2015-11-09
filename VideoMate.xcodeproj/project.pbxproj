@@ -87,6 +87,7 @@
 		65810B3B1BDC602E0036F205 /* UGCPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65810B391BDC602E0036F205 /* UGCPlaybackViewController.m */; };
 		65810B3C1BDC602E0036F205 /* UGCPlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65810B3A1BDC602E0036F205 /* UGCPlaybackViewController.xib */; };
 		65810B3F1BDC61EE0036F205 /* UploadMediaFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 65810B3E1BDC61EE0036F205 /* UploadMediaFiles.m */; };
+		6582DB381BF0914200A052F5 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6582DB371BF0914200A052F5 /* Utils.m */; };
 		65D0B35A1BD6287C0066138A /* ArchiveData.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D0B3591BD6287C0066138A /* ArchiveData.m */; };
 		65D0B35D1BD62A140066138A /* ArchiveFileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D0B35C1BD62A140066138A /* ArchiveFileData.m */; };
 		65D0B3611BD64B540066138A /* MediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D0B35F1BD64B540066138A /* MediaPlayerViewController.m */; };
@@ -276,6 +277,8 @@
 		65810B3A1BDC602E0036F205 /* UGCPlaybackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UGCPlaybackViewController.xib; sourceTree = "<group>"; };
 		65810B3D1BDC61EE0036F205 /* UploadMediaFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadMediaFiles.h; sourceTree = "<group>"; };
 		65810B3E1BDC61EE0036F205 /* UploadMediaFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadMediaFiles.m; sourceTree = "<group>"; };
+		6582DB361BF0914200A052F5 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		6582DB371BF0914200A052F5 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		65D0B3581BD6287C0066138A /* ArchiveData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveData.h; sourceTree = "<group>"; };
 		65D0B3591BD6287C0066138A /* ArchiveData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveData.m; sourceTree = "<group>"; };
 		65D0B35B1BD62A140066138A /* ArchiveFileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveFileData.h; sourceTree = "<group>"; };
@@ -425,6 +428,8 @@
 		6520B7EC1BCF3BA3009E4B48 /* MediaSuiteMate */ = {
 			isa = PBXGroup;
 			children = (
+				6582DB361BF0914200A052F5 /* Utils.h */,
+				6582DB371BF0914200A052F5 /* Utils.m */,
 				65611E021BE30FA80084DCD2 /* OrderedDictionary.h */,
 				65611E031BE30FA80084DCD2 /* OrderedDictionary.m */,
 				65810B3D1BDC61EE0036F205 /* UploadMediaFiles.h */,
@@ -959,6 +964,7 @@
 				654AEB331BD0A17E00921978 /* GlobalData.m in Sources */,
 				6520B7EF1BCF3BA3009E4B48 /* main.m in Sources */,
 				652B88A51BE0F1950092EAB8 /* UIView+SDExtension.m in Sources */,
+				6582DB381BF0914200A052F5 /* Utils.m in Sources */,
 				654AEA841BCF45DD00921978 /* RDVTabBarItem.m in Sources */,
 				656368001BD5CCFC00917DB2 /* AchiveListTableViewController.m in Sources */,
 				65810B3B1BDC602E0036F205 /* UGCPlaybackViewController.m in Sources */,
