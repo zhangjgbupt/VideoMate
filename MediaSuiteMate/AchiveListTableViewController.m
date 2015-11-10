@@ -178,7 +178,10 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     if (self.archiveCount == nil) {
         self.archiveCount = @"5";
     }
-    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/%@/archives/?startIndex=0&pageSize=%@&sort=TIME", appDelegate.svrAddr, self.channleData.channelId, self.archiveCount];
+    //MS2.1
+    //NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/%@/archives/?startIndex=0&pageSize=%@&sort=TIME", appDelegate.svrAddr, self.channleData.channelId, self.archiveCount];
+    //MS2.5
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/%@/archives/?startIndex=0&pageSize=%@&sort=time", appDelegate.svrAddr, self.channleData.channelId, self.archiveCount];
     
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

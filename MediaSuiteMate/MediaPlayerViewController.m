@@ -202,7 +202,7 @@
 }
 
 - (IBAction)likeBtnClick:(id)sender {
-    //[self doLike];
+    [self doLike];
 }
 
 - (IBAction)shareBtnClick:(id)sender {
@@ -218,7 +218,7 @@
     manager.securityPolicy.validatesDomainName = NO;
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-content-count+json"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-content-liked+json"];
     [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-liked+json" forHTTPHeaderField:@"Accept"];
     [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-liked+json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:appDelegate.accessToken forHTTPHeaderField:@"token"];
@@ -230,6 +230,10 @@
     } else {
         state = @"LIKE";
     }
+    
+    if (self.likeStatus == nil) {
+        self.likeStatus = @"NONE";
+    }
         
     NSDictionary *body = @{ @"archiveId" : self.archiveId,
                             @"status" : state,
@@ -237,7 +241,8 @@
     
     [manager POST:requestStr parameters:body
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            self.likeCount = [responseObject valueForKey:@"likeCount"];
+             NSNumber* numLikeCount = [responseObject valueForKey:@"likeCount"];
+             self.likeCount = [numLikeCount stringValue];
              [self.likeLabel setText:self.likeCount];
              [self getLikeStatus];
              //long unlikedCount = [responseObject valueForKey:@"unlikeCount"];
@@ -258,7 +263,7 @@
     manager.securityPolicy.validatesDomainName = NO;
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-content-count+json"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-content-liked+json"];
     [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-liked+json" forHTTPHeaderField:@"Accept"];
     [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-liked+json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:appDelegate.accessToken forHTTPHeaderField:@"token"];
@@ -270,9 +275,11 @@
              //LIKE/DISLIKE
              self.likeStatus = [responseObject valueForKey:@"status"];
              if ([self.likeStatus isEqualToString:@"LIKE"]) {
-                [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_pressed.png"] forState:UIControlStateNormal];
+                 [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_pressed.png"] forState:UIControlStateNormal];
+                 [self.likeLabel setTextColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f]];
              } else {
                  [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_normal.png"] forState:UIControlStateNormal];
+                 [self.likeLabel setTextColor:[UIColor colorWithRed:170.0f/255.0f green:170.0f/255.0f blue:170.0f/255.0f alpha:1.0f]];
              }
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){

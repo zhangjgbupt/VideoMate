@@ -124,9 +124,10 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
     [cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
     
+    CGFloat titleWidth = thumbRectSize.size.width*3/4;
     CGRect titleRectSize = CGRectMake(cell.channelTitle.frame.origin.x,
                                       cell.channelTitle.frame.origin.y,
-                                      thumbRectSize.size.width,
+                                      titleWidth,
                                       cell.channelTitle.frame.size.height);
     [cell.channelTitle setFrame:titleRectSize];
     NSString* title = NSLocalizedString(@"channel_page_title_text", nil);
@@ -134,6 +135,12 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     [cell.channelTitle setText:title];
     
     NSString* itemNum = [NSString stringWithFormat:@"(%@ %@)", channelData.contentCount,NSLocalizedString(@"item_count", nil)];
+    CGFloat countLabelWidth = thumbRectSize.size.width/4;
+    CGRect countRectSize = CGRectMake(cell.channelTitle.frame.origin.x+titleWidth,
+                                      cell.itemNum.frame.origin.y,
+                                      countLabelWidth,
+                                      cell.itemNum.frame.size.height);
+    [cell.itemNum setFrame:countRectSize];
     [cell.itemNum setText:itemNum];
     return cell;
 }

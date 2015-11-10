@@ -14,6 +14,7 @@
 #import "ArchiveFileData.h"
 #import "IGLDropDownMenu.h"
 #import "SDRefresh.h"
+#import "DropDownListView.h"
 
 @interface MyMediaViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,IGLDropDownMenuDelegate>
 @property (nonatomic, retain) NSMutableArray* archiveList;
@@ -25,6 +26,10 @@
 @property int maxPageNumber;
 
 @property (nonatomic, strong) IGLDropDownMenu *videoSourceSelectorMenu;
+@property (strong, nonatomic) DropDownListView * channelDropListView;
+@property (strong, nonatomic) NSMutableArray* channelList;
+@property (strong, nonatomic) NSMutableDictionary * channelListNameAndIdDict;
+@property (strong, nonatomic) ArchiveData* selectedArchive2Share;
 @property BOOL isUploadClick;
 
 @property (nonatomic, strong) SDRefreshFooterView *refreshFooter;

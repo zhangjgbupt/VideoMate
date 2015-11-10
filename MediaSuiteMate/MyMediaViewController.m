@@ -16,13 +16,14 @@
 @end
 
 @implementation MyMediaViewController
-@synthesize archiveCount, archiveList;
+@synthesize archiveCount, selectedArchive2Share, archiveList, channelList, channelListNameAndIdDict;
 @synthesize uploadButton;
 @synthesize videoURL;
 @synthesize videoSourceSelectorMenu, isUploadClick;
 @synthesize refreshFooter, refreshHeader;
 @synthesize maxPageNumber, currentPageIndex;
 @synthesize appDelegate;
+@synthesize channelDropListView;
 
 static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
@@ -32,6 +33,9 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     self.maxPageNumber = 0;
     
     self.appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    self.channelList = [[NSMutableArray alloc]init];
+    self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     
@@ -54,6 +58,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 //    appDelegate.navController.viewControllers = childViewControllers;
     
      self.archiveList = [[NSMutableArray alloc]init];
+    [self getContributedChannels];
     [self getMyArchives];
     [self setupHeader];
     [self setupFooter];
@@ -147,29 +152,36 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
-        [self deleteArchive:archive.achiveId];
-        [self.archiveList removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        //ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
+        //[self deleteArchive:archive.achiveId];
+        //[self.archiveList removeObjectAtIndex:indexPath.row];
+        //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
 
-//-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewRowAction *button = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Button 1" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
-//                                    {
-//                                        NSLog(@"Action to perform with Button 1");
-//                                    }];
-//    button.backgroundColor = [UIColor greenColor]; //arbitrary color
-//    UITableViewRowAction *button2 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Button 2" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
-//                                     {
-//                                         NSLog(@"Action to perform with Button2!");
-//                                     }];
-//    button2.backgroundColor = [UIColor blueColor]; //arbitrary color
-//    
-//    return @[button, button2];
-//}
+-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedArchive2Share = [self.archiveList objectAtIndex:indexPath.row];
+    UITableViewRowAction *deleteBtn = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
+                                    {
+                                        NSLog(@"Action to perform with Delete");
+                                        ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
+                                        [self deleteArchive:archive.achiveId];
+                                        [self.archiveList removeObjectAtIndex:indexPath.row];
+                                        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                    }];
+    deleteBtn.backgroundColor = [UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f];
+    
+    UITableViewRowAction *shareBtn = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"slide_share", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
+                                     {
+                                         NSLog(@"Action to perform with Share!");
+                                         [self share2Channel];
+                                     }];
+    shareBtn.backgroundColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
+    
+    return @[deleteBtn, shareBtn];
+}
 
 /*
 // Override to support rearranging the table view.
@@ -367,6 +379,92 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
          }];
 }
 
+- (void) getContributedChannels
+{
+    NSString* userName = [appDelegate.userName stringByReplacingOccurrencesOfString:@"\\" withString:@" "];
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/user/%@/contributedChannels/?startIndex=0&pageSize=10000", appDelegate.svrAddr,userName];
+    requestStr = [self escapeUrl:requestStr];
+    
+    NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-content-channel-list+json"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-channel-list+json" forHTTPHeaderField:@"Accept"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-channel-list+json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:appDelegate.accessToken forHTTPHeaderField:@"token"];
+    [manager.requestSerializer setValue:auth forHTTPHeaderField:@"Authorization"];
+    [manager GET:requestStr parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSArray* channelArray =[responseObject valueForKey:@"plcm-content-channel"];
+             if(channelArray!=nil && [channelArray count]>0) {
+                 //if get channel successful, remove the older.
+                 [channelList removeAllObjects];
+                 [channelListNameAndIdDict removeAllObjects];
+             }
+             for (int i=0; i<[channelArray count]; i++) {
+                 NSDictionary* channelOrigialData = channelArray[i];
+                 ChannelData* channelObj = [[ChannelData alloc]init];
+                 channelObj.channelId = channelOrigialData[@"channelId"];
+                 channelObj.name = channelOrigialData[@"name"];
+                 channelObj.description = channelOrigialData[@"description"];
+                 //channelObj.creatTime = channelOrigialData[@"createTime"];
+                 //channelObj.viewCount = channelOrigialData[@"viewCount"];
+                 //channelObj.contentCount = channelOrigialData[@"contentCount"];
+                 //channelObj.updateTime = channelOrigialData[@"updateTime"];
+                 //channelObj.ownerName = channelOrigialData[@"ownerName"];
+                 //channelObj.firstArchiveId = channelOrigialData[@"firstArchiveId"];
+                 //channelObj.firstArchiveThumbnailURL = channelOrigialData[@"firstArchiveThumbnailURL"];
+                 [channelList addObject:channelObj];
+                 [channelListNameAndIdDict setObject: channelObj.channelId forKey:channelObj.name];
+             }
+         }
+         failure:^(AFHTTPRequestOperation* task, NSError* error){
+             NSLog(@"Get Channle List Failed!");
+             NSLog(@"Error: %@", error.description);
+         }];
+    
+}
+
+- (void) updateArchivePeroperty:(NSString*) archiveId withChannelIds:(NSMutableArray*)selectedChannelList
+{
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/content/archives/%@", appDelegate.svrAddr, archiveId];
+    NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-csc+json"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Accept"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-archive+json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:appDelegate.accessToken forHTTPHeaderField:@"token"];
+    [manager.requestSerializer setValue:auth forHTTPHeaderField:@"Authorization"];
+    
+    if (selectedChannelList==nil) {
+        selectedChannelList = [[NSMutableArray alloc]init];
+    }
+    
+    NSDictionary *body = @{ @"archiveId" : archiveId,
+                            @"description" : self.selectedArchive2Share.description,
+                            @"displayName" : self.selectedArchive2Share.displayName,
+                            @"channelIds" : selectedChannelList,
+                            @"owner" : self.selectedArchive2Share.owner,
+                            };
+    
+    [manager PUT:requestStr parameters:body
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"update archive peropery success!");
+             
+         }
+         failure:^(AFHTTPRequestOperation* task, NSError* error){
+             NSLog(@"update archive peroperty Failed!");
+             NSLog(@"Error: %@", error.description);
+         }];
+}
+
 - (NSString *)escapeUrl:(NSString *)string
 {
     NSMutableCharacterSet *cs = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
@@ -541,8 +639,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     __weak SDRefreshHeaderView *weakRefreshHeader = refreshHeader;
     __weak typeof(self) weakSelf = self;
     refreshHeader.beginRefreshingOperation = ^{
-        //[weakSelf getMyArchives];
-        [weakSelf getMyArchiveCount];
+        [weakSelf getMyArchives];
+        //[weakSelf getMyArchiveCount];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
             [weakRefreshHeader endRefreshing];
@@ -565,8 +663,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         [weakSelf getMyArchives];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
-            [weakSelf getMyArchiveCount];
-            //[weakRefreshFooter endRefreshing];
+            //[weakSelf getMyArchiveCount];
+            [weakRefreshFooter endRefreshing];
         });
     };
 }
@@ -587,5 +685,55 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 //        [self.refreshFooter endRefreshing];
 //    });
 //}
+
+
+#pragma mark - dropdown list delegate
+
+-(void)showPopUpWithTitle:(NSString*)popupTitle withOption:(NSArray*)arrOptions xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple{
+    
+    
+    channelDropListView = [[DropDownListView alloc] initWithTitle:popupTitle options:arrOptions xy:point size:size isMultiple:isMultiple];
+    channelDropListView.delegate = self;
+    [channelDropListView showInView:self.view animated:YES];
+    
+    /*----------------Set DropDown backGroundColor-----------------*/
+    //[channelDropListView SetBackGroundDropDown_R:0.0 G:108.0 B:194.0 alpha:0.70];
+    // derek
+    [channelDropListView SetBackGroundDropDown_R:255.0 G:255.0 B:255.0 alpha:1.0];
+    
+}
+- (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex{
+    /*----------------Get Selected Value[Single selection]-----------------*/
+    NSString* channelId = [[self.channelList objectAtIndex:anIndex] channelId];
+    //strChannelsSelected = [NSString stringWithFormat:@"%@%@,",strChannelsSelected, channelId];
+}
+- (void)DropDownListView:(DropDownListView *)dropdownListView Datalist:(NSMutableArray*)ArryData{
+    
+    /*----------------Get Selected Value[Multiple selection]-----------------*/
+    for(int i=0; i<[ArryData count]; i++) {
+        NSString* id = [channelListNameAndIdDict objectForKey:ArryData[i]];
+        [ArryData replaceObjectAtIndex:i withObject:id];
+    }
+    [self updateArchivePeroperty:self.selectedArchive2Share.achiveId withChannelIds:ArryData];
+}
+- (void)DropDownListViewDidCancel{
+    
+}
+
+- (void)share2Channel {
+    [self.channelDropListView fadeOut];
+    
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGFloat screenHeight = screenRect.size.height;
+    
+    int w = 315;
+    int h = screenHeight - 100;
+    int x = (screenWidth - w)/2;
+    int y = 120;
+    
+    NSArray* channelNameList = [channelListNameAndIdDict allKeys];
+    [self showPopUpWithTitle:NSLocalizedString(@"channel_select_title",nil) withOption:channelNameList xy:CGPointMake(x, y) size:CGSizeMake(w, h) isMultiple:YES];
+}
 
 @end

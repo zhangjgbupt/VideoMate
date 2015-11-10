@@ -41,3 +41,7 @@
 "channel_label_title"="频道:";
 "channel_select_title"="选择频道";
 "upload_btn_title"="上传文件";
+
+//media slide menu
+"slide_share"="共享";
+"slide_delete"="删除";
