@@ -49,7 +49,7 @@
     
     //set the color for navigation bar background to red.
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f]];
-    [[UINavigationBar appearance] setTranslucent:NO];
+    //[[UINavigationBar appearance] setTranslucent:NO];
     
     [self.window setRootViewController:navController];
     [self.window makeKeyAndVisible];

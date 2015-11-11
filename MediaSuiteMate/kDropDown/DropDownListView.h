@@ -15,6 +15,7 @@
     CGFloat R,G,B,A;
     BOOL isMultipleSelection;
 }
+@property (nonatomic, strong) UITableView* kTableView;
 @property(nonatomic,strong) NSMutableArray* arryData;
 @property (nonatomic, assign) id<kDropDownListViewDelegate> delegate;
 - (void)fadeOut;

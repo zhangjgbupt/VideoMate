@@ -16,7 +16,7 @@
 @end
 
 @implementation MyMediaViewController
-@synthesize archiveCount, selectedArchive2Share, archiveList, channelList, channelListNameAndIdDict;
+@synthesize archiveCount, selectedArchive2Share, archiveList, channelNameList, channelListNameAndIdDict;
 @synthesize uploadButton;
 @synthesize videoURL;
 @synthesize videoSourceSelectorMenu, isUploadClick;
@@ -34,7 +34,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     
-    self.channelList = [[NSMutableArray alloc]init];
+    self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
@@ -120,8 +120,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     CGRect frame = cell.archiveThum.frame;
     [cell.archiveThum setFrame:CGRectMake(frame.origin.x, frame.origin.y, thum_w, frame.size.height)];
     [cell.archiveThum setImage:thumImage];
-    [cell.archiveThum setImage:thumImage];
-
     [cell.archiveName setText:archive.displayName];
     
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:([archive.creatTime doubleValue]/ 1000)];
@@ -135,9 +133,15 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //dropdown view always in top-right.
     CGRect fixedFrame = self.videoSourceSelectorMenu.frame;
     fixedFrame.origin.y = 10 + scrollView.contentOffset.y;
     self.videoSourceSelectorMenu.frame = fixedFrame;
+    
+    //popup channel selected view in middle of the mainview.
+    CGRect channelSelectViewRect = self.channelDropListView.frame;
+    channelSelectViewRect.origin.y = 100 + scrollView.contentOffset.y;
+    self.channelDropListView.frame = channelSelectViewRect;
 }
 
 
@@ -271,6 +275,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                  archiveObj.deviceAddress = archiveOrigialData[@"deviceAddress"];
                  archiveObj.mediaPath = archiveOrigialData[@"mediaPath"];
                  archiveObj.deviceId = archiveOrigialData[@"deviceId"];
+                 archiveObj.channelList = archiveOrigialData[@"channelIds"];
                  
                  NSNumber* likedCount = archiveOrigialData[@"likeCount"];
                  archiveObj.likeCount = [likedCount stringValue];
@@ -313,7 +318,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                  
                  [self.archiveList addObject:archiveObj];
              }
-             //[self.tableView reloadData];
+             [self.tableView reloadData];
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"Get Channle List Failed!");
@@ -401,7 +406,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
              NSArray* channelArray =[responseObject valueForKey:@"plcm-content-channel"];
              if(channelArray!=nil && [channelArray count]>0) {
                  //if get channel successful, remove the older.
-                 [channelList removeAllObjects];
+                 [channelNameList removeAllObjects];
                  [channelListNameAndIdDict removeAllObjects];
              }
              for (int i=0; i<[channelArray count]; i++) {
@@ -417,7 +422,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                  //channelObj.ownerName = channelOrigialData[@"ownerName"];
                  //channelObj.firstArchiveId = channelOrigialData[@"firstArchiveId"];
                  //channelObj.firstArchiveThumbnailURL = channelOrigialData[@"firstArchiveThumbnailURL"];
-                 [channelList addObject:channelObj];
+                 [channelNameList addObject:channelObj.name];
                  [channelListNameAndIdDict setObject: channelObj.channelId forKey:channelObj.name];
              }
          }
@@ -457,6 +462,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [manager PUT:requestStr parameters:body
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"update archive peropery success!");
+             [self getMyArchives];
              
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){
@@ -640,9 +646,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     __weak typeof(self) weakSelf = self;
     refreshHeader.beginRefreshingOperation = ^{
         [weakSelf getMyArchives];
-        //[weakSelf getMyArchiveCount];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadData];
             [weakRefreshHeader endRefreshing];
         });
     };
@@ -662,8 +666,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     refreshFooter.beginRefreshingOperation = ^{
         [weakSelf getMyArchives];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadData];
-            //[weakSelf getMyArchiveCount];
             [weakRefreshFooter endRefreshing];
         });
     };
@@ -691,20 +693,29 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 -(void)showPopUpWithTitle:(NSString*)popupTitle withOption:(NSArray*)arrOptions xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple{
     
-    
     channelDropListView = [[DropDownListView alloc] initWithTitle:popupTitle options:arrOptions xy:point size:size isMultiple:isMultiple];
     channelDropListView.delegate = self;
     [channelDropListView showInView:self.view animated:YES];
     
     /*----------------Set DropDown backGroundColor-----------------*/
-    //[channelDropListView SetBackGroundDropDown_R:0.0 G:108.0 B:194.0 alpha:0.70];
-    // derek
     [channelDropListView SetBackGroundDropDown_R:255.0 G:255.0 B:255.0 alpha:1.0];
     
+    NSArray* exitingChannels = self.selectedArchive2Share.channelList;
+    if (!isNSNull(exitingChannels)) {
+        for (int i=0; i<[channelNameList count]; i++) {
+            NSString* channelName = [channelNameList objectAtIndex:i];
+            NSString* channelId = [channelListNameAndIdDict objectForKey:channelName];
+            if ([exitingChannels containsObject:channelId]) {
+                NSIndexPath *path = [NSIndexPath indexPathForItem:i inSection:0];
+                [channelDropListView.kTableView selectRowAtIndexPath:path animated:YES scrollPosition:UITableViewScrollPositionNone];
+                [channelDropListView.kTableView.delegate tableView:channelDropListView.kTableView didSelectRowAtIndexPath:path];
+            }
+        }
+    }
 }
 - (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex{
     /*----------------Get Selected Value[Single selection]-----------------*/
-    NSString* channelId = [[self.channelList objectAtIndex:anIndex] channelId];
+    //NSString* channelId = [[self.channelList objectAtIndex:anIndex] channelId];
     //strChannelsSelected = [NSString stringWithFormat:@"%@%@,",strChannelsSelected, channelId];
 }
 - (void)DropDownListView:(DropDownListView *)dropdownListView Datalist:(NSMutableArray*)ArryData{
@@ -716,6 +727,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     }
     [self updateArchivePeroperty:self.selectedArchive2Share.achiveId withChannelIds:ArryData];
 }
+
 - (void)DropDownListViewDidCancel{
     
 }
@@ -727,12 +739,12 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     
+    
     int w = 315;
     int h = screenHeight - 100;
     int x = (screenWidth - w)/2;
-    int y = 120;
+    int y = appDelegate.tabBarController.navigationController.navigationBar.frame.size.height;;
     
-    NSArray* channelNameList = [channelListNameAndIdDict allKeys];
     [self showPopUpWithTitle:NSLocalizedString(@"channel_select_title",nil) withOption:channelNameList xy:CGPointMake(x, y) size:CGSizeMake(w, h) isMultiple:YES];
 }
 

@@ -21,7 +21,7 @@
 @property (strong, nonatomic) UILabel* placeholderLabel;
 @property (strong, nonatomic) IBOutlet UITextField *textMediaFileName;
 
-@property (strong, nonatomic) NSMutableArray* channelList;
+@property (strong, nonatomic) NSMutableArray* channelNameList;
 @property (strong, nonatomic) NSMutableDictionary * channelListNameAndIdDict;
 @property (strong, nonatomic) DropDownListView * channelDropListView;
 @property (strong, nonatomic) NSMutableArray* channelSelected;

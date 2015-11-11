@@ -17,7 +17,7 @@
 @synthesize videoController, videoURL, ugcArchiveData;
 @synthesize uploadMediaFilesHandle;
 @synthesize textMediaFileName, textDescription,progressView, placeholderLabel;
-@synthesize channelList,channelListNameAndIdDict,channelDropListView,channelSelected;
+@synthesize channelNameList,channelListNameAndIdDict,channelDropListView,channelSelected;
 @synthesize seperator_1, seperator_2;
 @synthesize appDelegate;
 @synthesize original_y_center;
@@ -36,7 +36,7 @@
     [super viewDidLoad];
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     
-    self.channelList = [[NSMutableArray alloc]init];
+    self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
     self.textMediaFileName.delegate = self;
     self.textDescription.delegate = self;
@@ -234,7 +234,7 @@
              NSArray* channelArray =[responseObject valueForKey:@"plcm-content-channel"];
              if(channelArray!=nil && [channelArray count]>0) {
                  //if get channel successful, remove the older.
-                 [channelList removeAllObjects];
+                 [channelNameList removeAllObjects];
                  [channelListNameAndIdDict removeAllObjects];
              }
              for (int i=0; i<[channelArray count]; i++) {
@@ -250,7 +250,7 @@
                  //channelObj.ownerName = channelOrigialData[@"ownerName"];
                  //channelObj.firstArchiveId = channelOrigialData[@"firstArchiveId"];
                  //channelObj.firstArchiveThumbnailURL = channelOrigialData[@"firstArchiveThumbnailURL"];
-                 [channelList addObject:channelObj];
+                 [channelNameList addObject:channelObj.name];
                  [channelListNameAndIdDict setObject: channelObj.channelId forKey:channelObj.name];
              }
          }
@@ -376,7 +376,7 @@
 }
 - (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex{
     /*----------------Get Selected Value[Single selection]-----------------*/
-    NSString* channelId = [[self.channelList objectAtIndex:anIndex] channelId];
+    //NSString* channelId = [[self.channelList objectAtIndex:anIndex] channelId];
     //strChannelsSelected = [NSString stringWithFormat:@"%@%@,",strChannelsSelected, channelId];
 }
 - (void)DropDownListView:(DropDownListView *)dropdownListView Datalist:(NSMutableArray*)ArryData{
@@ -387,15 +387,6 @@
         [ArryData replaceObjectAtIndex:i withObject:id];
     }
     self.channelSelected = ArryData;
-//    if (ArryData.count>0) {
-//        NSString* channelIds =[ArryData componentsJoinedByString:@","];
-//        self.strChannelsSelected = [NSString stringWithFormat:@"[%@]",channelIds ];
-//        NSLog(@"select all channel ids:%@", channelIds);
-//    }
-//    else{
-//        NSString* channelIds=@"";
-//    }
-    
 }
 - (void)DropDownListViewDidCancel{
     
@@ -415,7 +406,6 @@
     int x = (screenWidth - w)/2;
     int y = 120;
     
-    NSArray* channelNameList = [channelListNameAndIdDict allKeys];
     [self showPopUpWithTitle:NSLocalizedString(@"channel_select_title",nil) withOption:channelNameList xy:CGPointMake(x, y) size:CGSizeMake(w, h) isMultiple:YES];
 }
 

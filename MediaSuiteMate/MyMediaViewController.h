@@ -16,7 +16,7 @@
 #import "SDRefresh.h"
 #import "DropDownListView.h"
 
-@interface MyMediaViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,IGLDropDownMenuDelegate>
+@interface MyMediaViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,IGLDropDownMenuDelegate, kDropDownListViewDelegate>
 @property (nonatomic, retain) NSMutableArray* archiveList;
 @property (nonatomic, retain) NSString* archiveCount;
 @property (nonatomic, retain) UIBarButtonItem *uploadButton;
@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong) IGLDropDownMenu *videoSourceSelectorMenu;
 @property (strong, nonatomic) DropDownListView * channelDropListView;
-@property (strong, nonatomic) NSMutableArray* channelList;
+@property (strong, nonatomic) NSMutableArray* channelNameList;
 @property (strong, nonatomic) NSMutableDictionary * channelListNameAndIdDict;
 @property (strong, nonatomic) ArchiveData* selectedArchive2Share;
 @property BOOL isUploadClick;
