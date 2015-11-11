@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "MediaPlayerViewController.h"
 #import "UGCPlaybackViewController.h"
+#import "BGTableViewRowActionWithImage.h"
 
 @interface MyMediaViewController ()
 
@@ -167,22 +168,20 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 -(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedArchive2Share = [self.archiveList objectAtIndex:indexPath.row];
-    UITableViewRowAction *deleteBtn = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
-                                    {
-                                        NSLog(@"Action to perform with Delete");
-                                        ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
-                                        [self deleteArchive:archive.achiveId];
-                                        [self.archiveList removeObjectAtIndex:indexPath.row];
-                                        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                                    }];
-    deleteBtn.backgroundColor = [UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f];
+    ArchiveTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseArchiveIdentifier forIndexPath:indexPath];
     
-    UITableViewRowAction *shareBtn = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"slide_share", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
-                                     {
-                                         NSLog(@"Action to perform with Share!");
-                                         [self share2Channel];
-                                     }];
-    shareBtn.backgroundColor = [UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f];
+    BGTableViewRowActionWithImage *deleteBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_delete", nil) backgroundColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_delete"] forCellHeight:cell.frame.size.height handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+                                            NSLog(@"Action to perform with Delete");
+                                            ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
+                                            [self deleteArchive:archive.achiveId];
+                                            //[self.archiveList removeObjectAtIndex:indexPath.row];
+                                            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    
+    BGTableViewRowActionWithImage *shareBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_share", nil) backgroundColor:[UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_share"] forCellHeight:cell.frame.size.height handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        NSLog(@"Action to perform with Share!");
+        [self share2Channel];
+    }];
     
     return @[deleteBtn, shareBtn];
 }
@@ -315,7 +314,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                          [archiveObj.archiveFiles addObject:fileData];
                      }
                  }
-                 
                  [self.archiveList addObject:archiveObj];
              }
              [self.tableView reloadData];
@@ -377,6 +375,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [manager DELETE:requestStr parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"Delete Archive ---  SUCCESS");
+             [self getMyArchives];
         }
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"Delete Archive ---  FAIL");
@@ -471,23 +470,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
          }];
 }
 
-- (NSString *)escapeUrl:(NSString *)string
-{
-    NSMutableCharacterSet *cs = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-    //[cs removeCharactersInString:@"?&="];
-    return [string stringByAddingPercentEncodingWithAllowedCharacters: cs];
-}
-
-- (NSString *)timeFormatted:(long)totalSeconds
-{
-    
-    int seconds = totalSeconds % 60;
-    int minutes = (totalSeconds / 60) % 60;
-    int hours = totalSeconds / 3600;
-    
-    return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
-}
-
+#pragma mark - UIImagePickerController Delegate
 
 - (void)captureVideo {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -523,7 +506,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     }
     
 }
-
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
@@ -579,6 +561,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
      */
 }
 
+#pragma mark - IGLDropDownMenu Delegate
+
 - (void) go2ugcSourceSelect {
     
     if(videoSourceSelectorMenu.expanding) {
@@ -620,8 +604,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [self.videoSourceSelectorMenu reloadView];
 }
 
-#pragma mark - IGLDropDownMenuDelegate
-
 - (void)selectedItemAtIndex:(NSInteger)index
 {
     //IGLDropDownItem *item = self.videoSourceSelectorMenu.dropDownItems[index];
@@ -636,6 +618,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 
 #pragma mark - header and footer refresh
+
 - (void)setupHeader
 {
     refreshHeader = [SDRefreshHeaderView refreshView];
@@ -747,5 +730,25 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     [self showPopUpWithTitle:NSLocalizedString(@"channel_select_title",nil) withOption:channelNameList xy:CGPointMake(x, y) size:CGSizeMake(w, h) isMultiple:YES];
 }
+
+#pragma mark - others
+
+- (NSString *)escapeUrl:(NSString *)string
+{
+    NSMutableCharacterSet *cs = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    //[cs removeCharactersInString:@"?&="];
+    return [string stringByAddingPercentEncodingWithAllowedCharacters: cs];
+}
+
+- (NSString *)timeFormatted:(long)totalSeconds
+{
+    
+    int seconds = totalSeconds % 60;
+    int minutes = (totalSeconds / 60) % 60;
+    int hours = totalSeconds / 3600;
+    
+    return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
+}
+
 
 @end

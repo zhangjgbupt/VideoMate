@@ -387,6 +387,9 @@
         [ArryData replaceObjectAtIndex:i withObject:id];
     }
     self.channelSelected = ArryData;
+    NSInteger channelNumber = [ArryData count];
+    NSString* title = [NSString stringWithFormat:@"%ld %@", (long)channelNumber,NSLocalizedString(@"selected_channel", nil)];
+    [self.btnChannelList setTitle:title forState:UIControlStateNormal];
 }
 - (void)DropDownListViewDidCancel{
     

@@ -41,7 +41,8 @@
 "channel_label_title"="Channels:";
 "channel_select_title"="Select Channels";
 "upload_btn_title"="UPLOAD";
+"selected_channel"="Channels";
 
 //media slide menu
-"slide_share"="Share";
-"slide_delete"="Delete";
+"slide_share"=" Share ";
+"slide_delete"=" Delete ";
