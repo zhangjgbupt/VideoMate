@@ -16,6 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="image_welcom_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="QKq-8F-sUR">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="180x180.png" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-A8-kt2">
                                 <rect key="frame" x="106" y="89" width="180" height="180"/>
                             </imageView>
@@ -32,10 +35,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="28.266666666666666" y="355"/>
+            <point key="canvasLocation" x="27.5" y="354.5"/>
         </scene>
     </scenes>
     <resources>
         <image name="180x180.png" width="180" height="180"/>
+        <image name="image_welcom_bg.png" width="320" height="568"/>
     </resources>
 </document>

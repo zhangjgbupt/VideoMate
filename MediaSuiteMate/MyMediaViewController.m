@@ -172,8 +172,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                                             NSLog(@"Action to perform with Delete");
                                             ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
                                             [self deleteArchive:archive.achiveId];
-                                            [self.archiveList removeObjectAtIndex:indexPath.row];
-                                            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                            //[self.archiveList removeObjectAtIndex:indexPath.row];
+                                            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }];
     
     BGTableViewRowActionWithImage *shareBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_share", nil) backgroundColor:[UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_share"] forCellHeight:260 handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
