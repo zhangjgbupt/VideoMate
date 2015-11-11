@@ -168,17 +168,15 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 -(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedArchive2Share = [self.archiveList objectAtIndex:indexPath.row];
-    ArchiveTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseArchiveIdentifier forIndexPath:indexPath];
-    
-    BGTableViewRowActionWithImage *deleteBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_delete", nil) backgroundColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_delete"] forCellHeight:cell.frame.size.height handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    BGTableViewRowActionWithImage *deleteBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_delete", nil) backgroundColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_delete"] forCellHeight:260 handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
                                             NSLog(@"Action to perform with Delete");
                                             ArchiveData* archive = [self.archiveList objectAtIndex:indexPath.row];
                                             [self deleteArchive:archive.achiveId];
-                                            //[self.archiveList removeObjectAtIndex:indexPath.row];
-                                            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                            [self.archiveList removeObjectAtIndex:indexPath.row];
+                                            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }];
     
-    BGTableViewRowActionWithImage *shareBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_share", nil) backgroundColor:[UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_share"] forCellHeight:cell.frame.size.height handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    BGTableViewRowActionWithImage *shareBtn = [BGTableViewRowActionWithImage rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"slide_share", nil) backgroundColor:[UIColor colorWithRed:201.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0f] image:[UIImage imageNamed:@"icon_share"] forCellHeight:260 handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         NSLog(@"Action to perform with Share!");
         [self share2Channel];
     }];
@@ -589,9 +587,9 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         [item setText:dict[@"title"]];
         [dropdownItems addObject:item];
     }
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    float height = appDelegate.tabBarController.navigationController.navigationBar.frame.size.height;
-    float width = appDelegate.tabBarController.navigationController.navigationBar.frame.size.width/2;
+    
+    float height = appDelegate.navController.navigationBar.frame.size.height;
+    float width = appDelegate.navController.navigationBar.frame.size.width/2;
     
     self.videoSourceSelectorMenu = [[IGLDropDownMenu alloc] init];
     //self.videoSourceSelectorMenu.menuText = @"Video Source";
@@ -726,7 +724,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     int w = 315;
     int h = screenHeight - 100;
     int x = (screenWidth - w)/2;
-    int y = appDelegate.tabBarController.navigationController.navigationBar.frame.size.height;;
+    int y = self.videoSourceSelectorMenu.frame.origin.y+100;
     
     [self showPopUpWithTitle:NSLocalizedString(@"channel_select_title",nil) withOption:channelNameList xy:CGPointMake(x, y) size:CGSizeMake(w, h) isMultiple:YES];
 }
