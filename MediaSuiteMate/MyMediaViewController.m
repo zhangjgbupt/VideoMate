@@ -117,9 +117,10 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     
     CGFloat w = cell.frame.size.width;
-    CGFloat thum_w = w -40;
+    CGFloat thum_w = w - 40;
+    CGFloat thum_h = thum_w*9/16;
     CGRect frame = cell.archiveThum.frame;
-    [cell.archiveThum setFrame:CGRectMake(frame.origin.x, frame.origin.y, thum_w, frame.size.height)];
+    [cell.archiveThum setFrame:CGRectMake(frame.origin.x, frame.origin.y, thum_w, thum_h)];
     [cell.archiveThum setImage:thumImage];
     [cell.archiveName setText:archive.displayName];
     
@@ -132,6 +133,16 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGFloat imageWidth = screenWidth - 40;
+    CGFloat imageHight = imageWidth*9/16;
+    //title height = 30px
+    CGFloat cellHeight = imageHight + 30 + 30;
+    return cellHeight;
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     //dropdown view always in top-right.

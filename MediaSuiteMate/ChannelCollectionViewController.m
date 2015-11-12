@@ -68,7 +68,6 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_page_title", nil)];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = channelFollowButton;
     [appDelegate startNetworkConnectionMonitor];
-    
     //[self getContributeChannleCount];
 }
 
@@ -105,7 +104,10 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ChannelCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseChannelIdentifier forIndexPath:indexPath];
     ChannelData* channelData = [self.sortedChannelList objectAtIndex:indexPath.row];
-    cell.channelThum.frame = CGRectMake(0, 30, cell.frame.size.width, cell.frame.size.height);
+    CGFloat image_w = cell.frame.size.width;
+    CGFloat image_h = image_w*9/16;
+    cell.channelThum.frame = CGRectMake(0, 30, image_w, image_h);
+    [cell.channelThum setContentMode:UIViewContentModeScaleToFill];
     NSString* thumUrlString = channelData.firstArchiveThumbnailURL;
     UIImage* thumImage = [UIImage imageNamed:@"image_default_bg"];
     
@@ -115,16 +117,18 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
             NSURL* thumUrl = [NSURL URLWithString:thumUrlString];
             UIImage* thumImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:thumUrl]];
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                CGRect thumbRectSize = [cell.channelThum frame];
-                CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
-                [cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
+                //CGRect thumbRectSize = [cell.channelThum frame];
+                //CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
+                //[cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
+                [cell.channelThum setImage:thumImage];
             });
         });
     }
     
     CGRect thumbRectSize = [cell.channelThum frame];
-    CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
-    [cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
+    //CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
+    [cell.channelThum setImage:thumImage];
+    //[cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
     
     CGFloat titleWidth = thumbRectSize.size.width*3/4;
     CGRect titleRectSize = CGRectMake(cell.channelTitle.frame.origin.x,
@@ -191,8 +195,13 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGRect rectSize = [self.view frame];
-    int width = rectSize.size.width;
-    return CGSizeMake(width/2-5, (width/2)*3/4);
+    CGFloat cellWidth = rectSize.size.width/2-1;
+    CGFloat imageWidth = cellWidth;
+    CGFloat imageHeight = imageWidth*9/16;
+    //title height = 30 px
+    CGFloat cellHeight = imageHeight + 30;
+    
+    return CGSizeMake(cellWidth, cellHeight);
 }
 //定义每个UICollectionView 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

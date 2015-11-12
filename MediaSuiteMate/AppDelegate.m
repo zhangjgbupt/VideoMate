@@ -93,7 +93,8 @@
     MyMediaViewController* myMediaViewController = [[MyMediaViewController alloc]init];
     
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc]init];
-    flowLayout.itemSize = CGSizeMake(100, 100);
+    flowLayout.minimumInteritemSpacing = 1;
+    flowLayout.minimumLineSpacing = 1;
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     ChannelCollectionViewController *channelListViewController = [[ChannelCollectionViewController alloc] initWithCollectionViewLayout:flowLayout];
     
