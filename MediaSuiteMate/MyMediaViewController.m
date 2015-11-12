@@ -475,6 +475,11 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
+        NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIColor whiteColor],NSForegroundColorAttributeName,
+                                        [UIColor whiteColor],NSBackgroundColorAttributeName,nil];
+        picker.navigationBar.titleTextAttributes = textAttributes;
+        picker.navigationBar.tintColor = [UIColor whiteColor];
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.showsCameraControls = YES;
@@ -494,6 +499,11 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
+        NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIColor whiteColor],NSForegroundColorAttributeName,
+                                        [UIColor whiteColor],NSBackgroundColorAttributeName,nil];
+        picker.navigationBar.titleTextAttributes = textAttributes;
+        picker.navigationBar.tintColor = [UIColor whiteColor];
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];

@@ -61,6 +61,8 @@
     
     if ([self isUserInfoFileExist]) {
         [self readUserInfo];
+    } else {
+        [self setDefaultValue];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -127,6 +129,9 @@
     [self.view endEditing:YES];
 }
 
+- (void) setDefaultValue {
+    self.serverAddrText.text = @"ms.plcmchina.com";
+}
 
 - (void)readUserInfo {
     NSArray *sysPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory ,NSUserDomainMask, YES);

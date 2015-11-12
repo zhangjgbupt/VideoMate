@@ -46,6 +46,8 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     }
     appDelegate.navController.viewControllers = childViewControllers;
     
+    self.collectionView.bounces = YES;
+    self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.backgroundColor = [UIColor whiteColor];
     [self.collectionView registerClass:[ChannelCollectionViewCell class] forCellWithReuseIdentifier:reuseChannelIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:@"ChannelCollectionViewCell"
@@ -67,7 +69,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = channelFollowButton;
     [appDelegate startNetworkConnectionMonitor];
     
-    [self getContributeChannleCount];
+    //[self getContributeChannleCount];
 }
 
 - (BOOL)shouldAutorotate{
