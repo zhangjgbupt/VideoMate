@@ -71,19 +71,9 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = self.navigationController.navigationBar.bounds.size.height +
-    [UIApplication sharedApplication].statusBarFrame.size.height;
-    self.tableView.contentInset = insets;
-    self.tableView.scrollIndicatorInsets = insets;
-    
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"my_media_page_title", nil)];;
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = uploadButton;
     [appDelegate startNetworkConnectionMonitor];
-    
-    //[self getMyArchives];
 }
 
 #pragma mark - Table view data source

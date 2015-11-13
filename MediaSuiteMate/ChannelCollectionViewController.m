@@ -56,7 +56,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     
     //[self getContributeChannleCount];
     [self setupHeader];
-    [self setupFooter];
+    //[self setupFooter];
 }
 
 - (void)didReceiveMemoryWarning {
