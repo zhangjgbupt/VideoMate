@@ -14,8 +14,15 @@
 #import "RDVTabBarController.h"
 #import "RDVTabBarItem.h"
 #import "GlobalMacroDefine.h"
+#import "GeTuiSdk.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+/// 个推开发者网站中申请App时注册的AppId、AppKey、AppSecret
+#define kGtAppId           @"zW5idAIl9R7Q8Lda9Lav89"
+#define kGtAppKey          @"2pJIB7o8GK686qmAXSgQR8"
+#define kGtAppSecret       @"HZwEpyzG9GA0l98L698Pa7"
+
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, GeTuiSdkDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

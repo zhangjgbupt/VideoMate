@@ -74,6 +74,15 @@
 		654AEADB1BCF835700921978 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 654AEAD91BCF835700921978 /* LoginViewController.m */; };
 		654AEADC1BCF835700921978 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654AEADA1BCF835700921978 /* LoginViewController.xib */; };
 		654AEB331BD0A17E00921978 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 654AEB321BD0A17E00921978 /* GlobalData.m */; };
+		6553277A1BF96F440092C2E4 /* libGeTuiSdk-1.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327791BF96F440092C2E4 /* libGeTuiSdk-1.3.0.a */; };
+		6553277C1BF970240092C2E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6553277B1BF970240092C2E4 /* libz.tbd */; };
+		6553277E1BF970300092C2E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6553277D1BF970300092C2E4 /* libsqlite3.tbd */; };
+		655327801BF970380092C2E4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6553277F1BF970380092C2E4 /* CFNetwork.framework */; };
+		655327811BF970430092C2E4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65650E781BD2A6E2009090DF /* SystemConfiguration.framework */; };
+		655327831BF9704C0092C2E4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327821BF9704C0092C2E4 /* CoreTelephony.framework */; };
+		655327851BF970530092C2E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327841BF970530092C2E4 /* AVFoundation.framework */; };
+		655327871BF9705A0092C2E4 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327861BF9705A0092C2E4 /* CoreLocation.framework */; };
+		655327891BF970610092C2E4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327881BF970610092C2E4 /* CoreBluetooth.framework */; };
 		65611E041BE30FA80084DCD2 /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 65611E031BE30FA80084DCD2 /* OrderedDictionary.m */; };
 		656367F81BD4BBB900917DB2 /* ChannelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 656367F71BD4BBB900917DB2 /* ChannelData.m */; };
 		656367FA1BD4DF9200917DB2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656367F91BD4DF9200917DB2 /* QuartzCore.framework */; };
@@ -262,6 +271,15 @@
 		654AEADA1BCF835700921978 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		654AEB311BD0A17E00921978 /* GlobalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalData.h; sourceTree = "<group>"; };
 		654AEB321BD0A17E00921978 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
+		655327781BF96F440092C2E4 /* GeTuiSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeTuiSdk.h; sourceTree = "<group>"; };
+		655327791BF96F440092C2E4 /* libGeTuiSdk-1.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libGeTuiSdk-1.3.0.a"; sourceTree = "<group>"; };
+		6553277B1BF970240092C2E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6553277D1BF970300092C2E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		6553277F1BF970380092C2E4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		655327821BF9704C0092C2E4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		655327841BF970530092C2E4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		655327861BF9705A0092C2E4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		655327881BF970610092C2E4 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		65611E021BE30FA80084DCD2 /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderedDictionary.h; sourceTree = "<group>"; };
 		65611E031BE30FA80084DCD2 /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderedDictionary.m; sourceTree = "<group>"; };
 		656367F61BD4BBB900917DB2 /* ChannelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelData.h; sourceTree = "<group>"; };
@@ -387,7 +405,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				655327891BF970610092C2E4 /* CoreBluetooth.framework in Frameworks */,
+				655327871BF9705A0092C2E4 /* CoreLocation.framework in Frameworks */,
+				655327851BF970530092C2E4 /* AVFoundation.framework in Frameworks */,
+				655327831BF9704C0092C2E4 /* CoreTelephony.framework in Frameworks */,
+				655327811BF970430092C2E4 /* SystemConfiguration.framework in Frameworks */,
+				655327801BF970380092C2E4 /* CFNetwork.framework in Frameworks */,
+				6553277E1BF970300092C2E4 /* libsqlite3.tbd in Frameworks */,
+				6553277C1BF970240092C2E4 /* libz.tbd in Frameworks */,
 				656367FA1BD4DF9200917DB2 /* QuartzCore.framework in Frameworks */,
+				6553277A1BF96F440092C2E4 /* libGeTuiSdk-1.3.0.a in Frameworks */,
 				23F696B71E240A07E5474FD6 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,6 +425,13 @@
 		39CC2FD0B433B1D956B9E69E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				655327881BF970610092C2E4 /* CoreBluetooth.framework */,
+				655327861BF9705A0092C2E4 /* CoreLocation.framework */,
+				655327841BF970530092C2E4 /* AVFoundation.framework */,
+				655327821BF9704C0092C2E4 /* CoreTelephony.framework */,
+				6553277F1BF970380092C2E4 /* CFNetwork.framework */,
+				6553277D1BF970300092C2E4 /* libsqlite3.tbd */,
+				6553277B1BF970240092C2E4 /* libz.tbd */,
 				656367F91BD4DF9200917DB2 /* QuartzCore.framework */,
 				65650E781BD2A6E2009090DF /* SystemConfiguration.framework */,
 				A3C9E9A3F5FBB7FE09ED63F3 /* libPods.a */,
@@ -417,6 +451,7 @@
 		6520B7E11BCF3BA3009E4B48 = {
 			isa = PBXGroup;
 			children = (
+				655327771BF96F440092C2E4 /* GtSdkLib */,
 				652B88961BE0F1950092EAB8 /* RefreshBar */,
 				654AEA7B1BCF45DD00921978 /* RDVTabBarController */,
 				652B882F1BE05DB70092EAB8 /* kDropDown */,
@@ -586,6 +621,16 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		655327771BF96F440092C2E4 /* GtSdkLib */ = {
+			isa = PBXGroup;
+			children = (
+				655327781BF96F440092C2E4 /* GeTuiSdk.h */,
+				655327791BF96F440092C2E4 /* libGeTuiSdk-1.3.0.a */,
+			);
+			name = GtSdkLib;
+			path = MediaSuiteMate/GtSdkLib;
+			sourceTree = "<group>";
+		};
 		656367F51BD4BB4800917DB2 /* DataClass */ = {
 			isa = PBXGroup;
 			children = (
@@ -749,6 +794,11 @@
 					6520B7E91BCF3BA3009E4B48 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = W83UZNFYXX;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1114,6 +1164,10 @@
 				INFOPLIST_FILE = MediaSuiteMate/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MediaSuiteMate/GtSdkLib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
 				PRODUCT_NAME = VideoMate;
 				PROVISIONING_PROFILE = "";
@@ -1132,6 +1186,10 @@
 				INFOPLIST_FILE = MediaSuiteMate/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MediaSuiteMate/GtSdkLib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
 				PRODUCT_NAME = VideoMate;
 				PROVISIONING_PROFILE = "";

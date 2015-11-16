@@ -71,9 +71,18 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = self.navigationController.navigationBar.bounds.size.height +
+    [UIApplication sharedApplication].statusBarFrame.size.height;
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
+    
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"my_media_page_title", nil)];;
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = uploadButton;
     [appDelegate startNetworkConnectionMonitor];
+    
+    //[self getMyArchives];
 }
 
 #pragma mark - Table view data source
@@ -484,10 +493,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.showsCameraControls = YES;
+        picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        
-        //picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
-        //picker.videoMaximumDuration = 300.0f; // 300 seconds
         
         [self presentModalViewController: picker animated: YES];
         
