@@ -21,11 +21,12 @@
 
 @implementation AppDelegate
 @synthesize navController;
-@synthesize tabBarController;
+@synthesize tabBarController, channelViewController, mediaViewController, settingViewController;
 @synthesize userName, password, svrAddr;
 @synthesize accessToken, expireTimer, heartBeatTimer;
 @synthesize alertView;
 @synthesize isLoginSuccessful;
+
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -39,17 +40,10 @@
     [self setupViewControllers];
     
     self.navController = [[CustomerUINavigationController alloc] initWithRootViewController:self.viewController];
-    
-    //set the text color for navigation bar to white color
-    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIColor whiteColor],NSForegroundColorAttributeName,
-                                    [UIColor whiteColor],NSBackgroundColorAttributeName,nil];
-    self.navController.navigationBar.titleTextAttributes = textAttributes;
-    [self.navController.navigationBar setTintColor:[UIColor whiteColor]];
+    self.navController.navigationBar.hidden = YES;
     
     //set the color for navigation bar background to red.
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f]];
-    //[[UINavigationBar appearance] setTranslucent:NO];
     
     [self.window setRootViewController:navController];
     [self.window makeKeyAndVisible];
@@ -99,17 +93,48 @@
 #pragma mark - Methods
 
 - (void)setupTabViewControllers {
-    SettingViewController* settingViewController = [[SettingViewController alloc]init];
+    SettingViewController* mySettingViewController = [[SettingViewController alloc]init];
     MyMediaViewController* myMediaViewController = [[MyMediaViewController alloc]init];
     
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc]init];
     flowLayout.minimumInteritemSpacing = 1;
     flowLayout.minimumLineSpacing = 1;
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    ChannelCollectionViewController *channelListViewController = [[ChannelCollectionViewController alloc] initWithCollectionViewLayout:flowLayout];
+    ChannelCollectionViewController *myChannelListViewController = [[ChannelCollectionViewController alloc] initWithCollectionViewLayout:flowLayout];
+    
+    //set the text color for navigation bar to white color
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,nil];
+    UIColor* barTintColor = [UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f];
+
+    
+    UINavigationController *myMediaNavigationController = [[UINavigationController alloc]
+                                                   initWithRootViewController:myMediaViewController];
+    UINavigationController *myChannelNavigationController = [[UINavigationController alloc]
+                                                     initWithRootViewController:myChannelListViewController];
+    UINavigationController *mySettingNavigationController = [[UINavigationController alloc]
+                                                     initWithRootViewController:mySettingViewController];
+    
+    myMediaNavigationController.navigationBar.titleTextAttributes = textAttributes;
+    myChannelNavigationController.navigationBar.titleTextAttributes = textAttributes;
+    mySettingNavigationController.navigationBar.titleTextAttributes = textAttributes;
+    
+    [myMediaNavigationController.navigationBar setBarTintColor:barTintColor];
+    [myChannelNavigationController.navigationBar setBarTintColor:barTintColor];
+    [mySettingNavigationController.navigationBar setBarTintColor:barTintColor];
+    
+    [myMediaNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [myChannelNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [mySettingNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    self.mediaViewController = myMediaViewController;
+    self.channelViewController = myChannelListViewController;
+    self.settingViewController = mySettingViewController;
     
     tabBarController = [[RDVTabBarController alloc] init];
-    [tabBarController setViewControllers:@[myMediaViewController, channelListViewController,settingViewController]];
+    //[tabBarController setViewControllers:@[myMediaViewController, channelListViewController,settingViewController]];
+    [tabBarController setViewControllers:@[myMediaNavigationController, myChannelNavigationController,mySettingNavigationController]];
     [self customizeTabBarForController:tabBarController];
 }
 - (void)setupViewControllers {
@@ -291,6 +316,7 @@
                        NSLog(@"Error: %@", error.description);
                        self.isLoginSuccessful = 0;
                        [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGIN_FAIL" object:nil];
+                       
                    }];
 }
 
@@ -346,32 +372,34 @@
 
 
 - (void)networkLostAlert {
-
     
     alertView =   [UIAlertController
-                                  alertControllerWithTitle:nil
-                                  message:@"Network connection lost, please check you network reachability."
-                                  preferredStyle:UIAlertControllerStyleAlert];
+                   alertControllerWithTitle:nil
+                   message:NSLocalizedString(@"network_error_msg", nil)
+                   preferredStyle:UIAlertControllerStyleAlert];
     
-    
-//    alertView = [[UIAlertView alloc] initWithTitle:nil
-//                                           message:@"Network connection lost, please check you network reachability!"
-//                                          delegate:nil
-//                                 cancelButtonTitle:nil otherButtonTitles:nil, nil];
     
     [NSTimer scheduledTimerWithTimeInterval:1.5f
                                      target:self
                                    selector:@selector(dismissAlertView:)
                                    userInfo:nil
                                     repeats:NO];
-    [self.viewController presentViewController:alertView animated:YES completion:nil];
-    //[alertView show];
+
+    if (self.mediaViewController.isViewLoaded && self.mediaViewController.view.window) {
+        [self.mediaViewController presentViewController:alertView animated:YES completion:nil];
+        
+    } else if(self.channelViewController.isViewLoaded && self.channelViewController.view.window) {
+        [self.channelViewController presentViewController:alertView animated:YES completion:nil];
+        
+    } else if(self.settingViewController.isViewLoaded && self.settingViewController.view.window) {
+        [self.settingViewController presentViewController:alertView animated:YES completion:nil];
+        
+    }
 }
 
 - (void)dismissAlertView:(NSTimer*)timer {
     NSLog(@"Dismiss alert view");
     [alertView dismissViewControllerAnimated:YES completion:nil];
-    //[alertView dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 

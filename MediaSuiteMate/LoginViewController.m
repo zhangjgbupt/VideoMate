@@ -107,7 +107,7 @@
     NSString* password = passwordText.text;
     NSString* serverAddr = serverAddrText.text;
     if (userName.length==0 || password.length == 0 || serverAddr.length == 0) {
-        [[Utils getInstance] invokeAlert:@"error" message:@"You must input valid value for username, password and server adddress." delegate:self];
+        [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil) message:NSLocalizedString(@"null_login_info_msg",nil) delegate:self];
         return;
     }
     
@@ -123,9 +123,6 @@
 
 - (IBAction)backgroundTap:(id)sender
 {
-//    [userNameText resignFirstResponder];
-//    [passwordText resignFirstResponder];
-//    [serverAddrText resignFirstResponder];
     [self.view endEditing:YES];
 }
 
@@ -225,28 +222,9 @@
     }
 }
 
-//- (void)popAlertDlg {
-//    UIAlertController * alert=   [UIAlertController
-//                                  alertControllerWithTitle:@"Error:"
-//                                  message:@"You must input valid value for username, password and server adddress."
-//                                  preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    UIAlertAction* yesButton = [UIAlertAction
-//                                actionWithTitle:@"OK"
-//                                style:UIAlertActionStyleDefault
-//                                handler:^(UIAlertAction * action)
-//                                {
-//                                    [alert dismissViewControllerAnimated:YES completion:nil];
-//                                }];
-//    
-//    [alert addAction:yesButton];
-//    [self presentViewController:alert animated:YES completion:nil];
-//}
-
 - (void) onLoginSuccess {
     NSLog(@"Login success!");
     [activityIndicatorView stopAnimating];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [appDelegate setupTabViewControllers];
     [self.navigationController pushViewController:appDelegate.tabBarController animated:YES];
 }
@@ -254,6 +232,7 @@
 - (void) onLoginFail {
     NSLog(@"Login fail!");
     [activityIndicatorView stopAnimating];
+    [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil) message:NSLocalizedString(@"login_fail_msg",nil) delegate:self];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

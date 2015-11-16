@@ -30,15 +30,15 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     appDelegate = [[UIApplication sharedApplication] delegate];
     channelList = [NSMutableArray array];
     sortedChannelList = [NSMutableArray array];
-
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_page_title", nil)];
     self.navigationItem.backBarButtonItem = nil;
     channelFollowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_follow"]
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(go2ChannelFollowPage)];
-    appDelegate.tabBarController.navigationItem.rightBarButtonItem = channelFollowButton;
+    
+    self.navigationItem.rightBarButtonItem = channelFollowButton;
     
     NSMutableArray *childViewControllers = [[NSMutableArray alloc] initWithArray: appDelegate.navController.viewControllers];
     if ([[childViewControllers objectAtIndex:0] isKindOfClass:[LoginViewController class]]) {
@@ -65,8 +65,6 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_page_title", nil)];
-    appDelegate.tabBarController.navigationItem.rightBarButtonItem = channelFollowButton;
     [appDelegate startNetworkConnectionMonitor];
     //[self getContributeChannleCount];
 }

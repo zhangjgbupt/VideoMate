@@ -17,9 +17,9 @@
 #import "GeTuiSdk.h"
 
 /// 个推开发者网站中申请App时注册的AppId、AppKey、AppSecret
-#define kGtAppId           @"zW5idAIl9R7Q8Lda9Lav89"
-#define kGtAppKey          @"2pJIB7o8GK686qmAXSgQR8"
-#define kGtAppSecret       @"HZwEpyzG9GA0l98L698Pa7"
+#define kGtAppId           @"P7ZQxZqTpT6RLRlDY3Gh3A"
+#define kGtAppKey          @"avg2sQbzQm9jI5fM2pTTg"
+#define kGtAppSecret       @"KxXPVXjexy7Ua0o4sowxs5"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, GeTuiSdkDelegate>
@@ -41,6 +41,10 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@property (strong, nonatomic) UIViewController* mediaViewController;
+@property (strong, nonatomic) UIViewController* channelViewController;
+@property (strong, nonatomic) UIViewController* settingViewController;
 
 //-1: init
 //0: login fail

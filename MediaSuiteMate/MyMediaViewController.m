@@ -42,12 +42,12 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"my_media_page_title", nil)];
-    self.navigationItem.backBarButtonItem = nil;
+    //self.navigationItem.backBarButtonItem = nil;
     uploadButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_upload"]
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(go2ugcSourceSelect)];
-    appDelegate.tabBarController.navigationItem.rightBarButtonItem = uploadButton;
+    self.navigationItem.rightBarButtonItem = uploadButton;
     
     [self initUgcSourceSelectorView];
     isUploadClick = NO;
@@ -71,17 +71,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = self.navigationController.navigationBar.bounds.size.height +
-    [UIApplication sharedApplication].statusBarFrame.size.height;
-    self.tableView.contentInset = insets;
-    self.tableView.scrollIndicatorInsets = insets;
-    
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"my_media_page_title", nil)];;
-    appDelegate.tabBarController.navigationItem.rightBarButtonItem = uploadButton;
     [appDelegate startNetworkConnectionMonitor];
-    
     //[self getMyArchives];
 }
 
@@ -765,6 +755,5 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
 }
-
 
 @end

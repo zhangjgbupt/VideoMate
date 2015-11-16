@@ -46,3 +46,13 @@
 //media slide menu
 "slide_share"=" 共享 ";
 "slide_delete"=" 删除 ";
+
+//error msg
+"info_level_error"="错误";
+"info_level_info"="信息";
+
+"login_fail_msg"="登录失败，请检查服务器地址，用户名和密码是否正确!";
+"fetch_data_fail_msg"="取得媒体数据错误，请重试!";
+"null_login_info_msg"="请输入正确的服务器地址，用户名和密码!";
+
+"network_error_msg" = "网络连接错误，请确保wifi或者蜂窝数据连接正常";

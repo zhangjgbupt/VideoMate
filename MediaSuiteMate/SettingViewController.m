@@ -47,8 +47,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate startNetworkConnectionMonitor];
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"setting_page_title", nil)];
-    appDelegate.tabBarController.navigationItem.rightBarButtonItem = nil;
 }
 /*
 #pragma mark - Navigation

@@ -46,3 +46,12 @@
 //media slide menu
 "slide_share"=" Share ";
 "slide_delete"=" Delete ";
+
+//error msg
+"info_level_error"="ERROR";
+"info_level_info"="INFO";
+
+"login_fail_msg"="Login failed, please make sure you have input correct address, username and password!";
+"fetch_data_fail_msg"="Get media data fail, please try again!";
+"null_login_info_msg"="Server address, username and password can not be blank!";
+"network_error_msg" = "Network connection lost, please check you network reachability";
