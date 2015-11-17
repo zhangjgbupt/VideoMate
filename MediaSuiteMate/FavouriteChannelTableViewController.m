@@ -42,12 +42,6 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
     followBtnNormalBgImg = [UIImage imageNamed:@"btn_follow_normal"];
     followBtnFollowedBgImg = [UIImage imageNamed:@"btn_followed_pressed"];
     
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
-    //[self.tableView addGestureRecognizer:longPress];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.editButtonItem.title=NSLocalizedString(@"channel_follow_edit_btn_text", nil);
@@ -107,10 +101,12 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
     if (channelData.isFollowed) {
         [cell.followBtn setBackgroundImage:followBtnFollowedBgImg forState:UIControlStateNormal];
         [cell.followBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [cell.followBtn setTitle:NSLocalizedString(@"navigation_channel_follow", nil) forState:UIControlStateNormal];
         
     } else {
         [cell.followBtn setBackgroundImage:followBtnNormalBgImg forState:UIControlStateNormal];
         [cell.followBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [cell.followBtn setTitle:NSLocalizedString(@"navigation_channel_follow", nil) forState:UIControlStateNormal];
     }
     
     return cell;
@@ -119,6 +115,12 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
+    if (self.tableView.editing) {
+        //self.editButtonItem.title = NSLocalizedString(@"channel_follow_edit_btn_text", nil);
+    }
+    else {
+        self.editButtonItem.title = NSLocalizedString(@"channel_follow_edit_btn_text", nil);
+    }
     return YES;
 }
 
@@ -152,6 +154,8 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
         self.tableViewDataSourceList = self.channelList;
     }
     [self.tableView reloadData];
+    
+    [self saveFollowChannelListToFile];
     [super setEditing:editing animated:animated];
 }
 
@@ -358,7 +362,7 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
         return false;
     }
     
-    }
+}
 
 -(bool) readFollowChannelListFromFile {
     NSArray *sysPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory ,NSUserDomainMask, YES);

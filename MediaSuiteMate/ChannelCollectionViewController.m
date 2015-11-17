@@ -328,7 +328,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 -(void)go2ChannelFollowPage {
     FavouriteChannelTableViewController* followChannelViewController = [[FavouriteChannelTableViewController alloc]init];
     followChannelViewController.channelCount = self.channelCount;
-    followChannelViewController.channelList = self.sortedChannelList;
+    followChannelViewController.channelList = [self.sortedChannelList mutableCopy];
     [self.navigationController pushViewController:followChannelViewController animated:YES];
 }
 

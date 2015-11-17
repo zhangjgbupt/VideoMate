@@ -14,7 +14,7 @@
 "favourite_page_title" = "收藏";
 "channel_page_title_text" = "频道:";
 "channel_follow_page_title" = "关注";
-"navigation_channel_follow" = "+关注";
+"navigation_channel_follow" = "关注";
 "navigation_upload_btn" = "上传";
 
 //setting placeholder text

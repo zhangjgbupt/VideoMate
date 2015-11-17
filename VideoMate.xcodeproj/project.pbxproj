@@ -1178,7 +1178,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
 				PRODUCT_NAME = VideoMate;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "69e6cb09-a40f-4bdd-a4da-5bfdbe4ad5b4";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1200,7 +1200,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
 				PRODUCT_NAME = VideoMate;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "69e6cb09-a40f-4bdd-a4da-5bfdbe4ad5b4";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

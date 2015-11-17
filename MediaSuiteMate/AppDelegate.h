@@ -17,9 +17,9 @@
 #import "GeTuiSdk.h"
 
 /// 个推开发者网站中申请App时注册的AppId、AppKey、AppSecret
-#define kGtAppId           @"P7ZQxZqTpT6RLRlDY3Gh3A"
-#define kGtAppKey          @"avg2sQbzQm9jI5fM2pTTg"
-#define kGtAppSecret       @"KxXPVXjexy7Ua0o4sowxs5"
+#define kGtAppId           @"slEp4JgV6e9HwYdXBRVEK9"
+#define kGtAppKey          @"mY9tyJfgfQ9yeUFIacGFe4"
+#define kGtAppSecret       @"s5zkkTB5rz7aYCRgMdWGD6"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, GeTuiSdkDelegate>
