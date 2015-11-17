@@ -36,7 +36,7 @@
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     CGFloat player_h = screenWidth*9/16;
-    CGFloat player_y = 25 + self.navigationController.navigationBar.frame.size.height;
+    CGFloat player_y = self.navigationController.navigationBar.frame.size.height;
     
     if (self.player == nil)
     {

@@ -91,6 +91,8 @@
 		656368051BD5CD6D00917DB2 /* ArchiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 656368031BD5CD6D00917DB2 /* ArchiveTableViewCell.m */; };
 		656368061BD5CD6D00917DB2 /* ArchiveTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 656368041BD5CD6D00917DB2 /* ArchiveTableViewCell.xib */; };
 		65650E771BD21B35009090DF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65650E761BD21B35009090DF /* Launch Screen.storyboard */; };
+		657412AF1BFAF04800A7CADD /* icon_followed@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 657412AE1BFAF04800A7CADD /* icon_followed@3x.png */; };
+		657412B11BFAF05C00A7CADD /* icon_followed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 657412B01BFAF05C00A7CADD /* icon_followed@2x.png */; };
 		6578BF8E1BE778B00060473D /* icon_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6578BF8D1BE778B00060473D /* icon_follow@2x.png */; };
 		6578BF901BE778BB0060473D /* icon_follow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6578BF8F1BE778BB0060473D /* icon_follow@3x.png */; };
 		65810B3B1BDC602E0036F205 /* UGCPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65810B391BDC602E0036F205 /* UGCPlaybackViewController.m */; };
@@ -293,6 +295,8 @@
 		656368041BD5CD6D00917DB2 /* ArchiveTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArchiveTableViewCell.xib; sourceTree = "<group>"; };
 		65650E761BD21B35009090DF /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		65650E781BD2A6E2009090DF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		657412AE1BFAF04800A7CADD /* icon_followed@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_followed@3x.png"; sourceTree = "<group>"; };
+		657412B01BFAF05C00A7CADD /* icon_followed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_followed@2x.png"; sourceTree = "<group>"; };
 		6578BF8D1BE778B00060473D /* icon_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_follow@2x.png"; sourceTree = "<group>"; };
 		6578BF8F1BE778BB0060473D /* icon_follow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_follow@3x.png"; sourceTree = "<group>"; };
 		65810B381BDC602E0036F205 /* UGCPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCPlaybackViewController.h; sourceTree = "<group>"; };
@@ -474,6 +478,7 @@
 		6520B7EC1BCF3BA3009E4B48 /* MediaSuiteMate */ = {
 			isa = PBXGroup;
 			children = (
+				656367F51BD4BB4800917DB2 /* DataClass */,
 				6582DB391BF2E5CC00A052F5 /* BGTableViewRowActionWithImage.h */,
 				6582DB3A1BF2E5CC00A052F5 /* BGTableViewRowActionWithImage.m */,
 				6582DB361BF0914200A052F5 /* Utils.h */,
@@ -485,7 +490,6 @@
 				65810B381BDC602E0036F205 /* UGCPlaybackViewController.h */,
 				65810B391BDC602E0036F205 /* UGCPlaybackViewController.m */,
 				65810B3A1BDC602E0036F205 /* UGCPlaybackViewController.xib */,
-				656367F51BD4BB4800917DB2 /* DataClass */,
 				6520B7F01BCF3BA3009E4B48 /* AppDelegate.h */,
 				6520B7F11BCF3BA3009E4B48 /* AppDelegate.m */,
 				65D0B3691BD75DF20066138A /* CustomerUINavigationController.h */,
@@ -656,6 +660,7 @@
 		65E728111BD1127E00B16E78 /* image @3x */ = {
 			isa = PBXGroup;
 			children = (
+				657412AE1BFAF04800A7CADD /* icon_followed@3x.png */,
 				6582DB401BF30F3B00A052F5 /* icon_delete@3x.png */,
 				6582DB411BF30F3B00A052F5 /* icon_share@3x.png */,
 				654AB1BE1BE9E7F800D507AE /* btn_drop-arrow@3x.png */,
@@ -709,6 +714,7 @@
 		65E7281C1BD1127E00B16E78 /* images @2x */ = {
 			isa = PBXGroup;
 			children = (
+				657412B01BFAF05C00A7CADD /* icon_followed@2x.png */,
 				6582DB3C1BF30F2600A052F5 /* icon_delete@2x.png */,
 				6582DB3D1BF30F2600A052F5 /* icon_share@2x.png */,
 				654AB1B81BE9E7E000D507AE /* btn_drop-arrow@2x.png */,
@@ -895,6 +901,7 @@
 				65D0B3CA1BDA2B860066138A /* icon_channel_pressed@2x.png in Resources */,
 				65E728321BD1127E00B16E78 /* icon_follow_pressed@2x.png in Resources */,
 				652B88391BE05DB70092EAB8 /* check_mark@2x.png in Resources */,
+				657412B11BFAF05C00A7CADD /* icon_followed@2x.png in Resources */,
 				654AEAAA1BCF471600921978 /* navigationbar_background.png in Resources */,
 				6582DB431BF30F3B00A052F5 /* icon_share@3x.png in Resources */,
 				654AEAAB1BCF471600921978 /* navigationbar_background@2x.png in Resources */,
@@ -925,6 +932,7 @@
 				65810B3C1BDC602E0036F205 /* UGCPlaybackViewController.xib in Resources */,
 				654AB1B21BE8942500D507AE /* icon_download_normal@2x.png in Resources */,
 				656368061BD5CD6D00917DB2 /* ArchiveTableViewCell.xib in Resources */,
+				657412AF1BFAF04800A7CADD /* icon_followed@3x.png in Resources */,
 				65D0B3A91BDA0BE40066138A /* image_welcom_bg@3x.png in Resources */,
 				65650E771BD21B35009090DF /* Launch Screen.storyboard in Resources */,
 				65E7282C1BD1127E00B16E78 /* icon_setting_pressed@3x.png in Resources */,

@@ -13,6 +13,9 @@
 
 +(Utils*)getInstance;
 -(void) invokeAlert:(NSString*)title message:(NSString*) msg delegate:(UIViewController*) controller;
+- (bool)saveFollowChannelListToFile :(NSMutableArray*) followedChannelIdList;
+-(NSMutableArray*) readFollowChannelListFromFile;
+
 
 
 @end

@@ -8,6 +8,7 @@
 
 #import "AchiveListTableViewController.h"
 #import "MediaPlayerViewController.h"
+#import "Utils.h"
 
 @interface AchiveListTableViewController ()
 
@@ -23,16 +24,25 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [super viewDidLoad];
     
     self.appDelegate = [[UIApplication sharedApplication] delegate];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"archive_page_title", nil)];
     self.archiveList = [[NSMutableArray alloc]init];
+    
+    UIImage* followImage = nil;
+    if (channleData.isFollowed) {
+        followImage = [UIImage imageNamed:@"icon_followed"];
+    } else {
+        followImage = [UIImage imageNamed:@"icon_follow"];
+    }
+    UIBarButtonItem *channelFollowButton = [[UIBarButtonItem alloc] initWithImage:followImage
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(channelFollowBtnClick)];
+    
+    self.navigationItem.rightBarButtonItem = channelFollowButton;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -310,4 +320,18 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
          }];
 }
 
+-(void)channelFollowBtnClick {
+    NSLog(@"");
+     NSMutableArray* followedChannleIdList = [[Utils getInstance] readFollowChannelListFromFile];
+    if (self.channleData.isFollowed) {
+        self.channleData.isFollowed = false;
+        [followedChannleIdList removeObject:self.channleData.channelId];
+        [self.navigationItem.rightBarButtonItem setImage:[UIImage imageNamed:@"icon_follow"]];
+    } else {
+        self.channleData.isFollowed = true;
+        [followedChannleIdList addObject:self.channleData.channelId];
+        [self.navigationItem.rightBarButtonItem setImage:[UIImage imageNamed:@"icon_followed"]];
+    }
+    [[Utils getInstance] saveFollowChannelListToFile:followedChannleIdList];
+}
 @end

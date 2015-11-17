@@ -58,4 +58,28 @@ static Utils *instance = nil;
     [controller presentViewController:alert animated:YES completion:nil];
 }
 
+- (bool)saveFollowChannelListToFile :(NSMutableArray*) followedChannelIdList{
+    NSArray *sysPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory ,NSUserDomainMask, YES);
+    NSString *documentsDirectory = [sysPaths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"follow_channel.plist"];
+    NSLog(@"follow channle file path: %@", filePath);
+    
+    BOOL success = [followedChannelIdList writeToFile:filePath atomically:YES];
+    if(success) {
+        return true;
+    } else {
+        return false;
+    }
+    
+}
+
+-(NSMutableArray*) readFollowChannelListFromFile {
+    NSArray *sysPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory ,NSUserDomainMask, YES);
+    NSString *documentsDirectory = [sysPaths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"follow_channel.plist"];
+    NSLog(@"follow channle file path: %@", filePath);
+    NSMutableArray* followChannelIdList = [NSMutableArray arrayWithContentsOfFile:filePath];
+    return followChannelIdList;
+}
+
 @end

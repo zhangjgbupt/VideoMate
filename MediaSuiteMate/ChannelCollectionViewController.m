@@ -115,19 +115,14 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
             NSURL* thumUrl = [NSURL URLWithString:thumUrlString];
             UIImage* thumImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:thumUrl]];
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                //CGRect thumbRectSize = [cell.channelThum frame];
-                //CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
-                //[cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
                 [cell.channelThum setImage:thumImage];
             });
         });
     }
     
     CGRect thumbRectSize = [cell.channelThum frame];
-    //CGSize size=CGSizeMake(thumbRectSize.size.width, (thumbRectSize.size.height));
     [cell.channelThum setImage:thumImage];
-    //[cell.channelThum setImage:[self imageWithImage:thumImage scaledToSize:size]];
-    
+
     CGFloat titleWidth = thumbRectSize.size.width*3/4;
     CGRect titleRectSize = CGRectMake(cell.channelTitle.frame.origin.x,
                                       cell.channelTitle.frame.origin.y,
@@ -140,7 +135,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     
     NSString* itemNum = [NSString stringWithFormat:@"(%@ %@)", channelData.contentCount,NSLocalizedString(@"item_count", nil)];
     CGFloat countLabelWidth = thumbRectSize.size.width/4;
-    CGRect countRectSize = CGRectMake(cell.channelTitle.frame.origin.x+titleWidth,
+    CGRect countRectSize = CGRectMake(cell.channelTitle.frame.origin.x+titleWidth-1,
                                       cell.itemNum.frame.origin.y,
                                       countLabelWidth,
                                       cell.itemNum.frame.size.height);
@@ -348,7 +343,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     __weak typeof(self) weakSelf = self;
     refreshHeader.beginRefreshingOperation = ^{
         [weakSelf getContributeChannleCount];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //[weakSelf sortChannels];
             //[weakSelf.collectionView reloadData];
             [weakRefreshHeader endRefreshing];
@@ -369,7 +364,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     __weak typeof(self) weakSelf = self;
     refreshFooter.beginRefreshingOperation = ^{
         [weakSelf getContributeChannleCount];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //[weakSelf sortChannels];
             //[weakSelf.collectionView reloadData];
             [weakRefreshFooter endRefreshing];

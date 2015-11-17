@@ -43,15 +43,13 @@
     self.videoController = [[MPMoviePlayerController alloc] init];
     self.uploadMediaFilesHandle = [[UploadMediaFiles alloc] init];
     self.ugcArchiveData = [[ArchiveData alloc]init];
-    
-    self.original_y_center = self.view.center.y;
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     
     CGFloat player_x = 0;
-    CGFloat player_y = 20 + self.navigationController.navigationBar.frame.size.height;
+    CGFloat player_y = self.navigationController.navigationBar.frame.size.height;
     CGFloat player_w = screenWidth;
     CGFloat player_h = screenWidth*9/16;
     
@@ -143,6 +141,8 @@
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
+    // key board height = 216 for portrait, and 162 for landscape
+    self.original_y_center = self.view.center.y;
     self.view.center = CGPointMake(self.view.center.x, self.view.center.y-200);
 }
 
