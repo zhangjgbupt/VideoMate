@@ -59,12 +59,13 @@
     [self.videoController play];
 
     CGFloat progress_x = player_x;
-    CGFloat progress_y = player_y+player_h;
+    CGFloat progress_y = player_y+player_h+5;
     CGRect frame = CGRectMake(progress_x, progress_y, screenWidth, 5);
     self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     [self.progressView setFrame:frame];
     [self.view addSubview:self.progressView];
     [self.progressView setHidden:YES];
+    self.progressView.progressTintColor = [UIColor colorWithRed:93.0f/255.0f green:177.0f/255.0f blue:1.0f alpha:1.0f];
     [self.progressView setTransform:CGAffineTransformMakeScale(1.0, 5.0)];
     
     CGFloat title_x = 5;
