@@ -19,5 +19,5 @@
 @property (nonatomic, strong) SDRefreshFooterView *refreshFooter;
 @property (nonatomic, strong) SDRefreshHeaderView *refreshHeader;
 
-@property (strong, nonatomic) AppDelegate* appDelegate;
+@property (nonatomic, retain) AppDelegate* appDelegate;
 @end

@@ -55,3 +55,6 @@
 "fetch_data_fail_msg"="Get media data fail, please try again!";
 "null_login_info_msg"="Server address, username and password can not be blank!";
 "network_error_msg" = "Network connection lost, please check you network reachability";
+
+"file_name_blank_error" = "Please set file name for your upload file.";
+"ugc_error"="Error occured durating uploading, please try again.";

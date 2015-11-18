@@ -8,6 +8,7 @@
 
 #import "UGCPlaybackViewController.h"
 #import "ChannelData.h"
+#import "Utils.h"
 
 @interface UGCPlaybackViewController ()
 
@@ -34,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
@@ -87,7 +88,6 @@
     CGFloat channel_h = title_h;
     [self.btnChannelList setFrame:CGRectMake(channel_x, channel_y, channel_w, channel_h)];
     [self.btnChannelList setTitle:NSLocalizedString(@"channel_label_title", nil) forState:UIControlStateNormal];
-//    [self.btnChannelList setTitleColor:[UIColor colorWithRed:199.0 green:199.0 blue:199.0 alpha:1.0] forState:UIControlStateNormal];
     
     CGFloat seperator_2_x = 0;
     CGFloat seperator_2_y = channel_y + channel_h;
@@ -182,12 +182,8 @@
     [self.textMediaFileName resignFirstResponder];
     
     if (self.textMediaFileName.text == nil || [self.textMediaFileName.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                        message:@"Please set file name you want to upload!"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
+        
+        [[Utils getInstance] invokeAlert:@"" message:NSLocalizedString(@"file_name_blank_error", nil) delegate:self];
         return;
     }
 
@@ -306,6 +302,7 @@
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"Get archive peroperty Failed!");
              NSLog(@"Error: %@", error.description);
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"UPLOAD_FAIL" object:nil];
          }];
 }
 
@@ -346,11 +343,19 @@
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"update archive peroperty Failed!");
              NSLog(@"Error: %@", error.description);
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"UPLOAD_FAIL" object:nil];
          }];
 }
 
 -(void) submitNewArchive {
     [self getArchivePeroperty];
+}
+
+-(void) uploadMediaFileFail {
+    [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil)
+                             message:NSLocalizedString(@"ugc_error", nil)
+                            delegate:self];
+    
 }
 
 - (NSString *)escapeUrl:(NSString *)string
@@ -418,26 +423,24 @@
 //    [self showPopUpWithTitle:@"Select Channel" withOption:channelNameList xy:CGPointMake(16, 150) size:CGSizeMake(287, 280) isMultiple:NO];
 //}
 
--(CGSize)GetHeightDyanamic:(UILabel*)lbl
-{
-    NSRange range = NSMakeRange(0, [lbl.text length]);
-    CGSize constraint;
-    constraint= CGSizeMake(288 ,MAXFLOAT);
-    CGSize size;
-    
-    if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)) {
-        NSDictionary *attributes = [lbl.attributedText attributesAtIndex:0 effectiveRange:&range];
-        CGSize boundingBox = [lbl.text boundingRectWithSize:constraint options: NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-        
-        size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    }
-    else{
-        
-        
-        size = [lbl.text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-    }
-    return size;
-}
+//-(CGSize)GetHeightDyanamic:(UILabel*)lbl
+//{
+//    NSRange range = NSMakeRange(0, [lbl.text length]);
+//    CGSize constraint;
+//    constraint= CGSizeMake(288 ,MAXFLOAT);
+//    CGSize size;
+//    
+//    if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)) {
+//        NSDictionary *attributes = [lbl.attributedText attributesAtIndex:0 effectiveRange:&range];
+//        CGSize boundingBox = [lbl.text boundingRectWithSize:constraint options: NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+//        
+//        size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
+//    }
+//    else{
+//        size = [lbl.text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+//    }
+//    return size;
+//}
 
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 //    UITouch *touch = [touches anyObject];

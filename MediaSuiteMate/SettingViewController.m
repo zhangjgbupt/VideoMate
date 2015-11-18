@@ -20,8 +20,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"setting_page_title", nil)];
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    self.navigationController.topViewController.title = NSLocalizedString(@"setting_page_title", nil);
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = nil;
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -45,8 +45,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate startNetworkConnectionMonitor];
+    [super viewWillAppear:YES];
 }
 /*
 #pragma mark - Navigation
@@ -59,7 +60,7 @@
 */
 
 - (IBAction)doLogout:(id)sender {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSMutableArray *childViewControllers = [[NSMutableArray alloc] initWithArray: appDelegate.tabBarController.navigationController.viewControllers];
     if ([[childViewControllers objectAtIndex:0] isKindOfClass:[LoginViewController class]]) {
         [appDelegate.navController popToRootViewControllerAnimated:YES];

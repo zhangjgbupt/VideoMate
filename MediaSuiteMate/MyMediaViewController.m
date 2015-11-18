@@ -33,7 +33,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     self.currentPageIndex = 0;
     self.maxPageNumber = 0;
     
-    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
@@ -41,8 +41,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"my_media_page_title", nil)];
-    //self.navigationItem.backBarButtonItem = nil;
+    self.navigationController.topViewController.title = NSLocalizedString(@"my_media_page_title", nil);
     uploadButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_upload"]
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
@@ -73,17 +72,16 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
     //[self getMyArchives];
+    [super viewWillAppear:YES];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
     return [self.archiveList count];
 }
 
@@ -751,7 +749,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     int seconds = totalSeconds % 60;
     int minutes = (totalSeconds / 60) % 60;
-    int hours = totalSeconds / 3600;
+    int hours = (int)(totalSeconds / 3600);
     
     return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
 }

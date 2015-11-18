@@ -27,11 +27,11 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    appDelegate = [[UIApplication sharedApplication] delegate];
+    appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     channelList = [NSMutableArray array];
     sortedChannelList = [NSMutableArray array];
     
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_page_title", nil)];
+    self.navigationController.topViewController.title = NSLocalizedString(@"channel_page_title", nil);
     self.navigationItem.backBarButtonItem = nil;
     channelFollowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_follow"]
                                                            style:UIBarButtonItemStylePlain
@@ -67,12 +67,13 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
     //[self getContributeChannleCount];
+    [super viewWillAppear:YES];
 }
 
 - (BOOL)shouldAutorotate{
     return NO;
 }
-- (NSUInteger)supportedInterfaceOrientations{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -89,13 +90,11 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-#warning Incomplete implementation, return the number of sections
     return 1;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of items
     return [self.sortedChannelList count];
 }
 

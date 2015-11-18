@@ -28,13 +28,13 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     followedChannelObjectList = [[NSMutableArray alloc]init];
     tableViewDataSourceList = channelList;
     [self readFollowChannelListFromFile];
     
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_follow_page_title", nil)];
+    self.navigationController.topViewController.title = NSLocalizedString(@"channel_follow_page_title", nil);
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ChannelFollowViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseFollowChannelCellIdentifier];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -54,22 +54,22 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self saveFollowChannelListToFile];
+    [super viewWillDisappear:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
-    self.navigationController.topViewController.title = [NSString stringWithFormat:NSLocalizedString(@"channel_follow_page_title", nil)];
+    self.navigationController.topViewController.title = NSLocalizedString(@"channel_follow_page_title", nil);
+    [super viewWillAppear:YES];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
     return [self.tableViewDataSourceList count];
 }
 

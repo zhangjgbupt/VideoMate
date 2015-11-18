@@ -167,13 +167,13 @@
 }
 
 
-- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
-    UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
-    UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
+- (void)customizeTabBarForController:(RDVTabBarController *)tabbarController {
+    //UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
+    //UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
     NSArray *tabBarItemImages = @[@"icon_mymedia", @"icon_channel", @"icon_setting"];
     
     NSInteger index = 0;
-    for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
+    for (RDVTabBarItem *item in [[tabbarController tabBar] items]) {
         //[item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
         UIImage *selectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_pressed",
                                                       [tabBarItemImages objectAtIndex:index]]];
@@ -403,7 +403,7 @@
 }
 
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  // iOS 6 autorotation fix
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskAll;
     

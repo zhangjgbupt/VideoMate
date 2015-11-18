@@ -75,7 +75,7 @@
         for (int k=0; k<self.arryData.count; k++) {
             NSIndexPath *path=[self.arryData objectAtIndex:k];
             [arryResponceData addObject:[_kDropDownOption objectAtIndex:path.row]];
-            NSLog(@"pathRow=%d",path.row);
+            //NSLog(@"pathRow=%d",path.row);
         }
     
         [self.delegate DropDownListView:self Datalist:arryResponceData];
@@ -126,10 +126,10 @@
 {
     static NSString *cellIdentity = @"DropDownViewCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentity];
-    cell = [[DropDownViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentity];
+    UITableViewCell *cell = [[DropDownViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
     
-    int row = [indexPath row];
+    long row = [indexPath row];
     UIImageView *imgarrow=[[UIImageView alloc]init ];
     
     imgarrow.frame=CGRectMake(260,6, 27, 27);

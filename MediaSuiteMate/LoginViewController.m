@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     [activityIndicatorView setHidden:YES];
     [activityIndicatorView setHidesWhenStopped:YES];
@@ -83,12 +83,13 @@
 - (void)viewDidAppear:(BOOL)animated {
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+    [super viewDidAppear:YES];
 }
 
 - (BOOL)shouldAutorotate{
     return NO;
 }
-- (NSUInteger)supportedInterfaceOrientations{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskPortrait;
 }
 /*

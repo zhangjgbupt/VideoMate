@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     ArchiveFileData* fileData = nil;
     self.streamingURLlist = [[NSMutableArray alloc]init];
    
@@ -176,6 +176,7 @@
     ArchiveFileData* file = [self.episodeFiles objectAtIndex:0];
     [self getStreamingURL:file.archiveId withFileId:file.fileId];
     [self getLikeStatus];
+    [super viewWillAppear:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -183,12 +184,13 @@
     if(![self.player isFullscreen]) {
        [self.player stop];
     }
+    [super viewWillDisappear:YES];
 }
 
 - (BOOL)shouldAutorotate{
     return NO;
 }
-- (NSUInteger)supportedInterfaceOrientations{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskAll;
 }
 
@@ -288,8 +290,8 @@
          }];
 }
 
-- (void)getStreamingURL:(NSString*) archiveId withFileId:(NSString*) fileId {
-        NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/streaming/vods?archiveId=%@&archiveFileId=%@", appDelegate.svrAddr, archiveId, fileId];
+- (void)getStreamingURL:(NSString*) archiveid withFileId:(NSString*) fileId {
+        NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/streaming/vods?archiveId=%@&archiveFileId=%@", appDelegate.svrAddr, archiveid, fileId];
         
         NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

@@ -27,7 +27,7 @@
 
 - (void) doUpLoadMediaFiles: (NSString*)desFileName From:(NSString*)srcFileUrl ;
 {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSString* requestStr = [NSString stringWithFormat:@"http://%@:8888/DownUploadServer/upload/ugcUpload", self.desUploadFilePathData.ipAddr];
     NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:srcFileUrl]];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
@@ -62,7 +62,6 @@
                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"UPLOAD_FAIL" object:nil];
                                      }];
     
-    // 4. Set the progress block of the operation.
     [operation setUploadProgressBlock:^(NSUInteger __unused bytesWritten,
                                         long long totalBytesWritten,
                                         long long totalBytesExpectedToWrite) {
@@ -71,13 +70,12 @@
         NSLog(@"Wrote %f",progressValue);
     }];
     
-    // 5. Begin!
     [operation start];
 }
 
 - (void)upLoadMediaFiles: (NSString*)desFileName From:(NSString*)srcFileUrl
 {
-    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSString* requestUrl = [NSString stringWithFormat:@"http://%@/userportal/api/rest/upload/ugc/mediafile/path", appDelegate.svrAddr];
 
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];

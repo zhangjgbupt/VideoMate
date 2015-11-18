@@ -83,7 +83,6 @@
 		655327851BF970530092C2E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327841BF970530092C2E4 /* AVFoundation.framework */; };
 		655327871BF9705A0092C2E4 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327861BF9705A0092C2E4 /* CoreLocation.framework */; };
 		655327891BF970610092C2E4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 655327881BF970610092C2E4 /* CoreBluetooth.framework */; };
-		65611E041BE30FA80084DCD2 /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 65611E031BE30FA80084DCD2 /* OrderedDictionary.m */; };
 		656367F81BD4BBB900917DB2 /* ChannelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 656367F71BD4BBB900917DB2 /* ChannelData.m */; };
 		656367FA1BD4DF9200917DB2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656367F91BD4DF9200917DB2 /* QuartzCore.framework */; };
 		656368001BD5CCFC00917DB2 /* AchiveListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 656367FE1BD5CCFC00917DB2 /* AchiveListTableViewController.m */; };
@@ -282,8 +281,6 @@
 		655327841BF970530092C2E4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		655327861BF9705A0092C2E4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		655327881BF970610092C2E4 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		65611E021BE30FA80084DCD2 /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderedDictionary.h; sourceTree = "<group>"; };
-		65611E031BE30FA80084DCD2 /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderedDictionary.m; sourceTree = "<group>"; };
 		656367F61BD4BBB900917DB2 /* ChannelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelData.h; sourceTree = "<group>"; };
 		656367F71BD4BBB900917DB2 /* ChannelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelData.m; sourceTree = "<group>"; };
 		656367F91BD4DF9200917DB2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -483,8 +480,6 @@
 				6582DB3A1BF2E5CC00A052F5 /* BGTableViewRowActionWithImage.m */,
 				6582DB361BF0914200A052F5 /* Utils.h */,
 				6582DB371BF0914200A052F5 /* Utils.m */,
-				65611E021BE30FA80084DCD2 /* OrderedDictionary.h */,
-				65611E031BE30FA80084DCD2 /* OrderedDictionary.m */,
 				65810B3D1BDC61EE0036F205 /* UploadMediaFiles.h */,
 				65810B3E1BDC61EE0036F205 /* UploadMediaFiles.m */,
 				65810B381BDC602E0036F205 /* UGCPlaybackViewController.h */,
@@ -1034,7 +1029,6 @@
 				652B88411BE060210092EAB8 /* DropDownListView.m in Sources */,
 				65810B3F1BDC61EE0036F205 /* UploadMediaFiles.m in Sources */,
 				65D0B3611BD64B540066138A /* MediaPlayerViewController.m in Sources */,
-				65611E041BE30FA80084DCD2 /* OrderedDictionary.m in Sources */,
 				654AEADB1BCF835700921978 /* LoginViewController.m in Sources */,
 				65D0B35A1BD6287C0066138A /* ArchiveData.m in Sources */,
 				652B882E1BDF57410092EAB8 /* MediaPathData.m in Sources */,
