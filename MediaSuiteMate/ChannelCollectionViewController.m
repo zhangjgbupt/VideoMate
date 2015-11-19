@@ -18,7 +18,7 @@
 @end
 
 @implementation ChannelCollectionViewController
-@synthesize channelList, channelCount,sortedChannelList;
+@synthesize channelList, channelCount,sortedChannelList, channleFollowStatusCheckNumber;
 @synthesize channelFollowButton;
 @synthesize refreshFooter, refreshHeader;
 @synthesize appDelegate;
@@ -201,7 +201,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
--(void) getContributeChannle {
+-(void) getContentChannels {
     if (self.channelCount == nil) {
         self.channelCount = @"10";
     }
@@ -250,7 +250,6 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
                   [channelList addObject:channelObj];
               }
               [self refreshChannelListCollectView];
-              
           }
           failure:^(AFHTTPRequestOperation* task, NSError* error){
               NSLog(@"Get Channle List Failed!");
@@ -259,7 +258,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 
 }
 
--(void) getContributeChannleCount {
+-(void) getContentChannelCount {
     NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/count", appDelegate.svrAddr];
     NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
     
@@ -276,7 +275,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     [manager GET:requestStr parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              self.channelCount = [responseObject valueForKey:@"count"];
-             [self getContributeChannle];
+             [self getContentChannels];
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"Get Channle Count Failed!");
@@ -284,22 +283,105 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
          }];
 }
 
+-(void) getFollowStatus:(ChannelData*) channelData {
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/%@/subscribeStatus", appDelegate.svrAddr, channelData.channelId];
+    NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-csc+json"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Accept"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:appDelegate.accessToken forHTTPHeaderField:@"token"];
+    [manager.requestSerializer setValue:auth forHTTPHeaderField:@"Authorization"];
+    [manager GET:requestStr parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSNumber* flag = [responseObject valueForKey:@"flag"];
+             if ([flag intValue]==1) {
+                 channelData.isFollowed = true;
+             } else {
+                 channelData.isFollowed = false;
+             }
+             
+             channleFollowStatusCheckNumber ++;
+             if (channleFollowStatusCheckNumber == [self.channelList count]) {
+               [[NSNotificationCenter defaultCenter] postNotificationName:@"FOLLOW_STATUS_CHECK_COMPLETE" object:nil];
+             }
+             
+         }
+         failure:^(AFHTTPRequestOperation* task, NSError* error){
+             NSLog(@"Get subscribe status Failed!");
+             NSLog(@"Error: %@", error.description);
+             channleFollowStatusCheckNumber ++;
+             if (channleFollowStatusCheckNumber == [self.channelList count]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"FOLLOW_STATUS_CHECK_COMPLETE" object:nil];
+             }
+         }];
+}
+
 -(void) sortChannels {
     [self.sortedChannelList removeAllObjects];
+    
+    // there followed status maybe change not by app, by browser for example,
+    // so we need double check the channel id is still in followed list.
+    NSMutableArray* notFollowedChannelIds = [[NSMutableArray alloc]init];
+    
+    // followed channel id list, which is store in local and sorted.
     NSMutableArray* followedChannels = [self readFollowChannelListFromFile];
+    
     NSString* followedChannelId=nil;
     for (followedChannelId in followedChannels) {
+        bool isStillFollowed = false;
         NSUInteger originalChannelCount =[self.channelList count];
         for (int i=0; i<originalChannelCount; i++) {
             ChannelData* originalChannel = [self.channelList objectAtIndex:i];
-            if ([originalChannel.channelId isEqualToString:followedChannelId]) {
-                originalChannel.isFollowed=true;
+            if (([originalChannel.channelId isEqualToString:followedChannelId]) && (originalChannel.isFollowed)) {
                 [self.sortedChannelList addObject:originalChannel];
+                isStillFollowed = true;
             }
         }
+        if (!isStillFollowed) {
+            [notFollowedChannelIds addObject:followedChannelId];
+        }
     }
+    // remove all the channels which not followed already, remove from followed list and re-save to local file.
+    [followedChannels removeObjectsInArray: notFollowedChannelIds];
+    
+    //remove all followed channle from original channel list.
+    [self.channelList removeObjectsInArray:self.sortedChannelList];
+    
+    // find the followed channel in original channles which is not in local file.
+    NSMutableArray* followedChannelNotInLocalFile = [[NSMutableArray alloc]init];
+    for (ChannelData* channel in self.channelList) {
+        if (channel.isFollowed) {
+            [followedChannelNotInLocalFile addObject:channel];
+            [followedChannels addObject:channel.channelId];
+        }
+    }
+    [self saveFollowChannelListToFile:followedChannels];
+    
+    [self.sortedChannelList addObjectsFromArray:followedChannelNotInLocalFile];
+    
+    //remove all followed channle from original channel list.
     [self.channelList removeObjectsInArray:self.sortedChannelList];
     [self.sortedChannelList addObjectsFromArray:self.channelList];
+}
+
+- (bool)saveFollowChannelListToFile:(NSMutableArray*)channelIds {
+    NSArray *sysPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory ,NSUserDomainMask, YES);
+    NSString *documentsDirectory = [sysPaths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"follow_channel.plist"];
+    NSLog(@"follow channle file path: %@", filePath);
+    
+    BOOL success = [channelIds writeToFile:filePath atomically:YES];
+    if(success) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 -(NSMutableArray*) readFollowChannelListFromFile {
@@ -341,7 +423,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     __weak SDRefreshHeaderView *weakRefreshHeader = refreshHeader;
     __weak typeof(self) weakSelf = self;
     refreshHeader.beginRefreshingOperation = ^{
-        [weakSelf getContributeChannleCount];
+        [weakSelf getContentChannelCount];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //[weakSelf sortChannels];
             //[weakSelf.collectionView reloadData];
@@ -362,7 +444,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     __weak SDRefreshFooterView *weakRefreshFooter = refreshFooter;
     __weak typeof(self) weakSelf = self;
     refreshFooter.beginRefreshingOperation = ^{
-        [weakSelf getContributeChannleCount];
+        [weakSelf getContentChannelCount];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //[weakSelf sortChannels];
             //[weakSelf.collectionView reloadData];
@@ -372,7 +454,24 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 }
 
 - (void) refreshChannelListCollectView {
+    [self refreshChannelFollowStatus];
+}
+
+-(void) onFollowStatusComplete {
     [self sortChannels];
     [self.collectionView reloadData];
+}
+
+-(void) refreshChannelFollowStatus {
+    channleFollowStatusCheckNumber = 0;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FOLLOW_STATUS_CHECK_COMPLETE" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onFollowStatusComplete)
+                                                 name:@"FOLLOW_STATUS_CHECK_COMPLETE"
+                                               object:nil];
+    for (int i=0; i<[self.channelList count]; i++) {
+        ChannelData* channel = [self.channelList objectAtIndex:i];
+        [self getFollowStatus:channel];
+    }
 }
 @end

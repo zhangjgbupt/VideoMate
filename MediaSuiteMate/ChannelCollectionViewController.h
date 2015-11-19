@@ -20,4 +20,5 @@
 @property (nonatomic, strong) SDRefreshHeaderView *refreshHeader;
 
 @property (nonatomic, retain) AppDelegate* appDelegate;
+@property (atomic) int channleFollowStatusCheckNumber;
 @end

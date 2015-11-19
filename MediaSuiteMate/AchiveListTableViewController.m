@@ -319,16 +319,43 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
          }];
 }
 
+-(void) setSubscribeStatus:(NSString*)channelId status:(NSString*)subscribeStatus {
+    
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/contentChannels/%@/%@", appDelegate.svrAddr, channelId, subscribeStatus];
+    NSString* auth = [NSString stringWithFormat:@"Bearer %@", appDelegate.accessToken];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-csc+json"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Accept"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:appDelegate.accessToken forHTTPHeaderField:@"token"];
+    [manager.requestSerializer setValue:auth forHTTPHeaderField:@"Authorization"];
+    [manager PUT:requestStr parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"Set channel subscribe status successful.");
+         }
+         failure:^(AFHTTPRequestOperation* task, NSError* error){
+             NSLog(@"Get archive Count Failed!");
+             NSLog(@"Error: %@", error.description);
+         }];
+}
+
 -(void)channelFollowBtnClick {
     NSLog(@"");
      NSMutableArray* followedChannleIdList = [[Utils getInstance] readFollowChannelListFromFile];
     if (self.channleData.isFollowed) {
         self.channleData.isFollowed = false;
         [followedChannleIdList removeObject:self.channleData.channelId];
+        [self setSubscribeStatus:channleData.channelId status:@"unsubscribe"];
         [self.navigationItem.rightBarButtonItem setImage:[UIImage imageNamed:@"icon_follow"]];
     } else {
         self.channleData.isFollowed = true;
         [followedChannleIdList addObject:self.channleData.channelId];
+        [self setSubscribeStatus:channleData.channelId status:@"subscribe"];
         [self.navigationItem.rightBarButtonItem setImage:[UIImage imageNamed:@"icon_followed"]];
     }
     [[Utils getInstance] saveFollowChannelListToFile:followedChannleIdList];
