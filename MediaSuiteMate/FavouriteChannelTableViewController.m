@@ -60,6 +60,7 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
     self.navigationController.topViewController.title = NSLocalizedString(@"channel_follow_page_title", nil);
+    [appDelegate.tabBarController setTabBarHidden:YES];
     [super viewWillAppear:YES];
 }
 

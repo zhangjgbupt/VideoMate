@@ -38,10 +38,11 @@
     
     AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
     NSMutableURLRequest *request =
-    [serializer multipartFormRequestWithMethod:@"POST" URLString:requestStr parameters:params
+    [serializer multipartFormRequestWithMethod:@"POST"
+                                     URLString:requestStr parameters:params
                      constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                        [formData appendPartWithFileData:videoData name:@"file" fileName:desFileName mimeType:@"video/mp4"];
-                     }];
+                        [formData appendPartWithFileData:videoData name:@"file" fileName:desFileName mimeType:@"video/mp4"];}
+                                         error:nil];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;

@@ -49,6 +49,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [appDelegate startNetworkConnectionMonitor];
     self.navigationController.topViewController.title = NSLocalizedString(@"archive_page_title", nil);
     [self getArchiveCountInChannel];
+    [appDelegate.tabBarController setTabBarHidden:YES];
     [super viewWillAppear:YES];
 }
 

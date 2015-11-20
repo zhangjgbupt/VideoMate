@@ -140,6 +140,11 @@
     [self getContributedChannels];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [appDelegate.tabBarController setTabBarHidden:YES];
+    [super viewWillAppear:YES];
+}
+
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     // key board height = 216 for portrait, and 162 for landscape
@@ -324,8 +329,9 @@
     if (self.channelSelected==nil) {
         self.channelSelected = [[NSMutableArray alloc]init];
     }
+    
     NSDictionary *body = @{ @"archiveId" : self.ugcArchiveData.achiveId,
-                            @"description" : @"test",
+                            @"description" : self.textDescription.text,
                             @"displayName" : self.textMediaFileName.text,
                             @"channelIds" : self.channelSelected,
                             @"isDownloadable" : @"false",

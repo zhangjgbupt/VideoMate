@@ -47,6 +47,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate startNetworkConnectionMonitor];
+    [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
 }
 /*

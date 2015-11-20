@@ -121,7 +121,6 @@
     CGFloat shareLabel_h = 32;
     CGRect shareLabelFrame = CGRectMake(shareLabel_x, shareLabel_y, shareLabel_w, shareLabel_h);
     [self.shareLabel setFrame:shareLabelFrame];
-
     
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayerPlaybackStateDidChange:)  name:MPMoviePlayerPlaybackStateDidChangeNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayBackDidFinish:)  name:MPMoviePlayerPlaybackDidFinishNotification  object:nil];
@@ -168,6 +167,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.appDelegate.tabBarController setTabBarHidden:YES];
     if ([self.episodeFiles count] == 0) {
         [[Utils getInstance] invokeAlert:@"Error" message:@"There is no compatible video format" delegate:self];
         //[self invokeAlert:@"Error" message:@"There is no compatible video format" delegate:self];

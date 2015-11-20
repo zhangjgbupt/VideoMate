@@ -72,6 +72,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
     //[self getMyArchives];
+    [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
 }
 
@@ -249,10 +250,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [manager GET:requestStr parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSArray* archiveArray = responseObject;
-             if(archiveArray!=nil && [archiveArray count]>0) {
-                 //if get channel successful, remove the older.
-                 [self.archiveList removeAllObjects];
-             }
+            [self.archiveList removeAllObjects];
              
              for (int i=0; i<[archiveArray count]; i++) {
                  NSDictionary* archiveOrigialData = archiveArray[i];

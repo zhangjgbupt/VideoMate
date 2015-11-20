@@ -67,6 +67,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
     //[self getContributeChannleCount];
+    [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
 }
 
@@ -390,6 +391,9 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"follow_channel.plist"];
     NSLog(@"follow channle file path: %@", filePath);
     NSMutableArray* followedChannels = [NSMutableArray arrayWithContentsOfFile:filePath];
+    if (followedChannels==nil) {
+        followedChannels = [[NSMutableArray alloc]init];
+    }
     return followedChannels;
 }
 
