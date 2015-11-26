@@ -203,6 +203,7 @@
     
     if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)) {
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:16.0];
+        //UIFont *font = [UIFont systemFontOfSize:16.];
         UIColor *cl=[UIColor blackColor];
         
         NSDictionary *attributes = @{ NSFontAttributeName: font,NSForegroundColorAttributeName:cl};

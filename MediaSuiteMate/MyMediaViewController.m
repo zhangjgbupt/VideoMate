@@ -25,6 +25,7 @@
 @synthesize maxPageNumber, currentPageIndex;
 @synthesize appDelegate;
 @synthesize channelDropListView;
+@synthesize emptyVideoImg, emptyVideoTitle, emptyVideoDetail;
 
 static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
@@ -38,7 +39,44 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
     
+    CGRect screenFrame = [[UIScreen mainScreen] bounds];
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.width = screenFrame.size.width;
+    tableViewFrame.size.height = screenFrame.size.height-66;
+    [self.tableView setFrame:tableViewFrame];
+    self.tableView.delegate = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
+    
+    [self.emptyView setFrame:tableViewFrame];
+
+    CGRect emptyViewFrame = self.emptyView.frame;
+    CGFloat viewWidth = emptyViewFrame.size.width;
+    CGFloat viewHeight = emptyViewFrame.size.height;
+    
+    CGFloat empty_img_x = viewWidth/4;
+    CGFloat empty_img_y = viewHeight/3;
+    CGFloat empty_img_w = viewWidth/2;
+    CGFloat empty_img_h = empty_img_w;
+    [self.emptyVideoImg setFrame:CGRectMake(empty_img_x, empty_img_y, empty_img_w, empty_img_h)];
+    
+    CGFloat empty_title_x = viewWidth/5;
+    CGFloat empty_title_y = empty_img_y + empty_img_h + 10;
+    CGFloat empty_title_w = viewWidth*3/5;
+    CGFloat empty_title_h = 20;
+    [self.emptyVideoTitle setFrame:CGRectMake(empty_title_x, empty_title_y, empty_title_w, empty_title_h)];
+    
+    CGFloat empty_detail_x = viewWidth/5;
+    CGFloat empty_detail_y = empty_img_y + empty_img_h + 10 + 20;
+    CGFloat empty_detail_w = viewWidth*3/5;
+    CGFloat empty_detail_h = 20;
+    [self.emptyVideoDetail setFrame:CGRectMake(empty_detail_x, empty_detail_y, empty_detail_w, empty_detail_h)];
+    [self.emptyView addSubview:emptyVideoImg];
+    [self.emptyView addSubview:emptyVideoTitle];
+    [self.emptyView addSubview:emptyVideoDetail];
+    
+    [self.view addSubview:self.tableView];
+    [self.view addSubview:self.emptyView];
+    
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.topViewController.title = NSLocalizedString(@"my_media_page_title", nil);
@@ -51,17 +89,17 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [self initUgcSourceSelectorView];
     isUploadClick = NO;
     
-//    NSMutableArray *childViewControllers = [[NSMutableArray alloc] initWithArray: appDelegate.navController.viewControllers];
-//    if ([[childViewControllers objectAtIndex:0] isKindOfClass:[LoginViewController class]]) {
-//        [childViewControllers removeObjectAtIndex:0];
-//    }
-//    appDelegate.navController.viewControllers = childViewControllers;
-    
      self.archiveList = [[NSMutableArray alloc]init];
     [self getContributedChannels];
     [self getMyArchives];
     [self setupHeader];
     [self setupFooter];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(getMyArchives)
+                                                 name:@"UPDATE_PEROPERTY_SUCCESS"
+                                               object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -310,7 +348,23 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                  }
                  [self.archiveList addObject:archiveObj];
              }
-             [self.tableView reloadData];
+             if ([self.archiveList count]==0) {
+                 //[self.view bringSubviewToFront:self.emptyView];
+                 //[self.tableView removeFromSuperview];
+                 //[self.emptyView removeFromSuperview];
+                 //[self.view addSubview:self.emptyView];
+                 
+                 for (UIView *subView in self.view.subviews) {
+                     if([subView isKindOfClass:[UITableView class]]) {
+                         [subView removeFromSuperview];
+                     }
+                 }
+                 [self.view addSubview:self.emptyView];
+             } else {
+                 //[self.view bringSubviewToFront:self.tableView];
+                 [self.view addSubview:self.tableView];
+                 [self.tableView reloadData];
+             }
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"Get Channle List Failed!");
@@ -571,6 +625,9 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         [self.videoSourceSelectorMenu setExpanding:NO];
         [self.videoSourceSelectorMenu removeFromSuperview];
     } else {
+        float height = self.navigationController.navigationBar.frame.size.height;
+        float width = self.navigationController.navigationBar.frame.size.width/2;
+        [self.videoSourceSelectorMenu setFrame:CGRectMake(width, height-25, width, 45)];
         [self.view addSubview:self.videoSourceSelectorMenu];
         [self.videoSourceSelectorMenu setExpanding:YES];
     }
@@ -592,8 +649,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         [dropdownItems addObject:item];
     }
     
-    float height = appDelegate.navController.navigationBar.frame.size.height;
-    float width = appDelegate.navController.navigationBar.frame.size.width/2;
+    float height = self.navigationController.navigationBar.frame.size.height + 20;
+    float width = self.navigationController.navigationBar.frame.size.width/2;
     
     self.videoSourceSelectorMenu = [[IGLDropDownMenu alloc] init];
     //self.videoSourceSelectorMenu.menuText = @"Video Source";
@@ -680,7 +737,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     channelDropListView = [[DropDownListView alloc] initWithTitle:popupTitle options:arrOptions xy:point size:size isMultiple:isMultiple];
     channelDropListView.delegate = self;
-    [channelDropListView showInView:self.view animated:YES];
+    [channelDropListView showInView:self.tableView animated:YES];
     
     /*----------------Set DropDown backGroundColor-----------------*/
     [channelDropListView SetBackGroundDropDown_R:255.0 G:255.0 B:255.0 alpha:1.0];

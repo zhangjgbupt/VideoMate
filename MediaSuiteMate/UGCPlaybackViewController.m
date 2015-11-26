@@ -344,6 +344,8 @@
     [manager PUT:requestStr parameters:body
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"update archive peropery success!");
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"UPDATE_PEROPERTY_SUCCESS" object:nil];
+             [self.navigationController popViewControllerAnimated:self];
              
          }
          failure:^(AFHTTPRequestOperation* task, NSError* error){

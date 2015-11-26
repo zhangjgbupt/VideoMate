@@ -16,11 +16,18 @@
 #import "SDRefresh.h"
 #import "DropDownListView.h"
 
-@interface MyMediaViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,IGLDropDownMenuDelegate, kDropDownListViewDelegate>
+@interface MyMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, IGLDropDownMenuDelegate, kDropDownListViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *emptyView;
+@property (strong, nonatomic) IBOutlet UILabel *emptyVideoTitle;
+@property (strong, nonatomic) IBOutlet UILabel *emptyVideoDetail;
+
 @property (nonatomic, retain) NSMutableArray* archiveList;
 @property (nonatomic, retain) NSString* archiveCount;
 @property (nonatomic, retain) UIBarButtonItem *uploadButton;
 @property (nonatomic, retain) NSURL *videoURL;
+@property (strong, nonatomic) IBOutlet UIImageView *emptyVideoImg;
 
 @property int currentPageIndex;
 @property int maxPageNumber;

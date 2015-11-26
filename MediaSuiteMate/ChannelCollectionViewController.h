@@ -14,11 +14,13 @@
 @property (nonatomic, retain) NSMutableArray* channelList;
 @property (nonatomic, retain) NSMutableArray* sortedChannelList;
 @property (nonatomic, retain) NSString* channelCount;
-@property (nonatomic, retain) UIBarButtonItem *channelFollowButton;
 
 @property (nonatomic, strong) SDRefreshFooterView *refreshFooter;
 @property (nonatomic, strong) SDRefreshHeaderView *refreshHeader;
 
 @property (nonatomic, retain) AppDelegate* appDelegate;
 @property (atomic) int channleFollowStatusCheckNumber;
+
+@property (nonatomic) BOOL isOnlyDisplayFollowedChannel;
+@property (atomic) NSUInteger followedChannelCount;
 @end

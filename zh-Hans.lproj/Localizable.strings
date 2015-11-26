@@ -47,6 +47,9 @@
 "slide_share"=" 共享 ";
 "slide_delete"=" 删除 ";
 
+//no media info
+"no_media_info"="您还没有视频哦， 请点击右上方的按钮，上传自己喜欢的视频吧.";
+
 //error msg
 "info_level_error"="错误";
 "info_level_info"="信息";

@@ -47,7 +47,7 @@
     CGFloat screenHeight = screenRect.size.height;
     
     CGFloat appicon_x = (screenWidth - self.appiconImag.frame.size.width)/2;
-    CGFloat appicon_y = 40;
+    CGFloat appicon_y = 60;
     CGFloat appicon_w = self.appiconImag.frame.size.width;
     CGFloat appicon_h = self.appiconImag.frame.size.height;
     [self.appiconImag setFrame:CGRectMake(appicon_x, appicon_y, appicon_w, appicon_h)];

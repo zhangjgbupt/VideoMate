@@ -18,8 +18,7 @@
 @end
 
 @implementation ChannelCollectionViewController
-@synthesize channelList, channelCount,sortedChannelList, channleFollowStatusCheckNumber;
-@synthesize channelFollowButton;
+@synthesize channelList, channelCount,sortedChannelList, channleFollowStatusCheckNumber, followedChannelCount, isOnlyDisplayFollowedChannel;
 @synthesize refreshFooter, refreshHeader;
 @synthesize appDelegate;
 
@@ -31,14 +30,23 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     channelList = [NSMutableArray array];
     sortedChannelList = [NSMutableArray array];
     
+    isOnlyDisplayFollowedChannel = FALSE;
+    
     self.navigationController.topViewController.title = NSLocalizedString(@"channel_page_title", nil);
     self.navigationItem.backBarButtonItem = nil;
-    channelFollowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_follow"]
+    UIBarButtonItem* channelFollowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_follow"]
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(go2ChannelFollowPage)];
+  
+    UIBarButtonItem* channelListSwitchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_all"]
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(switchChannelListDataSource)];
     
     self.navigationItem.rightBarButtonItem = channelFollowButton;
+    self.navigationItem.leftBarButtonItem = channelListSwitchButton;
+    
     
     NSMutableArray *childViewControllers = [[NSMutableArray alloc] initWithArray: appDelegate.navController.viewControllers];
     if ([[childViewControllers objectAtIndex:0] isKindOfClass:[LoginViewController class]]) {
@@ -54,9 +62,19 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
                                                     bundle:[NSBundle mainBundle]]
                                 forCellWithReuseIdentifier:reuseChannelIdentifier];
     
-    //[self getContributeChannleCount];
     [self setupHeader];
     //[self setupFooter];
+    
+    //在这里向ms服务器注册可以确保登录已成功， 如果apnsClientId不位nil，说明在该view到生成之前已经成功获得，直接注册即可。
+    if (appDelegate.apnsClientId != nil) {
+        [appDelegate register2apns];
+    }
+    
+    //当apnsClientId生成较晚（在程序跳转到该view之后获得），该程序段可以确保向ms服务器注册。
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                                  selector:@selector(register2apns)
+                                                      name:@"GET_CLIENT_ID_SUCCESS"
+                                                    object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -96,7 +114,11 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.sortedChannelList count];
+    if (isOnlyDisplayFollowedChannel) {
+        return self.followedChannelCount;
+    } else {
+        return [self.sortedChannelList count];
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -363,6 +385,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
         }
     }
     [self saveFollowChannelListToFile:followedChannels];
+    self.followedChannelCount = [followedChannels count];
     
     [self.sortedChannelList addObjectsFromArray:followedChannelNotInLocalFile];
     
@@ -415,6 +438,18 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     followChannelViewController.channelCount = self.channelCount;
     followChannelViewController.channelList = [self.sortedChannelList mutableCopy];
     [self.navigationController pushViewController:followChannelViewController animated:YES];
+}
+
+-(void)switchChannelListDataSource {
+    
+    if (self.isOnlyDisplayFollowedChannel) {
+        self.isOnlyDisplayFollowedChannel = FALSE;
+        [self.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"icon_all"]];
+    } else {
+        self.isOnlyDisplayFollowedChannel = TRUE;
+        [self.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"icon_part"]];
+    }
+    [self.collectionView reloadData];
 }
 
 #pragma mark - header and footer refresh
@@ -477,5 +512,9 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
         ChannelData* channel = [self.channelList objectAtIndex:i];
         [self getFollowStatus:channel];
     }
+}
+
+-(void)register2apns{
+    [self.appDelegate register2apns];
 }
 @end

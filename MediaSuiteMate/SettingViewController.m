@@ -29,7 +29,7 @@
     CGFloat screenHeight = screenRect.size.height;
     
     CGFloat logout_x = 30;
-    CGFloat logout_y = screenHeight - 200;
+    CGFloat logout_y = screenHeight - 150;
     CGFloat logout_w = screenWidth - 60;
     CGFloat logout_h = 50;
     [self.logoutBtn setFrame:CGRectMake(logout_x, logout_y, logout_w, logout_h)];

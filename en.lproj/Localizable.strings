@@ -47,6 +47,9 @@
 "slide_share"=" Share ";
 "slide_delete"=" Delete ";
 
+//no media info
+"no_media_info"="upload your video by click upload icon in top-right.";
+
 //error msg
 "info_level_error"="ERROR";
 "info_level_info"="INFO";

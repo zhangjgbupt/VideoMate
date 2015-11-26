@@ -35,6 +35,7 @@
 @property (nonatomic, retain) NSString* svrAddr;
 @property (nonatomic, retain) NSString* accessToken;
 @property (nonatomic, retain) NSString* expireTimer;
+@property (nonatomic, retain) NSString* apnsClientId;
 @property (nonatomic, retain) NSTimer* heartBeatTimer;
 @property (nonatomic, retain) UIAlertController* alertView;
 
@@ -56,6 +57,7 @@
 - (void)setupTabViewControllers;
 - (NSURL *)applicationDocumentsDirectory;
 - (void) startNetworkConnectionMonitor;
+- (void) register2apns;
 
 
 @end

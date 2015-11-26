@@ -22,7 +22,7 @@
 @implementation AppDelegate
 @synthesize navController;
 @synthesize tabBarController, channelViewController, mediaViewController, settingViewController;
-@synthesize userName, password, svrAddr;
+@synthesize userName, password, svrAddr, apnsClientId;
 @synthesize accessToken, expireTimer, heartBeatTimer;
 @synthesize alertView;
 @synthesize isLoginSuccessful;
@@ -31,6 +31,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     isLoginSuccessful = -1;
+    apnsClientId = nil;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -319,6 +320,31 @@
                        
                    }];
 }
+
+- (void) register2apns {
+
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/users/regToApns", self.svrAddr];
+    NSDictionary *body = @{ @"userName" : self.userName,
+                            @"clientId" : self.apnsClientId,
+                        };
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-csc+json"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Accept"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-csc+json" forHTTPHeaderField:@"Content-Type"];
+    
+    [manager POST:requestStr parameters:body
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSLog(@"success");
+          }
+          failure:^(AFHTTPRequestOperation* task, NSError* error){
+              NSLog(@"Error: %@", error.description);
+          }];
+}
+
 
 - (void) startScheduleHeartBeat:(NSString*)interval {
     [self heartbeatRestApi];
@@ -610,7 +636,9 @@
 /** SDK启动成功返回cid */
 - (void)GeTuiSdkDidRegisterClient:(NSString *)clientId {
     // [4-EXT-1]: 个推SDK已注册，返回clientId
+    apnsClientId = clientId;
     NSLog(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GET_CLIENT_ID_SUCCESS" object:nil];
 }
 
 /** SDK遇到错误回调 */
