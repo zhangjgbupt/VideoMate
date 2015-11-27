@@ -34,12 +34,12 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     
     self.navigationController.topViewController.title = NSLocalizedString(@"channel_page_title", nil);
     self.navigationItem.backBarButtonItem = nil;
-    UIBarButtonItem* channelFollowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_follow"]
+    UIBarButtonItem* channelFollowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_management"]
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(go2ChannelFollowPage)];
   
-    UIBarButtonItem* channelListSwitchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_all"]
+    UIBarButtonItem* channelListSwitchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_follow"]
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(switchChannelListDataSource)];
@@ -444,10 +444,10 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     
     if (self.isOnlyDisplayFollowedChannel) {
         self.isOnlyDisplayFollowedChannel = FALSE;
-        [self.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"icon_all"]];
+        [self.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"icon_follow"]];
     } else {
         self.isOnlyDisplayFollowedChannel = TRUE;
-        [self.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"icon_part"]];
+        [self.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"icon_followed"]];
     }
     [self.collectionView reloadData];
 }

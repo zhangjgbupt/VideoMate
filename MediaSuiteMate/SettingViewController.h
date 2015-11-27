@@ -10,6 +10,7 @@
 
 @interface SettingViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UIButton *logoutBtn;
+@property (strong, nonatomic) IBOutlet UIImageView *setttingAnimationImgView;
 
 - (IBAction)doLogout:(id)sender;
 @end

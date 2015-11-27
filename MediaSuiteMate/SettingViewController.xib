@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
             <connections>
                 <outlet property="logoutBtn" destination="hPP-uR-dWU" id="J1C-3c-bWm"/>
+                <outlet property="setttingAnimationImgView" destination="aKo-bo-aLo" id="cJ0-Vn-ayl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

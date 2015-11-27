@@ -15,6 +15,7 @@
 @end
 
 @implementation SettingViewController
+@synthesize setttingAnimationImgView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,6 +24,15 @@
     self.navigationController.topViewController.title = NSLocalizedString(@"setting_page_title", nil);
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = nil;
+    
+    setttingAnimationImgView.animationImages = [NSArray arrayWithObjects:
+                                                [UIImage imageNamed:@"image_setting01"],
+                                                [UIImage imageNamed:@"image_setting02"],
+                                                [UIImage imageNamed:@"image_setting03"],
+                                                nil];
+    setttingAnimationImgView.animationDuration = 0.5f;
+    setttingAnimationImgView.animationRepeatCount = 0;
+    [setttingAnimationImgView startAnimating];
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
