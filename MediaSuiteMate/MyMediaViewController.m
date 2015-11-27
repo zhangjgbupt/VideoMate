@@ -64,12 +64,15 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     CGFloat empty_title_w = viewWidth*3/5;
     CGFloat empty_title_h = 20;
     [self.emptyVideoTitle setFrame:CGRectMake(empty_title_x, empty_title_y, empty_title_w, empty_title_h)];
+    [self.emptyVideoTitle setText:NSLocalizedString(@"no_media_title", nil)];
     
-    CGFloat empty_detail_x = viewWidth/5;
+    CGFloat empty_detail_x = viewWidth/10;
     CGFloat empty_detail_y = empty_img_y + empty_img_h + 10 + 20;
-    CGFloat empty_detail_w = viewWidth*3/5;
+    CGFloat empty_detail_w = viewWidth*4/5;
     CGFloat empty_detail_h = 20;
     [self.emptyVideoDetail setFrame:CGRectMake(empty_detail_x, empty_detail_y, empty_detail_w, empty_detail_h)];
+    [self.emptyVideoDetail setText:NSLocalizedString(@"no_media_info", nil)];
+    
     [self.emptyView addSubview:emptyVideoImg];
     [self.emptyView addSubview:emptyVideoTitle];
     [self.emptyView addSubview:emptyVideoDetail];

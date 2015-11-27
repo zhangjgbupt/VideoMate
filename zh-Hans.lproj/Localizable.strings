@@ -48,7 +48,8 @@
 "slide_delete"=" 删除 ";
 
 //no media info
-"no_media_info"="您还没有视频哦， 请点击右上方的按钮，上传自己喜欢的视频吧.";
+"no_media_title"="您还没有视频哦";
+"no_media_info"="点击右上方按钮，上传自己喜欢的视频吧";
 
 //error msg
 "info_level_error"="错误";
