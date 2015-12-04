@@ -116,7 +116,7 @@
     [self.btnUpload setTitle:NSLocalizedString(@"upload_btn_title", nil) forState:UIControlStateNormal];
     [self.btnUpload setBackgroundImage:[UIImage imageNamed:@"btn_login_normal"] forState:UIControlStateNormal];
     [self.btnUpload setBackgroundImage:[UIImage imageNamed:@"btn_login_pressed"] forState:UIControlStateSelected];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(submitNewArchive)
                                                  name:@"UPLOAD_SUCCESSFUL"
@@ -165,14 +165,14 @@
         progressView.progress = uploadMediaFilesHandle.progressValue;
         [self performSelector:@selector(getProgressValue) withObject:self afterDelay:0.1];
     }
-    else
-    {
-        self.btnUpload.hidden = NO;
-        self.progressView.hidden = YES;
-        uploadMediaFilesHandle.progressValue = 0;
-        progressView.progress = 0;
-        return;
-    }
+//    else
+//    {
+//        self.btnUpload.hidden = NO;
+//        self.progressView.hidden = YES;
+//        uploadMediaFilesHandle.progressValue = 0;
+//        progressView.progress = 0;
+//        return;
+//    }
 
 }
 
@@ -344,6 +344,7 @@
     [manager PUT:requestStr parameters:body
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"update archive peropery success!");
+             [self showUploadBtn];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"UPDATE_PEROPERTY_SUCCESS" object:nil];
              [self.navigationController popViewControllerAnimated:self];
              
@@ -351,6 +352,7 @@
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"update archive peroperty Failed!");
              NSLog(@"Error: %@", error.description);
+             [self showUploadBtn];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"UPLOAD_FAIL" object:nil];
          }];
 }
@@ -359,10 +361,19 @@
     [self getArchivePeroperty];
 }
 
+-(void) showUploadBtn {
+    self.btnUpload.hidden = NO;
+    self.progressView.hidden = YES;
+    uploadMediaFilesHandle.progressValue = 0;
+    progressView.progress = 0;
+}
+
 -(void) uploadMediaFileFail {
     [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil)
                              message:NSLocalizedString(@"ugc_error", nil)
                             delegate:self];
+    
+    [self showUploadBtn];
     
 }
 

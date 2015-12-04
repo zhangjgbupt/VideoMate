@@ -21,7 +21,7 @@
 @synthesize uploadButton;
 @synthesize videoURL;
 @synthesize videoSourceSelectorMenu, isUploadClick;
-@synthesize refreshFooter, refreshHeader;
+@synthesize refreshFooter, refreshHeader, refreshHeader4EmptyView;
 @synthesize maxPageNumber, currentPageIndex;
 @synthesize appDelegate;
 @synthesize channelDropListView;
@@ -48,6 +48,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     
     [self.emptyView setFrame:tableViewFrame];
+
+    [(UIScrollView *)self.emptyView setContentSize:CGSizeMake(tableViewFrame.size.width, tableViewFrame.size.height+300)];
 
     CGRect emptyViewFrame = self.emptyView.frame;
     CGFloat viewWidth = emptyViewFrame.size.width;
@@ -684,7 +686,9 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 - (void)setupHeader
 {
     refreshHeader = [SDRefreshHeaderView refreshView];
+    refreshHeader4EmptyView = [SDRefreshHeaderView refreshView];
     [refreshHeader addToScrollView:self.tableView];
+    [refreshHeader4EmptyView addToScrollView:self.emptyView];
     //[refreshHeader addTarget:self refreshAction:@selector(headerRefresh)];
     
     __weak SDRefreshHeaderView *weakRefreshHeader = refreshHeader;
@@ -693,6 +697,14 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         [weakSelf getMyArchives];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakRefreshHeader endRefreshing];
+        });
+    };
+    
+     __weak SDRefreshHeaderView *weakRefreshHeader4EmptyView = refreshHeader4EmptyView;
+    refreshHeader4EmptyView.beginRefreshingOperation = ^{
+        [weakSelf getMyArchives];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakRefreshHeader4EmptyView endRefreshing];
         });
     };
 

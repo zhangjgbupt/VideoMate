@@ -19,7 +19,7 @@
 @interface MyMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, IGLDropDownMenuDelegate, kDropDownListViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIView *emptyView;
+@property (strong, nonatomic) IBOutlet UIScrollView *emptyView;
 @property (strong, nonatomic) IBOutlet UILabel *emptyVideoTitle;
 @property (strong, nonatomic) IBOutlet UILabel *emptyVideoDetail;
 
@@ -41,6 +41,7 @@
 
 @property (nonatomic, strong) SDRefreshFooterView *refreshFooter;
 @property (nonatomic, strong) SDRefreshHeaderView *refreshHeader;
+@property (nonatomic, strong) SDRefreshHeaderView *refreshHeader4EmptyView;
 
 @property (nonatomic,assign) AppDelegate* appDelegate;
 

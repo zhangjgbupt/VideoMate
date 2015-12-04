@@ -28,7 +28,7 @@
                         <outlet property="delegate" destination="-1" id="jml-z7-LHA"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" id="dfb-vr-WpL">
+                <view contentMode="scaleToFill" id="dfb-vr-WpL" customClass="UIScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
