@@ -49,7 +49,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     [self.emptyView setFrame:tableViewFrame];
 
-    [(UIScrollView *)self.emptyView setContentSize:CGSizeMake(tableViewFrame.size.width, tableViewFrame.size.height+300)];
+    //force UIView to UIScrollView
+    [(UIScrollView *)self.emptyView setContentSize:CGSizeMake(tableViewFrame.size.width, tableViewFrame.size.height+1)];
 
     CGRect emptyViewFrame = self.emptyView.frame;
     CGFloat viewWidth = emptyViewFrame.size.width;

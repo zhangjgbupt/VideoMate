@@ -34,6 +34,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *seperator_2;
 @property (strong, nonatomic) IBOutlet UIButton *btnChannelList;
 
+@property (nonatomic) BOOL isKeyBoardShow;
+
 @property CGFloat original_y_center;
 
 @property (strong, nonatomic) AppDelegate* appDelegate;

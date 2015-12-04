@@ -21,7 +21,7 @@
 @synthesize channelNameList,channelListNameAndIdDict,channelDropListView,channelSelected;
 @synthesize seperator_1, seperator_2;
 @synthesize appDelegate;
-@synthesize original_y_center;
+@synthesize original_y_center,isKeyBoardShow;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +44,7 @@
     self.videoController = [[MPMoviePlayerController alloc] init];
     self.uploadMediaFilesHandle = [[UploadMediaFiles alloc] init];
     self.ugcArchiveData = [[ArchiveData alloc]init];
+    self.isKeyBoardShow = FALSE;
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
@@ -148,13 +149,17 @@
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     // key board height = 216 for portrait, and 162 for landscape
-    self.original_y_center = self.view.center.y;
-    self.view.center = CGPointMake(self.view.center.x, self.view.center.y-200);
+    if (!self.isKeyBoardShow) {
+        self.isKeyBoardShow = TRUE;
+        self.original_y_center = self.view.center.y;
+        self.view.center = CGPointMake(self.view.center.x, self.view.center.y-200);
+    }
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
     self.view.center = CGPointMake(self.view.center.x, self.original_y_center);
+    self.isKeyBoardShow = FALSE;
 }
 
 -(void)getProgressValue
