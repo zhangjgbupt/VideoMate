@@ -46,6 +46,7 @@
 @property (strong, nonatomic) UIViewController* mediaViewController;
 @property (strong, nonatomic) UIViewController* channelViewController;
 @property (strong, nonatomic) UIViewController* settingViewController;
+@property (strong, nonatomic) UIViewController* liveViewController;
 
 //-1: init
 //0: login fail

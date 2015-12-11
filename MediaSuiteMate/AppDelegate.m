@@ -11,6 +11,7 @@
 #import "SettingViewController.h"
 #import "ChannelCollectionViewController.h"
 #import "MyMediaViewController.h"
+#import "LiveViewController.h"
 #import "LoginViewController.h"
 #import "CustomerUINavigationController.h"
 #import "GlobalData.h"
@@ -21,7 +22,7 @@
 
 @implementation AppDelegate
 @synthesize navController;
-@synthesize tabBarController, channelViewController, mediaViewController, settingViewController;
+@synthesize tabBarController, channelViewController, mediaViewController, settingViewController, liveViewController;
 @synthesize userName, password, svrAddr, apnsClientId;
 @synthesize accessToken, expireTimer, heartBeatTimer;
 @synthesize alertView;
@@ -96,6 +97,7 @@
 - (void)setupTabViewControllers {
     SettingViewController* mySettingViewController = [[SettingViewController alloc]init];
     MyMediaViewController* myMediaViewController = [[MyMediaViewController alloc]init];
+    LiveViewController* myLiveViewController = [[LiveViewController alloc]init];
     
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc]init];
     flowLayout.minimumInteritemSpacing = 1;
@@ -116,26 +118,34 @@
                                                      initWithRootViewController:myChannelListViewController];
     UINavigationController *mySettingNavigationController = [[UINavigationController alloc]
                                                      initWithRootViewController:mySettingViewController];
+    UINavigationController *myLiveNavigationController = [[UINavigationController alloc] initWithRootViewController:myLiveViewController];
+    
     
     myMediaNavigationController.navigationBar.titleTextAttributes = textAttributes;
     myChannelNavigationController.navigationBar.titleTextAttributes = textAttributes;
     mySettingNavigationController.navigationBar.titleTextAttributes = textAttributes;
+    myLiveNavigationController.navigationBar.titleTextAttributes = textAttributes;
     
     [myMediaNavigationController.navigationBar setBarTintColor:barTintColor];
     [myChannelNavigationController.navigationBar setBarTintColor:barTintColor];
     [mySettingNavigationController.navigationBar setBarTintColor:barTintColor];
+    [myLiveNavigationController.navigationBar setBarTintColor:barTintColor];
+
     
     [myMediaNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [myChannelNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [mySettingNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
+    [myLiveNavigationController.navigationBar setTintColor:[UIColor whiteColor]];
+
     self.mediaViewController = myMediaViewController;
     self.channelViewController = myChannelListViewController;
     self.settingViewController = mySettingViewController;
+    self.liveViewController = myLiveNavigationController;
+
     
     tabBarController = [[RDVTabBarController alloc] init];
     //[tabBarController setViewControllers:@[myMediaViewController, channelListViewController,settingViewController]];
-    [tabBarController setViewControllers:@[myMediaNavigationController, myChannelNavigationController,mySettingNavigationController]];
+    [tabBarController setViewControllers:@[myMediaNavigationController, myLiveNavigationController, myChannelNavigationController,mySettingNavigationController]];
     [self customizeTabBarForController:tabBarController];
 }
 - (void)setupViewControllers {
@@ -171,7 +181,7 @@
 - (void)customizeTabBarForController:(RDVTabBarController *)tabbarController {
     //UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
     //UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
-    NSArray *tabBarItemImages = @[@"icon_mymedia", @"icon_channel", @"icon_setting"];
+    NSArray *tabBarItemImages = @[@"icon_mymedia", @"icon_live", @"icon_channel", @"icon_setting"];
     
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabbarController tabBar] items]) {
