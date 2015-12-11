@@ -45,7 +45,7 @@
     CGFloat liveIcon_w = 25;
     CGFloat liveIcon_h = 25;
     [self.liveIcon setFrame:CGRectMake(liveIcon_x, liveIcon_y, liveIcon_w, liveIcon_h)];
-    [self.liveIcon setImage:[UIImage imageNamed:@"icon_title"]];
+    [self.liveIcon setImage:[UIImage imageNamed:@"icon_live_back"]];
     
     [self.liveText setTextColor:[UIColor whiteColor]];
     [self.liveText setFont:[UIFont fontWithName:@"Arial" size:12]];
@@ -87,7 +87,7 @@
     CGFloat slide1_w = 5;
     CGFloat slide1_h = 30;
     [self.slide1 setFrame:CGRectMake(slide1_x, slide1_y, slide1_w, slide1_h)];
-    [self.slide1 setImage:[UIImage imageNamed:@"tag_title"]];
+    [self.slide1 setImage:[UIImage imageNamed:@"live_tag"]];
     
     CGFloat desTitle_y = seperator1_y + seperator1_h + 10;
     CGFloat desTitle_h = 20;
@@ -128,7 +128,7 @@
     CGFloat slide2_w = 5;
     CGFloat slide2_h = 30;
     [self.slide2 setFrame:CGRectMake(slide2_x, slide2_y, slide2_w, slide2_h)];
-    [self.slide2 setImage:[UIImage imageNamed:@"tag_title"]];
+    [self.slide2 setImage:[UIImage imageNamed:@"live_tag"]];
     
     CGFloat recommendTitle_x = 10;
     CGFloat recommendTitle_y = seperator2_y + 1 + 10;
@@ -144,7 +144,7 @@
     CGFloat recommendImg_w = screenWidth;
     CGFloat recommendImg_h = screenHeight - recommendImg_y;
     [self.recommendImg setFrame:CGRectMake(recommendImg_x, recommendImg_y, recommendImg_w, recommendImg_h)];
-    [self.recommendImg setImage:[UIImage imageNamed:@"image_default"]];
+    [self.recommendImg setImage:[UIImage imageNamed:@"no_recommend_live"]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayerPlaybackStateDidChange:)  name:MPMoviePlayerPlaybackStateDidChangeNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayBackDidFinish:)  name:MPMoviePlayerPlaybackDidFinishNotification  object:nil];

@@ -32,7 +32,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image_default.png" id="41f-oV-QeJ">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_live.png" id="41f-oV-QeJ">
                             <rect key="frame" x="0.0" y="120" width="320" height="264"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -58,6 +58,6 @@
         </view>
     </objects>
     <resources>
-        <image name="image_default.png" width="176" height="112"/>
+        <image name="no_live.png" width="176" height="112"/>
     </resources>
 </document>
