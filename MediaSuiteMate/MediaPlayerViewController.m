@@ -15,12 +15,19 @@
 @end
 
 @implementation MediaPlayerViewController
-@synthesize episodeFiles, archiveName, archiveDes, archiveId;
+@synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl;
 @synthesize player;
 @synthesize streamingURLlist;
 @synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator;
 @synthesize likeBtn, likeLabel, shareBtn, shareLabel, likeStatus, likeCount;
 @synthesize appDelegate;
+
+//for weixin share
+@synthesize shareTitle  = _shareTitle;
+@synthesize detailInfo = _detailInfo;
+@synthesize shareImage = _shareImage;
+@synthesize shareImageURL = _shareImageURL;
+@synthesize shareWebPageURL = _shareWebPageURL;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -122,6 +129,9 @@
     CGRect shareLabelFrame = CGRectMake(shareLabel_x, shareLabel_y, shareLabel_w, shareLabel_h);
     [self.shareLabel setFrame:shareLabelFrame];
     
+    //[self.shareBtn setHidden:TRUE];
+    //[self.shareLabel setHidden:TRUE];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayerPlaybackStateDidChange:)  name:MPMoviePlayerPlaybackStateDidChangeNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayBackDidFinish:)  name:MPMoviePlayerPlaybackDidFinishNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -208,7 +218,18 @@
 }
 
 - (IBAction)shareBtnClick:(id)sender {
-     NSLog(@"===== share button clicked =====");
+    NSString *imageURL=self.thumUrl;
+    NSString *title=self.archiveName;
+    NSString *detailInfo = self.archiveDes;
+    NSString *webUrl=[[appDelegate.svrAddr stringByAppendingString:@"/userportal/video?v="] stringByAppendingString:self.archiveId];
+    webUrl = [NSString stringWithFormat:@"http://%@", webUrl ];
+    
+    //ShareToolViewController *shareToolViewController = [[ShareToolViewController alloc]
+    //                                                    initWithNibName:@"ShareToolViewController" bundle:nil];
+    //shareToolViewController.delegate = self;
+    //[self addChildViewController:shareToolViewController];
+    [self initWhithTitle:title detailInfo:detailInfo image:nil imageUrl:imageURL webpageUrl:webUrl];
+    //[self.view addSubview:shareToolViewController.view];
 }
 
 -(void) doLike {
@@ -345,5 +366,126 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+#pragma mark - 分享
+- (void)initWhithTitle:(NSString *)title
+            detailInfo:(NSString*)info
+                 image:(UIImage *)image
+              imageUrl:(NSString *)imageUrl
+            webpageUrl:(NSString*)webpageUrl{
+    _shareTitle = title;
+    _detailInfo = info;
+    _shareImage = image;
+    _shareImageURL = imageUrl;
+    _shareWebPageURL = webpageUrl;
+    UIActionSheet* actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:@"分享到微信朋友",@"分享到微信朋友圈",nil];
+    [actionSheet showInView:self.view];
+}
+
+#pragma mark - UIActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0: //通过微信好友分享
+            [self shareInformationWithType:kShareTool_WeiXinFriends];
+            break;
+        case 1: //通过微信朋友圈分享
+            [self shareInformationWithType:kShareTool_WeiXinCircleFriends];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)shareInformationWithType:(ShareToolType)shareToolType {
+    switch (shareToolType) {
+        case kShareTool_WeiXinFriends:{
+            WXImageObject *imgObj = [WXImageObject object];
+            imgObj.imageUrl = _shareImageURL;
+            
+            WXWebpageObject *webObj = [WXWebpageObject object];
+            webObj.webpageUrl = _shareWebPageURL;
+            
+            WXMediaMessage *message = [WXMediaMessage message];
+            message.title = _shareTitle;
+            message.description = _detailInfo;
+            message.mediaObject = webObj;
+            
+            UIImage *desImage = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shareImageURL]]];
+            UIImage *thumbImg = [self thumbImageWithImage:desImage limitSize:CGSizeMake(150, 150)];
+            message.thumbData = UIImageJPEGRepresentation(thumbImg, 1);
+            //            NSLog(@"%@,%d",thumbImg,message.thumbData.length);
+            
+            SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+            req.scene = WXSceneSession;
+            req.bText = NO;
+            req.message = message;
+            [WXApi sendReq:req];
+            [self shareHasDone];
+            break;
+        }
+        case kShareTool_WeiXinCircleFriends:{
+            WXWebpageObject *webObj = [WXWebpageObject object];
+            webObj.webpageUrl = _shareImageURL;
+            
+            WXMediaMessage *message = [WXMediaMessage message];
+            message.title = _shareTitle;
+            message.description = _detailInfo;
+            message.mediaObject = webObj;
+            
+            UIImage *desImage = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shareImageURL]]];
+            UIImage *thumbImg = [self thumbImageWithImage:desImage limitSize:CGSizeMake(150, 150)];
+            message.thumbData = UIImageJPEGRepresentation(thumbImg, 1);
+            //            NSLog(@"%@,%d",thumbImg,message.thumbData.length);
+            
+            SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+            req.scene = WXSceneTimeline;
+            req.bText = NO;
+            req.message = message;
+            [WXApi sendReq:req];
+            [self shareHasDone];
+            break;
+        }
+        default:
+            break;
+    }
+}
+- (UIImage *)thumbImageWithImage:(UIImage *)scImg limitSize:(CGSize)limitSize
+{
+    if (scImg.size.width <= limitSize.width && scImg.size.height <= limitSize.height) {
+        return scImg;
+    }
+    CGSize thumbSize;
+    if (scImg.size.width / scImg.size.height > limitSize.width / limitSize.height) {
+        thumbSize.width = limitSize.width;
+        thumbSize.height = limitSize.width / scImg.size.width * scImg.size.height;
+    }
+    else {
+        thumbSize.height = limitSize.height;
+        thumbSize.width = limitSize.height / scImg.size.height * scImg.size.width;
+    }
+    UIGraphicsBeginImageContext(thumbSize);
+    [scImg drawInRect:(CGRect){CGPointZero,thumbSize}];
+    UIImage *thumbImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return thumbImg;
+}
+- (void)shareHasDone{
+    self.shareImage = nil;
+    self.shareTitle = nil;
+    self.shareImageURL = nil;
+    self.detailInfo = nil;
+    
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
+}
+
+
 
 @end

@@ -43,7 +43,7 @@
 "channel_follow_edit_btn_text"="排序";
 
 //sign out
-"sign_out_title"="登出";
+"sign_out_title"="退出登录";
 
 //upload media page
 "file_name_label_title"="标题:";

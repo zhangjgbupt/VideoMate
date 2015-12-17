@@ -77,6 +77,10 @@
     
     // 处理远程通知启动APP
     [self receiveNotificationByLaunchingOptions:launchOptions];
+    
+    if (![WXApi registerApp:@"wxd83e3fe2fa3784ea"]) {
+        NSLog(@"Failed to register with Weixin!");
+    }
 
     return YES;
 }
@@ -145,7 +149,7 @@
     
     tabBarController = [[RDVTabBarController alloc] init];
     //[tabBarController setViewControllers:@[myMediaViewController, channelListViewController,settingViewController]];
-    [tabBarController setViewControllers:@[myMediaNavigationController, myLiveNavigationController, myChannelNavigationController,mySettingNavigationController]];
+    [tabBarController setViewControllers:@[myChannelNavigationController, myLiveNavigationController, myMediaNavigationController,mySettingNavigationController]];
     [self customizeTabBarForController:tabBarController];
 }
 - (void)setupViewControllers {
@@ -181,7 +185,7 @@
 - (void)customizeTabBarForController:(RDVTabBarController *)tabbarController {
     //UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
     //UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
-    NSArray *tabBarItemImages = @[@"icon_mymedia", @"icon_live", @"icon_channel", @"icon_setting"];
+    NSArray *tabBarItemImages = @[@"icon_channel", @"icon_live", @"icon_mymedia", @"icon_setting"];
     
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabbarController tabBar] items]) {
@@ -467,6 +471,23 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+}
+
+- (BOOL)application:(UIApplication*)application handleOpenURL:(nonnull NSURL *)url {
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication*)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+#pragma Weixin delegate
+- (void) onReq:(BaseReq *)req {
+    NSLog(@"on Request");
+}
+
+- (void) onResp:(BaseResp *)resp {
+    NSLog(@"on Response");
 }
 
 #pragma mark - Core Data stack

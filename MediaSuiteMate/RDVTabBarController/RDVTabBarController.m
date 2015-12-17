@@ -48,7 +48,7 @@
     
     [self.view addSubview:[self contentView]];
     [self.view addSubview:[self tabBar]];
-    self.selectedIndex = 2;
+    self.selectedIndex = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

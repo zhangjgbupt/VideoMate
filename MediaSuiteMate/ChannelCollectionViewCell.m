@@ -9,7 +9,7 @@
 #import "ChannelCollectionViewCell.h"
 
 @implementation ChannelCollectionViewCell
-@synthesize channelTitle, channelThum, itemNum;
+@synthesize channelTitle, channelThum, itemNum, titleBackground;
 - (void)awakeFromNib {
     // Initialization code
 }

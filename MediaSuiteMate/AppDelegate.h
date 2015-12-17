@@ -15,6 +15,7 @@
 #import "RDVTabBarItem.h"
 #import "GlobalMacroDefine.h"
 #import "GeTuiSdk.h"
+#import "WXApi.h"
 
 /// 个推开发者网站中申请App时注册的AppId、AppKey、AppSecret
 #define kGtAppId           @"slEp4JgV6e9HwYdXBRVEK9"
@@ -22,7 +23,7 @@
 #define kGtAppSecret       @"s5zkkTB5rz7aYCRgMdWGD6"
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, GeTuiSdkDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, GeTuiSdkDelegate, WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

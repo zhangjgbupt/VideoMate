@@ -15,7 +15,7 @@
 @end
 
 @implementation SettingViewController
-@synthesize setttingAnimationImgView;
+@synthesize appicon, appName, serverAddress;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,18 +25,28 @@
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = nil;
     
-    setttingAnimationImgView.animationImages = [NSArray arrayWithObjects:
-                                                [UIImage imageNamed:@"image_setting01"],
-                                                [UIImage imageNamed:@"image_setting02"],
-                                                [UIImage imageNamed:@"image_setting03"],
-                                                nil];
-    setttingAnimationImgView.animationDuration = 0.5f;
-    setttingAnimationImgView.animationRepeatCount = 0;
-    [setttingAnimationImgView startAnimating];
+//    setttingAnimationImgView.animationImages = [NSArray arrayWithObjects:
+//                                                [UIImage imageNamed:@"image_setting01"],
+//                                                [UIImage imageNamed:@"image_setting02"],
+//                                                [UIImage imageNamed:@"image_setting03"],
+//                                                nil];
+//    setttingAnimationImgView.animationDuration = 0.5f;
+//    setttingAnimationImgView.animationRepeatCount = 0;
+//    [setttingAnimationImgView startAnimating];
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
+    
+    CGRect iconFrame = self.appicon.frame;
+    iconFrame.origin.x = (screenWidth - iconFrame.size.width)/2;
+    [self.appicon setFrame:iconFrame];
+    
+    CGRect nameFrame = self.appName.frame;
+    nameFrame.origin.x = (screenWidth - nameFrame.size.width)/2;
+    [self.appName setFrame:nameFrame];
+    
+    [self.serverAddress setText:appDelegate.svrAddr];
     
     CGFloat logout_x = 30;
     CGFloat logout_y = screenHeight - 150;

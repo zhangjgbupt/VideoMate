@@ -124,9 +124,9 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ChannelCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseChannelIdentifier forIndexPath:indexPath];
     ChannelData* channelData = [self.sortedChannelList objectAtIndex:indexPath.row];
-    CGFloat image_w = cell.frame.size.width;
-    CGFloat image_h = image_w*9/16;
-    cell.channelThum.frame = CGRectMake(0, 30, image_w, image_h);
+    CGFloat image_w = cell.frame.size.width-4;
+    CGFloat image_h = image_w*9/16-2;
+    cell.channelThum.frame = CGRectMake(2, 2, image_w-2, image_h-2);
     [cell.channelThum setContentMode:UIViewContentModeScaleToFill];
     NSString* thumUrlString = channelData.firstArchiveThumbnailURL;
     UIImage* thumImage = [UIImage imageNamed:@"image_default_bg"];
@@ -144,21 +144,31 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     
     CGRect thumbRectSize = [cell.channelThum frame];
     [cell.channelThum setImage:thumImage];
+    
+    CGFloat title_bg_x = thumbRectSize.origin.x;
+    CGFloat title_bg_y = thumbRectSize.origin.x + thumbRectSize.size.height-40;
+    CGFloat title_bg_w = thumbRectSize.size.width;
+    CGFloat title_bg_h = 40;
+    CGRect titleBgSize = CGRectMake(title_bg_x, title_bg_y, title_bg_w, title_bg_h);
+    [cell.titleBackground setFrame:titleBgSize];
 
-    CGFloat titleWidth = thumbRectSize.size.width*3/4;
-    CGRect titleRectSize = CGRectMake(cell.channelTitle.frame.origin.x,
-                                      cell.channelTitle.frame.origin.y,
+    CGFloat titleWidth = thumbRectSize.size.width*3/5;
+    CGFloat title_x = thumbRectSize.size.width/10;
+    CGFloat title_y = thumbRectSize.size.height-25;
+    CGRect titleRectSize = CGRectMake(title_x,
+                                      title_y,
                                       titleWidth,
                                       cell.channelTitle.frame.size.height);
     [cell.channelTitle setFrame:titleRectSize];
-    NSString* title = NSLocalizedString(@"channel_page_title_text", nil);
-    title = [NSString stringWithFormat:@"%@%@", title,channelData.name];
+    NSString* title = [NSString stringWithFormat:@"%@",channelData.name];
     [cell.channelTitle setText:title];
     
     NSString* itemNum = [NSString stringWithFormat:@"(%@ %@)", channelData.contentCount,NSLocalizedString(@"item_count", nil)];
-    CGFloat countLabelWidth = thumbRectSize.size.width/4;
-    CGRect countRectSize = CGRectMake(cell.channelTitle.frame.origin.x+titleWidth-1,
-                                      cell.itemNum.frame.origin.y,
+    CGFloat countLabelWidth = thumbRectSize.size.width*3/10;
+    CGFloat countLabel_x = thumbRectSize.size.width*7/10;
+    CGFloat countLable_y = title_y;
+    CGRect countRectSize = CGRectMake(countLabel_x,
+                                      countLable_y,
                                       countLabelWidth,
                                       cell.itemNum.frame.size.height);
     [cell.itemNum setFrame:countRectSize];
@@ -213,8 +223,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     CGFloat cellWidth = rectSize.size.width/2-1;
     CGFloat imageWidth = cellWidth;
     CGFloat imageHeight = imageWidth*9/16;
-    //title height = 30 px
-    CGFloat cellHeight = imageHeight + 30;
+    CGFloat cellHeight = imageHeight;
     
     return CGSizeMake(cellWidth, cellHeight);
 }

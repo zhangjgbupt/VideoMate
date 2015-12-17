@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" reuseIdentifier="channelCell" id="gTV-IL-0wX" customClass="ChannelCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+            <rect key="frame" x="0.0" y="0.0" width="300" height="273"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                <rect key="frame" x="0.0" y="0.0" width="300" height="273"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ayd-Gm-Gd6">
-                        <rect key="frame" x="0.0" y="0.0" width="138" height="30"/>
+                    <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="koj-Sv-9hB">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="265"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_title.png" id="ur8-9a-jjj">
+                        <rect key="frame" x="0.0" y="225" width="300" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ayd-Gm-Gd6">
+                        <rect key="frame" x="16" y="235" width="138" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vFi-SR-Auw">
-                        <rect key="frame" x="138" y="0.0" width="81" height="30"/>
+                        <rect key="frame" x="189" y="239" width="81" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="koj-Sv-9hB">
-                        <rect key="frame" x="0.0" y="27" width="300" height="265"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <size key="customSize" width="308" height="219"/>
+            <size key="customSize" width="308" height="192"/>
             <connections>
-                <outlet property="ChannelTitle" destination="Ayd-Gm-Gd6" id="rdn-Cm-bWj"/>
-                <outlet property="channelThum" destination="koj-Sv-9hB" id="JXx-FD-Wh9"/>
-                <outlet property="itemNum" destination="vFi-SR-Auw" id="g0T-pK-Ilp"/>
+                <outlet property="channelThum" destination="koj-Sv-9hB" id="j4Q-hH-8ro"/>
+                <outlet property="channelTitle" destination="Ayd-Gm-Gd6" id="KwC-uZ-iFH"/>
+                <outlet property="itemNum" destination="vFi-SR-Auw" id="aD7-O5-UFb"/>
+                <outlet property="titleBackground" destination="ur8-9a-jjj" id="EVe-8F-aYB"/>
             </connections>
-            <point key="canvasLocation" x="450" y="399"/>
+            <point key="canvasLocation" x="450" y="412.5"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="bg_title.png" width="320" height="70"/>
+    </resources>
 </document>

@@ -253,6 +253,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [mediaPlayer setArchiveName:archive.displayName];
     [mediaPlayer setArchiveDes:archive.description];
     [mediaPlayer setLikeCount:archive.likeCount];
+    [mediaPlayer setThumUrl:archive.archiveCoverURL];
     [self.navigationController pushViewController:mediaPlayer animated:YES];
 }
 
