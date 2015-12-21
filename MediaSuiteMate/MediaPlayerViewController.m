@@ -9,6 +9,7 @@
 #import "MediaPlayerViewController.h"
 #import "ArchiveFileData.h"
 #import "Utils.h"
+#import "ShareView.h"
 
 @interface MediaPlayerViewController ()
 
@@ -230,6 +231,21 @@
     //[self addChildViewController:shareToolViewController];
     [self initWhithTitle:title detailInfo:detailInfo image:nil imageUrl:imageURL webpageUrl:webUrl];
     //[self.view addSubview:shareToolViewController.view];
+}
+
+- (IBAction)toSendView {
+    
+    //SharePopupVC *vc = [[SharePopupVC alloc]init];
+    
+    //UIImage *image = [UIImage imageWithCaputureView:self.view];
+    
+    //vc.backImg = image;
+    
+    //[self presentViewController:vc animated:NO completion:nil];
+    
+    ShareView *view = [[ShareView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 160, self.view.frame.size.width, 160)];
+    [view show];
+    
 }
 
 -(void) doLike {

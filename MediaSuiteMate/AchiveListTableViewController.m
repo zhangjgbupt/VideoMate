@@ -27,7 +27,6 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    self.navigationController.topViewController.title = NSLocalizedString(@"archive_page_title", nil);
     self.archiveList = [[NSMutableArray alloc]init];
     
     UIImage* followImage = nil;
@@ -47,7 +46,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
-    self.navigationController.topViewController.title = NSLocalizedString(@"archive_page_title", nil);
+    self.navigationController.topViewController.title = [channleData name];
     [self getArchiveCountInChannel];
     [appDelegate.tabBarController setTabBarHidden:YES];
     [super viewWillAppear:YES];
