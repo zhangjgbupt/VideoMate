@@ -39,6 +39,11 @@
 "no_live_title" = "您还没有直播哦";
 "no_live_info"="请等待直播吧";
 
+//share view
+"share_title"="分享到";
+"share_wechat"="微信好友";
+"share_friend"="朋友圈";
+
 //follow channel page edit button
 "channel_follow_edit_btn_text"="排序";
 

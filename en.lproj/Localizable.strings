@@ -39,6 +39,11 @@
 "no_live_title" = "There is no lives yet";
 "no_live_info"="Please waiti for lives";
 
+//share view
+"share_title"="Share To";
+"share_wechat"="WeChat";
+"share_friend"="Moments";
+
 //follow channel page edit button
 "channel_follow_edit_btn_text"="Sort";
 

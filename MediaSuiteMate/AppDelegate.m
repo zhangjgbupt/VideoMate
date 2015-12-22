@@ -19,24 +19,15 @@
 //＝＝＝＝＝＝＝＝＝＝ShareSDK头文件＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
-//以下是ShareSDK必须添加的依赖库：
-//1、libicucore.dylib
-//2、libz.dylib
-//3、libstdc++.dylib
-//4、JavaScriptCore.framework
 
-//＝＝＝＝＝＝＝＝＝＝以下是各个平台SDK的头文件，根据需要继承的平台添加＝＝＝
-//腾讯开放平台（对应QQ和QQ空间）SDK头文件
+//腾讯SDK头文件
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
-//以下是腾讯SDK的依赖库：
-//libsqlite3.dylib
 
 //微信SDK头文件
 #import "WXApi.h"
-//以下是微信SDK的依赖库：
-//libsqlite3.dylib
-
+//新浪微博SDK头文件
+#import "WeiboSDK.h"
 
 
 #import <MOBFoundation/MOBFoundation.h>
@@ -115,8 +106,7 @@
      *  如果您使用的时服务端托管平台信息时，第二、四项参数可以传入nil，第三项参数则根据服务端托管平台来决定要连接的社交SDK。
      */
     [ShareSDK registerApp:@"chrisios"
-          activePlatforms:@[
-                            @(SSDKPlatformTypeSinaWeibo),
+          activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),
                             @(SSDKPlatformTypeTencentWeibo),
                             @(SSDKPlatformTypeMail),
                             @(SSDKPlatformTypeSMS),
@@ -124,42 +114,19 @@
                             @(SSDKPlatformTypeFacebook),
                             @(SSDKPlatformTypeTwitter),
                             @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ),
-                            @(SSDKPlatformTypeDouBan),
-                            @(SSDKPlatformTypeRenren),
-                            @(SSDKPlatformTypeKaixin),
-                            @(SSDKPlatformTypeGooglePlus),
-                            @(SSDKPlatformTypePocket),
-                            @(SSDKPlatformTypeInstagram),
-                            @(SSDKPlatformTypeLinkedIn),
-                            @(SSDKPlatformTypeTumblr),
-                            @(SSDKPlatformTypeFlickr),
-                            @(SSDKPlatformTypeWhatsApp),
-                            @(SSDKPlatformTypeYouDaoNote),
-                            @(SSDKPlatformTypeLine),
-                            @(SSDKPlatformTypeYinXiang),
-                            @(SSDKPlatformTypeEvernote),
-                            @(SSDKPlatformTypeYinXiang),
-                            @(SSDKPlatformTypeAliPaySocial),
-                            @(SSDKPlatformTypePinterest),
-                            @(SSDKPlatformTypeKakao),
-                            @(SSDKPlatformSubTypeKakaoTalk),
-                            @(SSDKPlatformSubTypeKakaoStory),
-                            @(SSDKPlatformTypeDropbox),
-                            @(SSDKPlatformTypeVKontakte),
-                            @(SSDKPlatformTypeMingDao)
-                            ]
+                            @(SSDKPlatformTypeQQ)]
                  onImport:^(SSDKPlatformType platformType) {
                      
                      switch (platformType)
                      {
                          case SSDKPlatformTypeWechat:
-                             //                             [ShareSDKConnector connectWeChat:[WXApi class]];
-                             [ShareSDKConnector connectWeChat:[WXApi class] delegate:self];
+                             [ShareSDKConnector connectWeChat:[WXApi class]];
+                             break;
+                         case SSDKPlatformTypeSinaWeibo:
+                             [ShareSDKConnector connectWeibo:[WeiboSDK class]];
                              break;
                          case SSDKPlatformTypeQQ:
-                             [ShareSDKConnector connectQQ:[QQApiInterface class]
-                                        tencentOAuthClass:[TencentOAuth class]];
+                             [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                              break;
                          default:
                              break;
@@ -177,19 +144,27 @@
                                               redirectUri:@"http://www.sharesdk.cn"
                                                  authType:SSDKAuthTypeBoth];
                       break;
+                  case SSDKPlatformTypeTencentWeibo:
+                      //设置腾讯微博应用信息
+                      [appInfo SSDKSetupTencentWeiboByAppKey:@"801307650"
+                                                   appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+                                                 redirectUri:@"http://www.sharesdk.cn"];
+                      break;
                   case SSDKPlatformTypeWechat:
+                      //设置微信应用信息
                       [appInfo SSDKSetupWeChatByAppId:@"wxd83e3fe2fa3784ea"
                                             appSecret:@"9e42072688302fd8da1d7a17f6a86413"];
                       break;
                   case SSDKPlatformTypeQQ:
+                      //设置QQ应用信息，其中authType设置为只用SSO形式授权
                       [appInfo SSDKSetupQQByAppId:@"100371282"
                                            appKey:@"aed9b0303e3ed1e27bae87c33761161d"
-                                         authType:SSDKAuthTypeBoth];
+                                         authType:SSDKAuthTypeSSO];
+                      break;
                   default:
                       break;
               }
           }];
-
 
     return YES;
 }
@@ -582,22 +557,22 @@
     [self saveContext];
 }
 
-- (BOOL)application:(UIApplication*)application handleOpenURL:(nonnull NSURL *)url {
-    return [WXApi handleOpenURL:url delegate:self];
-}
+//- (BOOL)application:(UIApplication*)application handleOpenURL:(nonnull NSURL *)url {
+//    return [WXApi handleOpenURL:url delegate:self];
+//}
+//
+//- (BOOL)application:(UIApplication*)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
+//    return [WXApi handleOpenURL:url delegate:self];
+//}
 
-- (BOOL)application:(UIApplication*)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
-    return [WXApi handleOpenURL:url delegate:self];
-}
-
-#pragma Weixin delegate
-- (void) onReq:(BaseReq *)req {
-    NSLog(@"on Request");
-}
-
-- (void) onResp:(BaseResp *)resp {
-    NSLog(@"on Response");
-}
+//#pragma Weixin delegate
+//- (void) onReq:(BaseReq *)req {
+//    NSLog(@"on Request");
+//}
+//
+//- (void) onResp:(BaseResp *)resp {
+//    NSLog(@"on Response");
+//}
 
 #pragma mark - Core Data stack
 

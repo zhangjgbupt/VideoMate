@@ -242,8 +242,17 @@
     //vc.backImg = image;
     
     //[self presentViewController:vc animated:NO completion:nil];
+    NSString *imageURL=self.thumUrl;
+    NSString *title=self.archiveName;
+    NSString *detailInfo = self.archiveDes;
+    NSString *webUrl=[[appDelegate.svrAddr stringByAppendingString:@"/userportal/video?v="] stringByAppendingString:self.archiveId];
+    webUrl = [NSString stringWithFormat:@"http://%@", webUrl ];
     
     ShareView *view = [[ShareView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 160, self.view.frame.size.width, 160)];
+    view.shareUrl = webUrl;
+    view.title = title;
+    view.message = detailInfo;
+    view.pictureName = imageURL;
     [view show];
     
 }
