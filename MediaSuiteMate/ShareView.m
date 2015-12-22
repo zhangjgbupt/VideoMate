@@ -50,7 +50,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
 {
 
     if (!_imageArr) {
-        _imageArr = [NSArray arrayWithObjects:@"icon_wechat",@"icon_friend",@"icon_qq",nil];
+        _imageArr = [NSArray arrayWithObjects:@"icon_wechat",@"icon_friend",nil];
     }
     return _imageArr;
 }
@@ -59,7 +59,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
 {
     
     if (!_titleArr) {
-        _titleArr = [NSArray arrayWithObjects:NSLocalizedString(@"share_wechat", nil),NSLocalizedString(@"share_friend", nil),@"QQ",nil];
+        _titleArr = [NSArray arrayWithObjects:NSLocalizedString(@"share_wechat", nil),NSLocalizedString(@"share_friend", nil),nil];
     }
     return _titleArr;
 }
@@ -67,7 +67,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
 
 -(id)initWithFrame:(CGRect)frame
 {
-    float Margin = ceilf(ApplicationframeValue.width/self.imageArr.count/2);
+    float Margin = ceilf(ApplicationframeValue.width/self.imageArr.count/3);
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -229,62 +229,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
             
         }
             break;
-        case 3:{
-            //1、创建分享参数
-            NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-            NSArray* imageArray = @[[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.pictureName]]]];
-            if (imageArray)
-            {
-                [shareParams SSDKSetupShareParamsByText:self.title
-                                                 images:imageArray
-                                                    url:[NSURL URLWithString:self.shareUrl]
-                                                  title:nil
-                                                   type:SSDKContentTypeApp];
-            }
-            
-            //2、分享
-            [ShareSDK share:SSDKPlatformTypeSinaWeibo
-                 parameters:shareParams
-             onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error)
-             {
-                 switch (state) {
-                     case SSDKResponseStateSuccess:
-                     {
-                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
-                                                                             message:nil
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:@"确定"
-                                                                   otherButtonTitles:nil];
-                         [alertView show];
-                         break;
-                     }
-                     case SSDKResponseStateFail:
-                     {
-                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享失败"
-                                                                             message:[NSString stringWithFormat:@"%@", error]
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:@"确定"
-                                                                   otherButtonTitles:nil];
-                         [alertView show];
-                         break;
-                     }
-                     case SSDKResponseStateCancel:
-                     {
-                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
-                                                                             message:nil
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:@"确定"
-                                                                   otherButtonTitles:nil];
-                         [alertView show];
-                         break;
-                     }
-                     default:
-                         break;
-                 }
-             }];
-            
-        }
-            break;
+
         }
     
 }
