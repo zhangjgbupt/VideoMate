@@ -11,13 +11,18 @@
 "archive_page_title" = "Archives";
 "setting_page_title" = "Setting";
 "my_media_page_title" = "My Medias";
-"my_live_page_title" = "My Lives";
+"my_live_page_title" = "Lives";
 "favourite_page_title" = "Favourite";
 "channel_page_title_text" = "Channel:";
 "channel_follow_page_title" = "Follow";
 "navigation_channel_follow" = "Follow";
 "navigation_upload_btn" = "UGC";
 
+//tab bar
+"icon_channel_text"="Channel";
+"icon_live_text"="Live";
+"icon_mymedia_text"="My Media";
+"icon_setting_text"="Settings";
 
 //setting placeholder text
 "server_address"="Server Address";

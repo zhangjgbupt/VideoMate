@@ -559,6 +559,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				655327851BF970530092C2E4 /* AVFoundation.framework in Frameworks */,
 				A5FF60231C2803050030B1DF /* AdSupport.framework in Frameworks */,
 				A5FF60211C2801FC0030B1DF /* ImageIO.framework in Frameworks */,
 				A5E84C731C24034600D70312 /* TencentOpenAPI.framework in Frameworks */,
@@ -575,7 +576,6 @@
 				A5E84C7F1C24034600D70312 /* ShareSDKExtension.framework in Frameworks */,
 				A5E84C801C24034600D70312 /* ShareSDKInterfaceAdapter.framework in Frameworks */,
 				65E953901C1EA9E90047ECE0 /* libWeChatSDK.a in Frameworks */,
-				655327851BF970530092C2E4 /* AVFoundation.framework in Frameworks */,
 				A5E84C7B1C24034600D70312 /* MOBFoundation.framework in Frameworks */,
 				655327831BF9704C0092C2E4 /* CoreTelephony.framework in Frameworks */,
 				A5E84C791C24034600D70312 /* libWeChatSDK.a in Frameworks */,
@@ -1553,7 +1553,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chris.VideoMate;
 				PRODUCT_NAME = VideoMate;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b9d66d22-7c87-4c8a-bb0f-3a93df0d026c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1597,7 +1597,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chris.VideoMate;
 				PRODUCT_NAME = VideoMate;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b9d66d22-7c87-4c8a-bb0f-3a93df0d026c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

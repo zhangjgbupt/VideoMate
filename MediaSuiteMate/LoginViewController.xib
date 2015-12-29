@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
                 <outlet property="activityIndicatorView" destination="FIE-Wt-ZYf" id="gV2-6Q-evF"/>
+                <outlet property="anonymousBtn" destination="IC3-CM-HTx" id="Cus-bm-2bo"/>
                 <outlet property="appiconImag" destination="pUr-19-cpn" id="vVc-K1-q7P"/>
                 <outlet property="loginBtn" destination="N8s-7z-BP3" id="2Xi-SQ-KKv"/>
                 <outlet property="passwordText" destination="gaw-OW-uJf" id="Acs-Iv-fKO"/>
@@ -93,6 +94,16 @@
                     <rect key="frame" x="177" y="394" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="IC3-CM-HTx">
+                    <rect key="frame" x="141" y="531" width="79" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="访客登录">
+                        <color key="titleColor" red="1" green="0.21765976672577325" blue="0.29562483466686085" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="checkboxClick:" destination="-1" eventType="touchUpInside" id="Olt-eg-2PF"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>

@@ -15,7 +15,7 @@
 @end
 
 @implementation SettingViewController
-@synthesize appicon, appName, serverAddress;
+@synthesize appicon, appName, serverAddress, userName;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,6 +47,7 @@
     [self.appName setFrame:nameFrame];
     
     [self.serverAddress setText:appDelegate.svrAddr];
+    [self.userName setText:appDelegate.userName];
     
     CGFloat logout_x = 30;
     CGFloat logout_y = screenHeight - 150;
@@ -57,6 +58,7 @@
     [self.logoutBtn setTitle:NSLocalizedString(@"sign_out_title", nil) forState:UIControlStateNormal];
     [self.logoutBtn setBackgroundImage:[UIImage imageNamed:@"btn_login_normal"] forState:UIControlStateNormal];
     //[self.logoutBtn setBackgroundImage:[UIImage imageNamed:@"btn_login_pressed"] forState:UIControlStateHighlighted];
+
 }
 
 - (void)didReceiveMemoryWarning {

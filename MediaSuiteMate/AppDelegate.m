@@ -43,6 +43,7 @@
 @synthesize accessToken, expireTimer, heartBeatTimer;
 @synthesize alertView;
 @synthesize isLoginSuccessful;
+@synthesize isAnonymous;
 
 
 
@@ -233,9 +234,14 @@
     
     tabBarController = [[RDVTabBarController alloc] init];
     //[tabBarController setViewControllers:@[myMediaViewController, channelListViewController,settingViewController]];
-    [tabBarController setViewControllers:@[myChannelNavigationController, myLiveNavigationController, myMediaNavigationController,mySettingNavigationController]];
+    if (self.isAnonymous) {
+        [tabBarController setViewControllers:@[myChannelNavigationController, mySettingNavigationController]];
+    } else {
+        [tabBarController setViewControllers:@[myChannelNavigationController, myLiveNavigationController, myMediaNavigationController,mySettingNavigationController]];
+    }
     [self customizeTabBarForController:tabBarController];
 }
+
 - (void)setupViewControllers {
     //here need check if configuration exist:
     // 1. if Yes, just go to main page.
@@ -250,7 +256,7 @@
 //            NSLog(@"Login not return!");
 //        }
         
-        if (self.isLoginSuccessful == 1) {
+        if (self.isLoginSuccessful == 1 || self.isAnonymous) {
             [self setupTabViewControllers];
             self.viewController = self.tabBarController;
         } else {
@@ -269,8 +275,15 @@
 - (void)customizeTabBarForController:(RDVTabBarController *)tabbarController {
     //UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
     //UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
-    NSArray *tabBarItemImages = @[@"icon_channel", @"icon_live", @"icon_mymedia", @"icon_setting"];
+    NSArray *tabBarItemImages, *tabBarItemTexts;
     
+    if (self.isAnonymous) {
+        tabBarItemImages = @[@"icon_channel", @"icon_setting"];
+        tabBarItemTexts = @[NSLocalizedString(@"icon_channel_text", nil),NSLocalizedString(@"icon_setting_text", nil)];
+    } else {
+        tabBarItemImages = @[@"icon_channel", @"icon_live", @"icon_mymedia", @"icon_setting"];
+        tabBarItemTexts = @[NSLocalizedString(@"icon_channel_text", nil),NSLocalizedString(@"icon_live_text", nil),NSLocalizedString(@"icon_mymedia_text", nil),NSLocalizedString(@"icon_setting_text", nil)];
+    }
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabbarController tabBar] items]) {
         //[item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
@@ -279,6 +292,7 @@
         UIImage *unselectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_normal",
                                                         [tabBarItemImages objectAtIndex:index]]];
         [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
+        [item setTitle:tabBarItemTexts[index]];
         
         index++;
     }

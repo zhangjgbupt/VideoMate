@@ -14,10 +14,11 @@
 
 @interface LoginViewController ()
 
+
 @end
 
 @implementation LoginViewController
-@synthesize userNameText, passwordText, serverAddrText, loginBtn;
+@synthesize userNameText, passwordText, serverAddrText, loginBtn, anonymousBtn;
 @synthesize activityIndicatorView;
 @synthesize appDelegate;
 
@@ -25,6 +26,7 @@
     [super viewDidLoad];
     
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.isAnonymous = false;
     
     [activityIndicatorView setHidden:YES];
     [activityIndicatorView setHidesWhenStopped:YES];
@@ -73,6 +75,40 @@
                                              selector:@selector(onLoginFail)
                                                  name:@"LOGIN_FAIL"
                                                object:nil];
+    
+    //self.anonymousBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [self.anonymousBtn setFrame:CGRectMake(login_x+login_w/2-40, screenHeight-120, 80, 80)];
+    
+    [self.anonymousBtn setImage:[UIImage imageNamed:@"checkbox_off.png"] forState:UIControlStateNormal];
+    [self.anonymousBtn setImage:[UIImage imageNamed:@"checkbox_on.png"] forState:UIControlStateSelected];
+    
+    [self.anonymousBtn addTarget:self action:@selector(checkboxClick:)forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+
+- (IBAction)checkboxClick:(UIButton *)sender {
+   sender.selected = !sender.selected;
+    if (sender.selected) {
+        [self.userNameText setText:@"Anonymous"];
+        [self.passwordText setText:@"Anonymous"];
+        self.userNameText.secureTextEntry = true;
+        self.passwordText.secureTextEntry = true;
+        [self.passwordText setEnabled:FALSE];
+        [self.userNameText setEnabled:FALSE];
+        appDelegate.isAnonymous = TRUE;
+        appDelegate.userName = @"Anonymous";
+    } else {
+        appDelegate.isAnonymous = FALSE;
+        [self.userNameText setText:@""];
+        [self.passwordText setText:@""];
+        self.userNameText.secureTextEntry = false;
+        self.passwordText.secureTextEntry = true;
+        [self.passwordText setEnabled:TRUE];
+        [self.userNameText setEnabled:TRUE];
+        appDelegate.userName = userNameText.text;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -107,19 +143,25 @@
     NSString* userName = userNameText.text;
     NSString* password = passwordText.text;
     NSString* serverAddr = serverAddrText.text;
-    if (userName.length==0 || password.length == 0 || serverAddr.length == 0) {
-        [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil) message:NSLocalizedString(@"null_login_info_msg",nil) delegate:self];
-        return;
+    if (!appDelegate.isAnonymous){
+        if (userName.length==0 || password.length == 0 || serverAddr.length == 0) {
+            [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil) message:NSLocalizedString(@"null_login_info_msg",nil) delegate:self];
+            return;
+        }
+        NSLog(@"username:%@, password:%@, serverAddr:%@", userName, password, serverAddr);
+        [self saveSetting];
+        
+        [activityIndicatorView setHidden:NO];
+        [activityIndicatorView startAnimating];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [appDelegate loginRestApi];
+        });
+    } else {
+        NSLog(@"Anonymous Login success!");
+        appDelegate.accessToken = nil;
+        [appDelegate setupTabViewControllers];
+        [self.navigationController pushViewController:appDelegate.tabBarController animated:YES];
     }
-    
-    NSLog(@"username:%@, password:%@, serverAddr:%@", userName, password, serverAddr);
-    [self saveSetting];
-    
-    [activityIndicatorView setHidden:NO];
-    [activityIndicatorView startAnimating];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [appDelegate loginRestApi];
-    });
 }
 
 - (IBAction)backgroundTap:(id)sender

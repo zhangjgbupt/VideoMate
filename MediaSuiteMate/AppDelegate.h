@@ -53,6 +53,7 @@
 //0: login fail
 //1: login success
 @property int isLoginSuccessful;
+@property Boolean isAnonymous;
 
 - (void)saveContext;
 - (void)loginRestApi;

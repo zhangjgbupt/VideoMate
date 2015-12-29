@@ -24,7 +24,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *loginBtn;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (strong, nonatomic) IBOutlet UIImageView *appiconImag;
-
+@property (strong, nonatomic) IBOutlet UIButton *anonymousBtn;
 @property (strong, nonatomic) AppDelegate* appDelegate;
 
 - (IBAction)doLogin:(id)sender;
