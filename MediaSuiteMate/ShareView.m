@@ -126,7 +126,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
                                                  images:imageArray
                                                     url:[NSURL URLWithString:self.shareUrl]
                                                   title:nil
-                                                   type:SSDKContentTypeApp];
+                                                   type:SSDKContentTypeAuto];
             }
             
             //2、分享
@@ -182,7 +182,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
                                                  images:imageArray
                                                     url:[NSURL URLWithString:self.shareUrl]
                                                   title:nil
-                                                   type:SSDKContentTypeApp];
+                                                   type:SSDKContentTypeAuto];
 
             }
             

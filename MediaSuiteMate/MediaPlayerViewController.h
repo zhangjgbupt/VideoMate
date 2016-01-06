@@ -27,11 +27,12 @@
 @property (strong, nonatomic) IBOutlet UIImageView *timeIcon;
 @property (strong, nonatomic) IBOutlet UILabel *mediaFileDes;
 @property (strong, nonatomic) IBOutlet UILabel *seperator;
+@property (strong, nonatomic) IBOutlet UILabel *seperator1;
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;
 @property (strong, nonatomic) IBOutlet UILabel *likeLabel;
 @property (strong, nonatomic) IBOutlet UIButton *shareBtn;
 @property (strong, nonatomic) IBOutlet UILabel *shareLabel;
-
+@property (strong, nonatomic) IBOutlet UILabel *labelBack;
 //for weixin share
 @property (nonatomic, retain)NSString *shareTitle;
 @property (nonatomic, retain)NSString *detailInfo;

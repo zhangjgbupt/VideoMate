@@ -78,10 +78,9 @@
     
     //self.anonymousBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [self.anonymousBtn setFrame:CGRectMake(login_x+login_w/2-40, screenHeight-120, 80, 80)];
-    
-    [self.anonymousBtn setImage:[UIImage imageNamed:@"checkbox_off.png"] forState:UIControlStateNormal];
-    [self.anonymousBtn setImage:[UIImage imageNamed:@"checkbox_on.png"] forState:UIControlStateSelected];
+    [self.anonymousBtn setFrame:CGRectMake(login_x+login_w/2-40, screenHeight-100, 80, 80)];
+    [self.anonymousBtn setTitleColor:[UIColor colorWithRed:14.0/255 green:101.0/255 blue:183.0/255 alpha:1.0] forState:UIControlStateNormal];
+    [self.anonymousBtn setTitleColor:[UIColor colorWithRed:66.0/255 green:152.0/255 blue:232.0/255 alpha:1.0] forState:UIControlStateHighlighted];
     
     [self.anonymousBtn addTarget:self action:@selector(checkboxClick:)forControlEvents:UIControlEventTouchUpInside];
     
@@ -89,26 +88,12 @@
 }
 
 - (IBAction)checkboxClick:(UIButton *)sender {
-   sender.selected = !sender.selected;
-    if (sender.selected) {
-        [self.userNameText setText:@"Anonymous"];
-        [self.passwordText setText:@"Anonymous"];
-        self.userNameText.secureTextEntry = true;
-        self.passwordText.secureTextEntry = true;
-        [self.passwordText setEnabled:FALSE];
-        [self.userNameText setEnabled:FALSE];
-        appDelegate.isAnonymous = TRUE;
-        appDelegate.userName = @"Anonymous";
-    } else {
-        appDelegate.isAnonymous = FALSE;
-        [self.userNameText setText:@""];
-        [self.passwordText setText:@""];
-        self.userNameText.secureTextEntry = false;
-        self.passwordText.secureTextEntry = true;
-        [self.passwordText setEnabled:TRUE];
-        [self.userNameText setEnabled:TRUE];
-        appDelegate.userName = userNameText.text;
-    }
+    appDelegate.isAnonymous = TRUE;
+    appDelegate.userName = @"Anonymous";
+    NSLog(@"Anonymous Login success!");
+    appDelegate.accessToken = nil;
+    [appDelegate setupTabViewControllers];
+    [self.navigationController pushViewController:appDelegate.tabBarController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -156,11 +141,6 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [appDelegate loginRestApi];
         });
-    } else {
-        NSLog(@"Anonymous Login success!");
-        appDelegate.accessToken = nil;
-        [appDelegate setupTabViewControllers];
-        [self.navigationController pushViewController:appDelegate.tabBarController animated:YES];
     }
 }
 

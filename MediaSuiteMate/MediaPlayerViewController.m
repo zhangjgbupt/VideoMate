@@ -10,6 +10,7 @@
 #import "ArchiveFileData.h"
 #import "Utils.h"
 #import "ShareView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface MediaPlayerViewController ()
 
@@ -19,8 +20,8 @@
 @synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl;
 @synthesize player;
 @synthesize streamingURLlist;
-@synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator;
-@synthesize likeBtn, likeLabel, shareBtn, shareLabel, likeStatus, likeCount;
+@synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator, seperator1;
+@synthesize likeBtn, likeLabel, shareBtn, shareLabel, likeStatus, likeCount, labelBack;
 @synthesize appDelegate;
 
 //for weixin share
@@ -97,6 +98,14 @@
     [self.mediaFileCrateTime setText:[NSDateFormatter localizedStringFromDate:date
                                                                    dateStyle:NSDateFormatterShortStyle
                                                                    timeStyle:NSDateFormatterShortStyle]];
+    
+    CGFloat seperator1_x = title_x;
+    CGFloat seperator1_y = screenHeight - 60;
+    CGFloat seperator1_w = screenWidth - title_x*2;
+    CGFloat seperator1_h = 1;
+    CGRect seperatorFrame1 = CGRectMake(seperator1_x, seperator1_y, seperator1_w, seperator1_h);
+    [self.seperator1 setFrame:seperatorFrame1];
+    
     CGFloat likeBtn_x = 50;
     CGFloat likeBtn_y = screenHeight-50;
     CGFloat likeBtn_w = 32;
@@ -130,8 +139,6 @@
     CGRect shareLabelFrame = CGRectMake(shareLabel_x, shareLabel_y, shareLabel_w, shareLabel_h);
     [self.shareLabel setFrame:shareLabelFrame];
     
-    //[self.shareBtn setHidden:TRUE];
-    //[self.shareLabel setHidden:TRUE];
     
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayerPlaybackStateDidChange:)  name:MPMoviePlayerPlaybackStateDidChangeNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayBackDidFinish:)  name:MPMoviePlayerPlaybackDidFinishNotification  object:nil];
@@ -379,9 +386,52 @@
 - (void) startPlay {
     NSString* url = [self.streamingURLlist objectAtIndex:0];
     [self.player setContentURL:[NSURL URLWithString:url]];
+    NSInteger x = [self degressFromVideoFileWithURL:[NSURL URLWithString:url]];
+    NSLog(@"test %ld",x);
+    [self rotateVideoView:self.player degrees:0];
     [self.player play];
 }
 
+-(void) rotateVideoView:(MPMoviePlayerViewController *)movePlayerViewController degrees:(NSInteger)degrees {
+    {
+        if(degrees==0||degrees==360) return;
+        if(degrees<0) degrees = (degrees % 360) + 360;
+        if(degrees>360) degrees = degrees % 360;
+        // MPVideoView在iOS8中Tag为1002，不排除苹果以后更改的可能性。参考递归查看View层次结构的lldb命令： (lldb) po [movePlayerViewController.view recursiveDescription]
+        UIView *videoView = [movePlayerViewController.view viewWithTag:1002];
+        if ([videoView isKindOfClass:NSClassFromString(@"MPVideoView")]) {
+            videoView.transform = CGAffineTransformMakeRotation(M_PI * degrees / 180.0);
+            videoView.frame = movePlayerViewController.view.bounds;
+        }
+    }
+}
+
+-(NSUInteger)degressFromVideoFileWithURL:(NSURL *)url
+{
+    NSUInteger degress = 0;
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+    NSLog(@"%ld",[tracks count]);
+    if([tracks count] > 0) {
+        AVAssetTrack *videoTrack = [tracks objectAtIndex:0];
+        CGAffineTransform t = videoTrack.preferredTransform;
+        NSLog(@"detail %f,%f,%f,%f",t.a,t.b,t.c,t.d);
+        if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
+            // Portrait
+            degress = 90;
+        }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
+            // PortraitUpsideDown
+            degress = 270;
+        }else if(t.a == 1.0 && t.b == 0 && t.c == 0 && t.d == 1.0){
+            // LandscapeRight
+            degress = 0;
+        }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
+            // LandscapeLeft
+            degress = 180;
+        }
+    }
+    return degress;
+}
 /*
 #pragma mark - Navigation
 
