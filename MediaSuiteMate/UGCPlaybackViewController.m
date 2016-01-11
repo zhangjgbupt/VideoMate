@@ -9,6 +9,13 @@
 #import "UGCPlaybackViewController.h"
 #import "ChannelData.h"
 #import "Utils.h"
+#import "FVCustomAlertView.h"
+
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface UGCPlaybackViewController ()
 
@@ -22,6 +29,7 @@
 @synthesize seperator_1, seperator_2;
 @synthesize appDelegate;
 @synthesize original_y_center,isKeyBoardShow;
+@synthesize transcodingPromtView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -205,7 +213,15 @@
     if (![[fileName pathExtension] isEqualToString:@".mp4"]){
         fileName = [fileName stringByAppendingString:@".mp4"];
     }
-    [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
+    if ([self isNeededTranscode:self.videoURL]) {
+        [self videoFixOrientation:self.videoURL];
+        // show transcoding waiting dialog.
+        self.transcodingPromtView = [FVCustomAlertView showDefaultLoadingAlertOnView:self.view withTitle:NSLocalizedString(@"wait_for_transcoding", nil)];
+    } else {
+        [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
+    }
+    
+    //[uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
 }
 
 - (IBAction)dismissKeyBoard:(id)sender {
@@ -489,6 +505,200 @@
     }
     else{
         self.placeholderLabel.hidden = YES;
+    }
+}
+
+- (BOOL)isNeededTranscode:(NSURL*) urlVideoLocation {
+    AVAsset *firstAsset = [AVAsset assetWithURL:urlVideoLocation];
+    if(firstAsset !=nil && [[firstAsset tracksWithMediaType:AVMediaTypeVideo] count]>0){
+        //Create AVMutableComposition Object.This object will hold our multiple AVMutableCompositionTrack.
+        AVMutableComposition* mixComposition = [[AVMutableComposition alloc] init];
+        
+        //VIDEO TRACK
+        AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstAsset.duration);
+        
+        if ([[firstAsset tracksWithMediaType:AVMediaTypeAudio] count]>0) {
+        //AUDIO TRACK
+            AVMutableCompositionTrack *firstAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [firstAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        }else{
+            NSLog(@"warning: video has no audio");
+        }
+        
+        AVAssetTrack *FirstAssetTrack = [[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+        
+        UIImageOrientation FirstAssetOrientation_  = UIImageOrientationUp;
+        
+        BOOL  isFirstAssetPortrait_  = NO;
+        
+        CGAffineTransform firstTransform = FirstAssetTrack.preferredTransform;
+        
+        if(firstTransform.a == 0 && firstTransform.b == 1.0 && firstTransform.c == -1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_= UIImageOrientationRight;
+            isFirstAssetPortrait_ = YES;
+            return true;
+            
+        }
+        if(firstTransform.a == 0 && firstTransform.b == -1.0 && firstTransform.c == 1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationLeft;
+            isFirstAssetPortrait_ = YES;
+            return true;
+        }
+        if(firstTransform.a == 1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == 1.0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationUp;
+            return false;
+        }
+        if(firstTransform.a == -1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == -1.0)
+        {
+            FirstAssetOrientation_ = UIImageOrientationDown;
+            return true;
+        }
+
+    }
+    return true;
+}
+
+- (void)videoFixOrientation:(NSURL*) urlVideoLocalLocation{
+    AVAsset *firstAsset = [AVAsset assetWithURL:urlVideoLocalLocation];
+    if(firstAsset !=nil && [[firstAsset tracksWithMediaType:AVMediaTypeVideo] count]>0){
+        //Create AVMutableComposition Object.This object will hold our multiple AVMutableCompositionTrack.
+        AVMutableComposition* mixComposition = [[AVMutableComposition alloc] init];
+        
+        //VIDEO TRACK
+        AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstAsset.duration);
+        
+        if ([[firstAsset tracksWithMediaType:AVMediaTypeAudio] count]>0) {
+        //AUDIO TRACK
+            AVMutableCompositionTrack *firstAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [firstAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        }else{
+            NSLog(@"warning: video has no audio");
+        }
+        
+        //FIXING ORIENTATION//
+        AVMutableVideoCompositionLayerInstruction *FirstlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
+        
+        AVAssetTrack *FirstAssetTrack = [[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+        
+        UIImageOrientation FirstAssetOrientation_  = UIImageOrientationUp;
+        
+        BOOL  isFirstAssetPortrait_  = NO;
+        
+        CGAffineTransform firstTransform = FirstAssetTrack.preferredTransform;
+        
+        CGFloat width = FirstAssetTrack.naturalSize.width;
+        CGFloat height = FirstAssetTrack.naturalSize.height;
+        
+        if(firstTransform.a == 0 && firstTransform.b == 1.0 && firstTransform.c == -1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_= UIImageOrientationRight;
+            isFirstAssetPortrait_ = YES;
+            //width = FirstAssetTrack.naturalSize.height;
+            //height = FirstAssetTrack.naturalSize.width;
+        }
+        if(firstTransform.a == 0 && firstTransform.b == -1.0 && firstTransform.c == 1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationLeft;
+            isFirstAssetPortrait_ = YES;
+            //width = FirstAssetTrack.naturalSize.height;
+            //height = FirstAssetTrack.naturalSize.width;
+        }
+        if(firstTransform.a == 1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == 1.0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationUp;
+        }
+        if(firstTransform.a == -1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == -1.0)
+        {
+            FirstAssetOrientation_ = UIImageOrientationDown;
+        }
+        
+        //CGFloat width = FirstAssetTrack.naturalSize.width;
+        //CGFloat height = FirstAssetTrack.naturalSize.height;
+        CGFloat FirstAssetScaleToFitRatio = 1.0;
+        
+        if(isFirstAssetPortrait_)
+        {
+            FirstAssetScaleToFitRatio = 9.0/16.0;
+            CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
+//            [FirstlayerInstruction setTransform:CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor) atTime:kCMTimeZero];
+            [FirstlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0.61*height, 0)) atTime:kCMTimeZero];
+        }
+        else
+        {
+            CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
+            [FirstlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0, 0)) atTime:kCMTimeZero];
+        }
+        [FirstlayerInstruction setOpacity:0.0 atTime:firstAsset.duration];
+        
+        MainInstruction.layerInstructions = [NSArray arrayWithObjects:FirstlayerInstruction,nil];;
+        
+        AVMutableVideoComposition *MainCompositionInst = [AVMutableVideoComposition videoComposition];
+        MainCompositionInst.instructions = [NSArray arrayWithObject:MainInstruction];
+        MainCompositionInst.frameDuration = CMTimeMake(1, 30);
+        MainCompositionInst.renderSize = CGSizeMake(width, height);
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"mergeVideo-%d.mov",arc4random() % 1000]];
+        
+        NSURL *url = [NSURL fileURLWithPath:myPathDocs];
+        self.videoURL = url;
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+        
+        exporter.outputURL=url;
+        exporter.outputFileType = AVFileTypeQuickTimeMovie;
+        exporter.videoComposition = MainCompositionInst;
+        exporter.shouldOptimizeForNetworkUse = YES;
+        [exporter exportAsynchronouslyWithCompletionHandler:^
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self exportDidFinish:exporter];
+             });
+         }];
+    }else{
+        NSLog(@"Error, video track not found");
+    }
+}
+
+- (void)exportDidFinish:(AVAssetExportSession*)session
+{
+    if(session.status == AVAssetExportSessionStatusCompleted){
+        
+//       NSURL *outputURL = session.outputURL;
+//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+//        if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputURL]) {
+//            [library writeVideoAtPathToSavedPhotosAlbum:outputURL
+//                                        completionBlock:^(NSURL *assetURL, NSError *error){
+//                                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                                if (error) {
+//                                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Video Saving Failed"  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil, nil];
+//                                                    [alert show];
+//                                                }else{
+//                                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Video Saved" message:@"Saved To Photo Album"  delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//                                                    [alert show];
+//                                                }
+//                                                
+//                                            });
+//                                            
+//                                        }];
+//        }
+        if (self.transcodingPromtView != nil) {
+            [self.transcodingPromtView removeFromSuperview];
+        }
+        [uploadMediaFilesHandle upLoadMediaFiles:@"transcode.mp4" From:[self.videoURL path]];
+#warning DO WHAT EVER YOU NEED AFTER FIXING ORIENTATION
+    }else{
+        NSLog(@"error fixing orientation");
     }
 }
 

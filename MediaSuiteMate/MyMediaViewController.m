@@ -12,6 +12,7 @@
 #import "UGCPlaybackViewController.h"
 #import "BGTableViewRowActionWithImage.h"
 
+
 @interface MyMediaViewController ()
 
 @end
@@ -563,6 +564,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+        
         //picker.videoMaximumDuration = 300.0f; // 300 seconds
         
         [self presentViewController:picker animated:YES completion:NULL];

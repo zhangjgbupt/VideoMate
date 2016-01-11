@@ -26,8 +26,6 @@
 
 //微信SDK头文件
 #import "WXApi.h"
-//新浪微博SDK头文件
-#import "WeiboSDK.h"
 
 
 #import <MOBFoundation/MOBFoundation.h>
@@ -122,12 +120,6 @@
                      {
                          case SSDKPlatformTypeWechat:
                              [ShareSDKConnector connectWeChat:[WXApi class]];
-                             break;
-                         case SSDKPlatformTypeSinaWeibo:
-                             [ShareSDKConnector connectWeibo:[WeiboSDK class]];
-                             break;
-                         case SSDKPlatformTypeQQ:
-                             [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                              break;
                          default:
                              break;
