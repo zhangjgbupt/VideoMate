@@ -31,6 +31,7 @@ static NSString * const reuseArchiveIdentifier = @"LiveCell";
     self.maxPageNumber = 0;
     
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:NO];
     
     CGRect screenFrame = [[UIScreen mainScreen] bounds];
     CGRect tableViewFrame = self.tableView.frame;
@@ -103,6 +104,7 @@ static NSString * const reuseArchiveIdentifier = @"LiveCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
+    [appDelegate setShouldRotate:NO];
     //[self getMyArchives];
     [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];

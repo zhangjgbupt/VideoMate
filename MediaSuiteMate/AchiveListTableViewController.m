@@ -24,7 +24,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [super viewDidLoad];
     
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    
+    [self.appDelegate setShouldRotate:NO];
     [self.tableView registerNib:[UINib nibWithNibName:@"ArchiveTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:reuseArchiveIdentifier];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.archiveList = [[NSMutableArray alloc]init];
@@ -46,6 +46,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
+    [self.appDelegate setShouldRotate:NO];
     self.navigationController.topViewController.title = [channleData name];
     [self getArchiveCountInChannel];
     [appDelegate.tabBarController setTabBarHidden:YES];
@@ -57,12 +58,12 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotate{
-    return NO;
-}
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskPortrait;
-}
+//- (BOOL)shouldAutorotate{
+//    return NO;
+//}
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
 
 #pragma mark - Table view data source
 
@@ -169,6 +170,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [mediaPlayer setLikeCount:archive.likeCount];
     [mediaPlayer setArchiveId:archive.achiveId];
     [mediaPlayer setThumUrl:archive.archiveCoverURL];
+    [mediaPlayer setCreateTime:archive.creatTime];
     [self.navigationController pushViewController:mediaPlayer animated:YES];
 }
 
@@ -276,6 +278,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                      fileData.episode = fileOrigialData[@"episode"];
                      int tmpEpisode = [fileData.episode intValue];
                      if(tmpEpisode > episode && [fileData.fileType isEqualToString:@"MP4"]) {
+                         episode = tmpEpisode;
                          [archiveObj.archiveFiles addObject:fileData];
                      }
                  }

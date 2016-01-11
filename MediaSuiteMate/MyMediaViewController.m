@@ -36,6 +36,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     self.maxPageNumber = 0;
     
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:NO];
     
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
@@ -116,6 +117,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
+    [appDelegate setShouldRotate:NO];
     //[self getMyArchives];
     [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
@@ -255,6 +257,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [mediaPlayer setArchiveDes:archive.description];
     [mediaPlayer setLikeCount:archive.likeCount];
     [mediaPlayer setThumUrl:archive.archiveCoverURL];
+    [mediaPlayer setCreateTime:archive.creatTime];
     [self.navigationController pushViewController:mediaPlayer animated:YES];
 }
 
@@ -351,6 +354,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                      fileData.episode = fileOrigialData[@"episode"];
                      int tmpEpisode = [fileData.episode intValue];
                      if(tmpEpisode > episode && [fileData.fileType isEqualToString:@"MP4"]) {
+                         episode = tmpEpisode;
                          [archiveObj.archiveFiles addObject:fileData];
                      }
                  }

@@ -44,6 +44,7 @@
 {
     [super viewDidLoad];
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:NO];
     
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
@@ -151,6 +152,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate.tabBarController setTabBarHidden:YES];
+    [self.appDelegate setShouldRotate:NO];
     [super viewWillAppear:YES];
 }
 
@@ -187,6 +189,10 @@
 //        return;
 //    }
 
+}
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
 }
 
 - (void)didReceiveMemoryWarning

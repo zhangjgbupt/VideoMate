@@ -26,6 +26,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, GeTuiSdkDelegate, WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (assign, nonatomic) BOOL shouldRotate;
 
 @property (strong, nonatomic) UINavigationController *navController;
 @property (strong, nonatomic) UIViewController *viewController;

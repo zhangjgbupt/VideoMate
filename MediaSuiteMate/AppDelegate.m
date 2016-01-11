@@ -41,13 +41,14 @@
 @synthesize accessToken, expireTimer, heartBeatTimer;
 @synthesize alertView;
 @synthesize isLoginSuccessful;
-@synthesize isAnonymous;
+@synthesize isAnonymous, shouldRotate;
 
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     isLoginSuccessful = -1;
     apnsClientId = nil;
+    shouldRotate = NO;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -535,7 +536,10 @@
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
-    return UIInterfaceOrientationMaskAll;
+    if (self.shouldRotate)
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    else
+        return UIInterfaceOrientationMaskPortrait;
     
 }
 

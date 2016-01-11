@@ -29,6 +29,7 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
     [super viewDidLoad];
     
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:NO];
     followedChannelObjectList = [[NSMutableArray alloc]init];
     tableViewDataSourceList = channelList;
     [self readFollowChannelListFromFile];
@@ -59,6 +60,7 @@ static NSString * const reuseFollowChannelCellIdentifier = @"ChannelFollowCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
+    [appDelegate setShouldRotate:NO];
     self.navigationController.topViewController.title = NSLocalizedString(@"channel_follow_page_title", nil);
     [appDelegate.tabBarController setTabBarHidden:YES];
     [super viewWillAppear:YES];
