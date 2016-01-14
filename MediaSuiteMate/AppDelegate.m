@@ -30,6 +30,8 @@
 
 #import <MOBFoundation/MOBFoundation.h>
 
+#define LOG2FILE
+
 @interface AppDelegate ()
 
 @end
@@ -49,6 +51,13 @@
     isLoginSuccessful = -1;
     apnsClientId = nil;
     shouldRotate = NO;
+    
+    #ifdef LOG2FILE
+    #if TARGET_IPHONE_SIMULATOR == 0
+    [self redirectLogToDocuments];
+    #endif
+    #endif
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -810,4 +819,13 @@
     NSLog(@"\n>>>[GexinSdk SetModeOff]:%@\n\n",isModeOff?@"开启":@"关闭");
 }
 
+
+- (void)redirectLogToDocuments
+{
+    NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [allPaths objectAtIndex:0];
+    NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:@"log.txt"];
+    
+    freopen([pathForLog cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+}
 @end

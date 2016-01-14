@@ -11,7 +11,7 @@
 
 @implementation UploadMediaFiles
 
-@synthesize progressValue;
+@synthesize progressValue,progressValueSize;
 @synthesize desUploadFilePathData;
 @synthesize fileName;
 
@@ -59,16 +59,19 @@
                                          NSLog(@"Success %@", responseObject);
                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"UPLOAD_SUCCESSFUL" object:nil];
                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                         NSLog(@"Failure %@", error.description);
+                                         NSLog(@"do upload file failed: %@", error.description);
                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"UPLOAD_FAIL" object:nil];
                                      }];
     
     [operation setUploadProgressBlock:^(NSUInteger __unused bytesWritten,
                                         long long totalBytesWritten,
                                         long long totalBytesExpectedToWrite) {
-        NSLog(@"Wrote %lld/%lld", totalBytesWritten, totalBytesExpectedToWrite);
+        //NSLog(@"Wrote %lld/%lld", totalBytesWritten, totalBytesExpectedToWrite);
         progressValue = totalBytesWritten*1.0/totalBytesExpectedToWrite;
-        NSLog(@"Wrote %f",progressValue);
+        float totalBytesWritetedKb = totalBytesWritten/1024.0/1024.0;
+        float totalBytesExpectedKb = totalBytesExpectedToWrite/1024.0/1024.0;
+        progressValueSize = [NSString stringWithFormat:@"%.02fM/%.02fM",totalBytesWritetedKb,totalBytesExpectedKb];
+        //NSLog(@"Wrote %f",progressValue);
     }];
     
     [operation start];

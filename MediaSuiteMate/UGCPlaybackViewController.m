@@ -10,6 +10,7 @@
 #import "ChannelData.h"
 #import "Utils.h"
 #import "FVCustomAlertView.h"
+#import "ASProgressPopUpView.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMedia/CoreMedia.h>
@@ -70,17 +71,34 @@
     [self.videoController play];
 
     CGFloat progress_x = player_x;
-    CGFloat progress_y = player_y+player_h+5;
+    CGFloat progress_y = player_y+player_h-1;
     CGRect frame = CGRectMake(progress_x, progress_y, screenWidth, 5);
-    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    
+    self.progressView = [[ASProgressPopUpView alloc]initWithProgressViewStyle:UIProgressViewStyleBar];
     [self.progressView setFrame:frame];
     [self.view addSubview:self.progressView];
     [self.progressView setHidden:YES];
-    self.progressView.progressTintColor = [UIColor colorWithRed:93.0f/255.0f green:177.0f/255.0f blue:1.0f alpha:1.0f];
-    [self.progressView setTransform:CGAffineTransformMakeScale(1.0, 5.0)];
+    [self.progressView setTransform:CGAffineTransformMakeScale(1.0, 1.5)];
+    UIColor* progressBarColor = [UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:1.0f alpha:1.0f];
+    UIColor* progressPopUpColor = [UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:1.0f alpha:0.6f];
+    self.progressView.font = [UIFont fontWithName:@"Arial" size:12];
+    self.progressView.progressTintColor = progressBarColor;
+    self.progressView.popUpViewAnimatedColors = @[progressPopUpColor, progressPopUpColor, progressPopUpColor];
+    self.progressView.dataSource = self;
+    [self.progressView showPopUpViewAnimated:YES];
+    
+    CGFloat upload_rate_x = 0;
+    CGFloat upload_rate_y = progress_y + 1;
+    CGFloat upload_rate_w = screenWidth;
+    CGFloat upload_rate_h = 30;
+    CGRect uploadRateLabelFrame = CGRectMake(upload_rate_x, upload_rate_y, upload_rate_w, upload_rate_h);
+    [self.uploadRate setFrame:uploadRateLabelFrame];
+    //[self.uploadRate setBackgroundColor:[UIColor whiteColor]];
+    [self.uploadRate setTextColor:[UIColor colorWithRed:139.0f/255.0f green:139.0f/255.0f blue:139.0f/255.0 alpha:1.0f]];
+    [self.uploadRate setTextAlignment:NSTextAlignmentRight];
     
     CGFloat title_x = 5;
-    CGFloat title_y = progress_y + 16;
+    CGFloat title_y = upload_rate_y + upload_rate_h + 16;
     CGFloat title_w = player_w-10;
     CGFloat title_h = 40;
     [self.textMediaFileName setFrame:CGRectMake(title_x, title_y, title_w, title_h)];
@@ -177,7 +195,8 @@
 {
     if(progressView.progress < 1.0)
     {
-        progressView.progress = uploadMediaFilesHandle.progressValue;
+        [self.progressView setProgress:uploadMediaFilesHandle.progressValue animated:YES];
+        //progressView.progress = uploadMediaFilesHandle.progressValue;
         [self performSelector:@selector(getProgressValue) withObject:self afterDelay:0.1];
     }
 //    else
@@ -211,7 +230,6 @@
         return;
     }
 
-    self.progressView.hidden = NO;
     self.btnUpload.hidden = YES;
     [self getProgressValue];
     
@@ -224,6 +242,7 @@
         // show transcoding waiting dialog.
         self.transcodingPromtView = [FVCustomAlertView showDefaultLoadingAlertOnView:self.view withTitle:NSLocalizedString(@"wait_for_transcoding", nil)];
     } else {
+        self.progressView.hidden = NO;
         [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
     }
     
@@ -652,7 +671,8 @@
         MainCompositionInst.frameDuration = CMTimeMake(1, 30);
         MainCompositionInst.renderSize = CGSizeMake(width, height);
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"mergeVideo-%d.mov",arc4random() % 1000]];
         
@@ -701,11 +721,35 @@
         if (self.transcodingPromtView != nil) {
             [self.transcodingPromtView removeFromSuperview];
         }
+        self.progressView.hidden = NO;
         [uploadMediaFilesHandle upLoadMediaFiles:@"transcode.mp4" From:[self.videoURL path]];
 #warning DO WHAT EVER YOU NEED AFTER FIXING ORIENTATION
     }else{
         NSLog(@"error fixing orientation");
     }
+}
+
+#pragma mark - ASProgressPopUpView dataSource
+
+// <ASProgressPopUpViewDataSource> is entirely optional
+// it allows you to supply custom NSStrings to ASProgressPopUpView
+- (NSString *)progressView:(ASProgressPopUpView *)progressView stringForProgress:(float)progress
+{
+    NSString *s;
+    if (progress > 0.0001) {
+        [self.uploadRate setBackgroundColor:[UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0 alpha:1.0f]];
+    }
+    [self.uploadRate setText:uploadMediaFilesHandle.progressValueSize];
+    NSString* progressValue = [NSString stringWithFormat:@"%d%%", (int)(uploadMediaFilesHandle.progressValue*100)];
+    return progressValue;
+}
+
+// by default ASProgressPopUpView precalculates the largest popUpView size needed
+// it then uses this size for all values and maintains a consistent size
+// if you want the popUpView size to adapt as values change then return 'NO'
+- (BOOL)progressViewShouldPreCalculatePopUpViewSize:(ASProgressPopUpView *)progressView;
+{
+    return NO;
 }
 
 @end

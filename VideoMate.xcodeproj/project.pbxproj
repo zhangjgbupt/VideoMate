@@ -30,6 +30,8 @@
 		652B88A31BE0F1950092EAB8 /* SDRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 652B889C1BE0F1950092EAB8 /* SDRefreshHeaderView.m */; };
 		652B88A41BE0F1950092EAB8 /* SDRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 652B889E1BE0F1950092EAB8 /* SDRefreshView.m */; };
 		652B88A51BE0F1950092EAB8 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 652B88A01BE0F1950092EAB8 /* UIView+SDExtension.m */; };
+		65309E621C43C301001E9C68 /* ASPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 65309E5F1C43C301001E9C68 /* ASPopUpView.m */; };
+		65309E631C43C301001E9C68 /* ASProgressPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 65309E611C43C301001E9C68 /* ASProgressPopUpView.m */; };
 		6547AEC51C3CB8EE00374466 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6547AEC41C3CB8EE00374466 /* CoreMedia.framework */; };
 		6547AEC71C3CB8F800374466 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6547AEC61C3CB8F800374466 /* MediaPlayer.framework */; };
 		6547AEC91C3CB90600374466 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6547AEC81C3CB90600374466 /* MobileCoreServices.framework */; };
@@ -302,6 +304,10 @@
 		652B889E1BE0F1950092EAB8 /* SDRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDRefreshView.m; sourceTree = "<group>"; };
 		652B889F1BE0F1950092EAB8 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
 		652B88A01BE0F1950092EAB8 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		65309E5E1C43C301001E9C68 /* ASPopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPopUpView.h; sourceTree = "<group>"; };
+		65309E5F1C43C301001E9C68 /* ASPopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPopUpView.m; sourceTree = "<group>"; };
+		65309E601C43C301001E9C68 /* ASProgressPopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASProgressPopUpView.h; sourceTree = "<group>"; };
+		65309E611C43C301001E9C68 /* ASProgressPopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASProgressPopUpView.m; sourceTree = "<group>"; };
 		6547AEC41C3CB8EE00374466 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		6547AEC61C3CB8F800374466 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		6547AEC81C3CB90600374466 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -683,6 +689,10 @@
 		6520B7EC1BCF3BA3009E4B48 /* MediaSuiteMate */ = {
 			isa = PBXGroup;
 			children = (
+				65309E5E1C43C301001E9C68 /* ASPopUpView.h */,
+				65309E5F1C43C301001E9C68 /* ASPopUpView.m */,
+				65309E601C43C301001E9C68 /* ASProgressPopUpView.h */,
+				65309E611C43C301001E9C68 /* ASProgressPopUpView.m */,
 				656367F51BD4BB4800917DB2 /* DataClass */,
 				A5E84BF41C23FB7400D70312 /* ShareView.h */,
 				A5E84BF51C23FB7400D70312 /* ShareView.m */,
@@ -1416,6 +1426,7 @@
 				A5E84BF61C23FB7400D70312 /* ShareView.m in Sources */,
 				65B22A5A1C3F577C0067066A /* FVCustomAlertView.m in Sources */,
 				654AEABD1BCF531900921978 /* ChannelCollectionViewController.m in Sources */,
+				65309E621C43C301001E9C68 /* ASPopUpView.m in Sources */,
 				65D0B3681BD731A90066138A /* StreamingUrlData.m in Sources */,
 				652B882A1BDE296A0092EAB8 /* IGLDropDownItem.m in Sources */,
 				654AEAC21BCF57A400921978 /* ChannelCollectionViewCell.m in Sources */,
@@ -1445,6 +1456,7 @@
 				654AEA841BCF45DD00921978 /* RDVTabBarItem.m in Sources */,
 				656368001BD5CCFC00917DB2 /* AchiveListTableViewController.m in Sources */,
 				A5F109351C0DA2B000736C89 /* LiveViewController.m in Sources */,
+				65309E631C43C301001E9C68 /* ASProgressPopUpView.m in Sources */,
 				65810B3B1BDC602E0036F205 /* UGCPlaybackViewController.m in Sources */,
 				65D0B39B1BD9CDEF0066138A /* MyMediaViewController.m in Sources */,
 				652B882B1BDE296A0092EAB8 /* IGLDropDownMenu.m in Sources */,

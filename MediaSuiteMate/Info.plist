@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -60,7 +60,7 @@
 	<key>UIBackgroundModes</key>
 	<array/>
 	<key>UIFileSharingEnabled</key>
-	<false/>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>

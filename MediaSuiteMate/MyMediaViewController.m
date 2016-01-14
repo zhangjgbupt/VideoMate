@@ -545,7 +545,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.showsCameraControls = YES;
-        picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+        picker.videoQuality = UIImagePickerControllerQualityTypeIFrame1280x720;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         
         [self presentModalViewController: picker animated: YES];
@@ -566,9 +566,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.navigationBar.tintColor = [UIColor whiteColor];
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.videoQuality = UIImagePickerControllerQualityTypeIFrame1280x720;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
-        
         //picker.videoMaximumDuration = 300.0f; // 300 seconds
         
         [self presentViewController:picker animated:YES completion:NULL];
