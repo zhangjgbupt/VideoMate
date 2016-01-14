@@ -18,7 +18,7 @@
 @end
 
 @implementation MediaPlayerViewController
-@synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl;
+@synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl,createTime;
 @synthesize player;
 @synthesize streamingURLlist;
 @synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator, seperator1, seperator2,desTitle;
@@ -37,12 +37,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    ArchiveFileData* fileData = nil;
+    [self.appDelegate setShouldRotate:YES];
+//    ArchiveFileData* fileData = nil;
     self.streamingURLlist = [[NSMutableArray alloc]init];
    
-    if ([self.episodeFiles count]==1) {
-        fileData   = [self.episodeFiles objectAtIndex:0];
-    }
+//    if ([self.episodeFiles count]==1) {
+//        fileData   = [self.episodeFiles objectAtIndex:0];
+//    }
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
@@ -109,6 +110,7 @@
     CGFloat description_h = 30;
     CGRect descriptionFrame = CGRectMake(description_x, description_y, description_w, description_h);
     [self.mediaFileDes setFrame:descriptionFrame];
+
     [self.mediaFileDes setFont:[UIFont fontWithName:@"Arial" size:14.0]];
     [self.mediaFileDes setTextColor:[UIColor grayColor]];
     if ([self.archiveDes length] == 0) {
@@ -119,7 +121,7 @@
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSDate* date = [NSDate dateWithTimeIntervalSince1970:([fileData.creatTime doubleValue]/ 1000)];
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:([self.createTime doubleValue]/ 1000)];
     [self.mediaFileCrateTime setText:[dateFormatter stringFromDate:date]];
     
     CGFloat seperator1_x = 0;
@@ -219,6 +221,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.appDelegate setShouldRotate:YES];
     [self.appDelegate.tabBarController setTabBarHidden:YES];
     if ([self.episodeFiles count] == 0) {
         [[Utils getInstance] invokeAlert:@"Error" message:@"There is no compatible video format" delegate:self];
@@ -239,12 +242,12 @@
     [super viewWillDisappear:YES];
 }
 
-- (BOOL)shouldAutorotate{
-    return NO;
-}
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAll;
-}
+//- (BOOL)shouldAutorotate{
+//    return NO;
+//}
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

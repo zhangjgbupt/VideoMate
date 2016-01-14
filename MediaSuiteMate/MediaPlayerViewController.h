@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSString* likeStatus;
 @property (strong, nonatomic) NSString* likeCount;
 @property (strong, nonatomic) NSString* thumUrl;
+@property (strong, nonatomic) NSString* createTime;
 @property (strong, nonatomic) NSMutableArray* episodeFiles;
 @property (nonatomic, retain) MPMoviePlayerController *player;
 @property (strong, nonatomic) NSMutableArray* streamingURLlist;

@@ -16,6 +16,7 @@
 @property (nonatomic) float progressValue;
 @property (nonatomic, retain) MediaPathData* desUploadFilePathData;
 @property (nonatomic, retain) NSString* fileName;
+@property (nonatomic, retain) NSString* progressValueSize;
 
 
 - (void) upLoadMediaFiles: (NSString*) desFileName From: (NSString*)srcFileUrl;

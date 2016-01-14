@@ -12,6 +12,7 @@
 #import "UGCPlaybackViewController.h"
 #import "BGTableViewRowActionWithImage.h"
 
+
 @interface MyMediaViewController ()
 
 @end
@@ -35,6 +36,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     self.maxPageNumber = 0;
     
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:NO];
     
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
@@ -115,6 +117,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
+    [appDelegate setShouldRotate:NO];
     //[self getMyArchives];
     [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
@@ -254,6 +257,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
     [mediaPlayer setArchiveDes:archive.description];
     [mediaPlayer setLikeCount:archive.likeCount];
     [mediaPlayer setThumUrl:archive.archiveCoverURL];
+    [mediaPlayer setCreateTime:archive.creatTime];
     [self.navigationController pushViewController:mediaPlayer animated:YES];
 }
 
@@ -350,6 +354,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
                      fileData.episode = fileOrigialData[@"episode"];
                      int tmpEpisode = [fileData.episode intValue];
                      if(tmpEpisode > episode && [fileData.fileType isEqualToString:@"MP4"]) {
+                         episode = tmpEpisode;
                          [archiveObj.archiveFiles addObject:fileData];
                      }
                  }
@@ -540,7 +545,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.showsCameraControls = YES;
-        picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+        picker.videoQuality = UIImagePickerControllerQualityTypeIFrame1280x720;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         
         [self presentModalViewController: picker animated: YES];
@@ -561,8 +566,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.navigationBar.tintColor = [UIColor whiteColor];
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.videoQuality = UIImagePickerControllerQualityTypeIFrame1280x720;
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
         //picker.videoMaximumDuration = 300.0f; // 300 seconds
         
         [self presentViewController:picker animated:YES completion:NULL];

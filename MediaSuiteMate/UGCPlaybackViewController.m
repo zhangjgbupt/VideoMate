@@ -9,6 +9,14 @@
 #import "UGCPlaybackViewController.h"
 #import "ChannelData.h"
 #import "Utils.h"
+#import "FVCustomAlertView.h"
+#import "ASProgressPopUpView.h"
+
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface UGCPlaybackViewController ()
 
@@ -22,6 +30,7 @@
 @synthesize seperator_1, seperator_2;
 @synthesize appDelegate;
 @synthesize original_y_center,isKeyBoardShow;
+@synthesize transcodingPromtView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,6 +45,7 @@
 {
     [super viewDidLoad];
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:NO];
     
     self.channelNameList = [[NSMutableArray alloc]init];
     self.channelListNameAndIdDict = [[NSMutableDictionary alloc] init];
@@ -61,17 +71,34 @@
     [self.videoController play];
 
     CGFloat progress_x = player_x;
-    CGFloat progress_y = player_y+player_h+5;
+    CGFloat progress_y = player_y+player_h-1;
     CGRect frame = CGRectMake(progress_x, progress_y, screenWidth, 5);
-    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    
+    self.progressView = [[ASProgressPopUpView alloc]initWithProgressViewStyle:UIProgressViewStyleBar];
     [self.progressView setFrame:frame];
     [self.view addSubview:self.progressView];
     [self.progressView setHidden:YES];
-    self.progressView.progressTintColor = [UIColor colorWithRed:93.0f/255.0f green:177.0f/255.0f blue:1.0f alpha:1.0f];
-    [self.progressView setTransform:CGAffineTransformMakeScale(1.0, 5.0)];
+    [self.progressView setTransform:CGAffineTransformMakeScale(1.0, 1.5)];
+    UIColor* progressBarColor = [UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:1.0f alpha:1.0f];
+    UIColor* progressPopUpColor = [UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:1.0f alpha:0.6f];
+    self.progressView.font = [UIFont fontWithName:@"Arial" size:12];
+    self.progressView.progressTintColor = progressBarColor;
+    self.progressView.popUpViewAnimatedColors = @[progressPopUpColor, progressPopUpColor, progressPopUpColor];
+    self.progressView.dataSource = self;
+    [self.progressView showPopUpViewAnimated:YES];
+    
+    CGFloat upload_rate_x = 0;
+    CGFloat upload_rate_y = progress_y + 1;
+    CGFloat upload_rate_w = screenWidth;
+    CGFloat upload_rate_h = 30;
+    CGRect uploadRateLabelFrame = CGRectMake(upload_rate_x, upload_rate_y, upload_rate_w, upload_rate_h);
+    [self.uploadRate setFrame:uploadRateLabelFrame];
+    //[self.uploadRate setBackgroundColor:[UIColor whiteColor]];
+    [self.uploadRate setTextColor:[UIColor colorWithRed:139.0f/255.0f green:139.0f/255.0f blue:139.0f/255.0 alpha:1.0f]];
+    [self.uploadRate setTextAlignment:NSTextAlignmentRight];
     
     CGFloat title_x = 5;
-    CGFloat title_y = progress_y + 16;
+    CGFloat title_y = upload_rate_y + upload_rate_h + 16;
     CGFloat title_w = player_w-10;
     CGFloat title_h = 40;
     [self.textMediaFileName setFrame:CGRectMake(title_x, title_y, title_w, title_h)];
@@ -143,6 +170,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate.tabBarController setTabBarHidden:YES];
+    [self.appDelegate setShouldRotate:NO];
     [super viewWillAppear:YES];
 }
 
@@ -167,7 +195,8 @@
 {
     if(progressView.progress < 1.0)
     {
-        progressView.progress = uploadMediaFilesHandle.progressValue;
+        [self.progressView setProgress:uploadMediaFilesHandle.progressValue animated:YES];
+        //progressView.progress = uploadMediaFilesHandle.progressValue;
         [self performSelector:@selector(getProgressValue) withObject:self afterDelay:0.1];
     }
 //    else
@@ -179,6 +208,10 @@
 //        return;
 //    }
 
+}
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
 }
 
 - (void)didReceiveMemoryWarning
@@ -197,7 +230,6 @@
         return;
     }
 
-    self.progressView.hidden = NO;
     self.btnUpload.hidden = YES;
     [self getProgressValue];
     
@@ -205,7 +237,16 @@
     if (![[fileName pathExtension] isEqualToString:@".mp4"]){
         fileName = [fileName stringByAppendingString:@".mp4"];
     }
-    [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
+    if ([self isNeededTranscode:self.videoURL]) {
+        [self videoFixOrientation:self.videoURL];
+        // show transcoding waiting dialog.
+        self.transcodingPromtView = [FVCustomAlertView showDefaultLoadingAlertOnView:self.view withTitle:NSLocalizedString(@"wait_for_transcoding", nil)];
+    } else {
+        self.progressView.hidden = NO;
+        [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
+    }
+    
+    //[uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
 }
 
 - (IBAction)dismissKeyBoard:(id)sender {
@@ -490,6 +531,225 @@
     else{
         self.placeholderLabel.hidden = YES;
     }
+}
+
+- (BOOL)isNeededTranscode:(NSURL*) urlVideoLocation {
+    AVAsset *firstAsset = [AVAsset assetWithURL:urlVideoLocation];
+    if(firstAsset !=nil && [[firstAsset tracksWithMediaType:AVMediaTypeVideo] count]>0){
+        //Create AVMutableComposition Object.This object will hold our multiple AVMutableCompositionTrack.
+        AVMutableComposition* mixComposition = [[AVMutableComposition alloc] init];
+        
+        //VIDEO TRACK
+        AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstAsset.duration);
+        
+        if ([[firstAsset tracksWithMediaType:AVMediaTypeAudio] count]>0) {
+        //AUDIO TRACK
+            AVMutableCompositionTrack *firstAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [firstAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        }else{
+            NSLog(@"warning: video has no audio");
+        }
+        
+        AVAssetTrack *FirstAssetTrack = [[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+        
+        UIImageOrientation FirstAssetOrientation_  = UIImageOrientationUp;
+        
+        BOOL  isFirstAssetPortrait_  = NO;
+        
+        CGAffineTransform firstTransform = FirstAssetTrack.preferredTransform;
+        
+        if(firstTransform.a == 0 && firstTransform.b == 1.0 && firstTransform.c == -1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_= UIImageOrientationRight;
+            isFirstAssetPortrait_ = YES;
+            return true;
+            
+        }
+        if(firstTransform.a == 0 && firstTransform.b == -1.0 && firstTransform.c == 1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationLeft;
+            isFirstAssetPortrait_ = YES;
+            return true;
+        }
+        if(firstTransform.a == 1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == 1.0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationUp;
+            return false;
+        }
+        if(firstTransform.a == -1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == -1.0)
+        {
+            FirstAssetOrientation_ = UIImageOrientationDown;
+            return true;
+        }
+
+    }
+    return true;
+}
+
+- (void)videoFixOrientation:(NSURL*) urlVideoLocalLocation{
+    AVAsset *firstAsset = [AVAsset assetWithURL:urlVideoLocalLocation];
+    if(firstAsset !=nil && [[firstAsset tracksWithMediaType:AVMediaTypeVideo] count]>0){
+        //Create AVMutableComposition Object.This object will hold our multiple AVMutableCompositionTrack.
+        AVMutableComposition* mixComposition = [[AVMutableComposition alloc] init];
+        
+        //VIDEO TRACK
+        AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstAsset.duration);
+        
+        if ([[firstAsset tracksWithMediaType:AVMediaTypeAudio] count]>0) {
+        //AUDIO TRACK
+            AVMutableCompositionTrack *firstAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [firstAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+        }else{
+            NSLog(@"warning: video has no audio");
+        }
+        
+        //FIXING ORIENTATION//
+        AVMutableVideoCompositionLayerInstruction *FirstlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
+        
+        AVAssetTrack *FirstAssetTrack = [[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+        
+        UIImageOrientation FirstAssetOrientation_  = UIImageOrientationUp;
+        
+        BOOL  isFirstAssetPortrait_  = NO;
+        
+        CGAffineTransform firstTransform = FirstAssetTrack.preferredTransform;
+        
+        CGFloat width = FirstAssetTrack.naturalSize.width;
+        CGFloat height = FirstAssetTrack.naturalSize.height;
+        
+        if(firstTransform.a == 0 && firstTransform.b == 1.0 && firstTransform.c == -1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_= UIImageOrientationRight;
+            isFirstAssetPortrait_ = YES;
+            //width = FirstAssetTrack.naturalSize.height;
+            //height = FirstAssetTrack.naturalSize.width;
+        }
+        if(firstTransform.a == 0 && firstTransform.b == -1.0 && firstTransform.c == 1.0 && firstTransform.d == 0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationLeft;
+            isFirstAssetPortrait_ = YES;
+            //width = FirstAssetTrack.naturalSize.height;
+            //height = FirstAssetTrack.naturalSize.width;
+        }
+        if(firstTransform.a == 1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == 1.0)
+        {
+            FirstAssetOrientation_ =  UIImageOrientationUp;
+        }
+        if(firstTransform.a == -1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == -1.0)
+        {
+            FirstAssetOrientation_ = UIImageOrientationDown;
+        }
+        
+        //CGFloat width = FirstAssetTrack.naturalSize.width;
+        //CGFloat height = FirstAssetTrack.naturalSize.height;
+        CGFloat FirstAssetScaleToFitRatio = 1.0;
+        
+        if(isFirstAssetPortrait_)
+        {
+            FirstAssetScaleToFitRatio = 9.0/16.0;
+            CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
+//            [FirstlayerInstruction setTransform:CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor) atTime:kCMTimeZero];
+            [FirstlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0.61*height, 0)) atTime:kCMTimeZero];
+        }
+        else
+        {
+            CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
+            [FirstlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0, 0)) atTime:kCMTimeZero];
+        }
+        [FirstlayerInstruction setOpacity:0.0 atTime:firstAsset.duration];
+        
+        MainInstruction.layerInstructions = [NSArray arrayWithObjects:FirstlayerInstruction,nil];;
+        
+        AVMutableVideoComposition *MainCompositionInst = [AVMutableVideoComposition videoComposition];
+        MainCompositionInst.instructions = [NSArray arrayWithObject:MainInstruction];
+        MainCompositionInst.frameDuration = CMTimeMake(1, 30);
+        MainCompositionInst.renderSize = CGSizeMake(width, height);
+        
+        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"mergeVideo-%d.mov",arc4random() % 1000]];
+        
+        NSURL *url = [NSURL fileURLWithPath:myPathDocs];
+        self.videoURL = url;
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+        
+        exporter.outputURL=url;
+        exporter.outputFileType = AVFileTypeQuickTimeMovie;
+        exporter.videoComposition = MainCompositionInst;
+        exporter.shouldOptimizeForNetworkUse = YES;
+        [exporter exportAsynchronouslyWithCompletionHandler:^
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self exportDidFinish:exporter];
+             });
+         }];
+    }else{
+        NSLog(@"Error, video track not found");
+    }
+}
+
+- (void)exportDidFinish:(AVAssetExportSession*)session
+{
+    if(session.status == AVAssetExportSessionStatusCompleted){
+        
+//       NSURL *outputURL = session.outputURL;
+//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+//        if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputURL]) {
+//            [library writeVideoAtPathToSavedPhotosAlbum:outputURL
+//                                        completionBlock:^(NSURL *assetURL, NSError *error){
+//                                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                                if (error) {
+//                                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Video Saving Failed"  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil, nil];
+//                                                    [alert show];
+//                                                }else{
+//                                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Video Saved" message:@"Saved To Photo Album"  delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//                                                    [alert show];
+//                                                }
+//                                                
+//                                            });
+//                                            
+//                                        }];
+//        }
+        if (self.transcodingPromtView != nil) {
+            [self.transcodingPromtView removeFromSuperview];
+        }
+        self.progressView.hidden = NO;
+        [uploadMediaFilesHandle upLoadMediaFiles:@"transcode.mp4" From:[self.videoURL path]];
+#warning DO WHAT EVER YOU NEED AFTER FIXING ORIENTATION
+    }else{
+        NSLog(@"error fixing orientation");
+    }
+}
+
+#pragma mark - ASProgressPopUpView dataSource
+
+// <ASProgressPopUpViewDataSource> is entirely optional
+// it allows you to supply custom NSStrings to ASProgressPopUpView
+- (NSString *)progressView:(ASProgressPopUpView *)progressView stringForProgress:(float)progress
+{
+    NSString *s;
+    if (progress > 0.0001) {
+        [self.uploadRate setBackgroundColor:[UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0 alpha:1.0f]];
+    }
+    [self.uploadRate setText:uploadMediaFilesHandle.progressValueSize];
+    NSString* progressValue = [NSString stringWithFormat:@"%d%%", (int)(uploadMediaFilesHandle.progressValue*100)];
+    return progressValue;
+}
+
+// by default ASProgressPopUpView precalculates the largest popUpView size needed
+// it then uses this size for all values and maintains a consistent size
+// if you want the popUpView size to adapt as values change then return 'NO'
+- (BOOL)progressViewShouldPreCalculatePopUpViewSize:(ASProgressPopUpView *)progressView;
+{
+    return NO;
 }
 
 @end

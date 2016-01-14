@@ -24,6 +24,7 @@
     self.navigationController.topViewController.title = NSLocalizedString(@"setting_page_title", nil);
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.tabBarController.navigationItem.rightBarButtonItem = nil;
+    [appDelegate setShouldRotate:NO];
     
 //    setttingAnimationImgView.animationImages = [NSArray arrayWithObjects:
 //                                                [UIImage imageNamed:@"image_setting01"],
@@ -69,6 +70,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate startNetworkConnectionMonitor];
+    [appDelegate setShouldRotate:NO];
     [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
 }

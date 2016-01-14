@@ -22,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [self.appDelegate setShouldRotate:YES];
     self.streamingURLlist = [[NSMutableArray alloc]init];
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -192,6 +193,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.appDelegate setShouldRotate:YES];
     [self.appDelegate.tabBarController setTabBarHidden:YES];
     if (!self.isEasyCapture) {
         [self getLiveStreamingURL:self.callID];

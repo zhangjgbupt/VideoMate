@@ -8,18 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "ASProgressPopUpView.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "UploadMediaFiles.h"
 #import "ArchiveData.h"
 #import "DropDownListView.h"
 
-@interface UGCPlaybackViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, kDropDownListViewDelegate>
+@interface UGCPlaybackViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, kDropDownListViewDelegate, ASProgressPopUpViewDataSource>
 
-@property (strong, nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) IBOutlet ASProgressPopUpView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *btnUpload;
 @property (strong, nonatomic) IBOutlet UITextView *textDescription;
 @property (strong, nonatomic) UILabel* placeholderLabel;
 @property (strong, nonatomic) IBOutlet UITextField *textMediaFileName;
+@property (strong, nonatomic) IBOutlet UILabel *uploadRate;
 
 @property (strong, nonatomic) NSMutableArray* channelNameList;
 @property (strong, nonatomic) NSMutableDictionary * channelListNameAndIdDict;
@@ -33,6 +35,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *seperator_1;
 @property (strong, nonatomic) IBOutlet UILabel *seperator_2;
 @property (strong, nonatomic) IBOutlet UIButton *btnChannelList;
+
+@property (strong, nonatomic) UIView* transcodingPromtView;
 
 @property (nonatomic) BOOL isKeyBoardShow;
 

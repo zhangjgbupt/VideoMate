@@ -31,6 +31,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     sortedChannelList = [NSMutableArray array];
     
     isOnlyDisplayFollowedChannel = FALSE;
+    [self.appDelegate setShouldRotate:NO];
     
     self.navigationController.topViewController.title = NSLocalizedString(@"channel_page_title", nil);
     self.navigationItem.backBarButtonItem = nil;
@@ -86,6 +87,7 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
     [appDelegate startNetworkConnectionMonitor];
     //[self getContributeChannleCount];
     [appDelegate.tabBarController setTabBarHidden:NO];
+    [self.appDelegate setShouldRotate:NO];
     [super viewWillAppear:YES];
 }
 

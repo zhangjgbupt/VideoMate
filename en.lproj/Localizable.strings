@@ -65,6 +65,7 @@
 "channel_select_title"="Select Channels";
 "upload_btn_title"="UPLOAD";
 "selected_channel"="Channels";
+"wait_for_transcoding"="In transcoding...";
 
 //media slide menu
 "slide_share"=" Share ";

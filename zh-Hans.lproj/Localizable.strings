@@ -66,6 +66,7 @@
 "channel_select_title"="选择频道";
 "upload_btn_title"="上传文件";
 "selected_channel"="频道";
+"wait_for_transcoding"="正在转码，请稍等...";
 
 //media slide menu
 "slide_share"=" 共享 ";
@@ -86,3 +87,4 @@
 "network_error_msg" = "网络连接错误，请确保wifi或者蜂窝数据连接正常";
 "file_name_blank_error" = "文件名称不能为空";
 "ugc_error"="文件上传失败，请重试！";
+

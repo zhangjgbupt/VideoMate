@@ -30,6 +30,8 @@
 
 #import <MOBFoundation/MOBFoundation.h>
 
+#define LOG2FILE
+
 @interface AppDelegate ()
 
 @end
@@ -41,13 +43,21 @@
 @synthesize accessToken, expireTimer, heartBeatTimer;
 @synthesize alertView;
 @synthesize isLoginSuccessful;
-@synthesize isAnonymous;
+@synthesize isAnonymous, shouldRotate;
 
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     isLoginSuccessful = -1;
     apnsClientId = nil;
+    shouldRotate = NO;
+    
+    #ifdef LOG2FILE
+    #if TARGET_IPHONE_SIMULATOR == 0
+    [self redirectLogToDocuments];
+    #endif
+    #endif
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -538,7 +548,10 @@
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
-    return UIInterfaceOrientationMaskAll;
+    if (self.shouldRotate)
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    else
+        return UIInterfaceOrientationMaskPortrait;
     
 }
 
@@ -809,4 +822,13 @@
     NSLog(@"\n>>>[GexinSdk SetModeOff]:%@\n\n",isModeOff?@"开启":@"关闭");
 }
 
+
+- (void)redirectLogToDocuments
+{
+    NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [allPaths objectAtIndex:0];
+    NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:@"log.txt"];
+    
+    freopen([pathForLog cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+}
 @end
