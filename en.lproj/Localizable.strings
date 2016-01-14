@@ -35,6 +35,9 @@
 "context_menu_item_new_capture"="New Video";
 "context_menu_item_exist_video"="Exist Video";
 
+//media text
+"media_description_title"="Media Description";
+
 //live text
 "live_description_title"="Live Description";
 "no_description" = "There is no description";

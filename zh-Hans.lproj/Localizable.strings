@@ -36,6 +36,9 @@
 "context_menu_item_new_capture"="新视频";
 "context_menu_item_exist_video"="已有视频";
 
+//media text
+"media_description_title"="视频简介";
+
 //live text
 "live_description_title"="直播简介";
 "no_description" = "没有描述";

@@ -97,7 +97,7 @@
     [self.desTitle setFont:[UIFont fontWithName:@"ArialRoundedMTBold" size:18.0]];
     
     CGFloat description_x = 10;
-    CGFloat description_y = desTitle_y + desTitle_h;
+    CGFloat description_y = desTitle_y + desTitle_h+ 5;
     CGFloat description_w = screenWidth - title_x*2;
     CGFloat description_h = 30;
     CGRect descriptionFrame = CGRectMake(description_x, description_y, description_w, description_h);
@@ -110,11 +110,12 @@
         [self.mediaFileDes setText:self.description];
     }
     
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     if (self.createTime != nil) {
+        
         NSDate* date = [NSDate dateWithTimeIntervalSince1970:([self.createTime doubleValue]/ 1000)];
-        [self.mediaFileCrateTime setText:[NSDateFormatter localizedStringFromDate:date
-                                                                    dateStyle:NSDateFormatterShortStyle
-                                                                    timeStyle:NSDateFormatterShortStyle]];
+        [self.mediaFileCrateTime setText:[dateFormatter stringFromDate:date]];
     } else {
         [self.mediaFileCrateTime setText:@""];
         [self.timeIcon setHidden:YES];

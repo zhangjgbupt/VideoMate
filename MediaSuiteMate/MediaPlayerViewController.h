@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import"ShareToolViewController.h"
-
+#import "ShareToolViewController.h"
+#import "LikeBtn.h"
 
 @interface MediaPlayerViewController : UIViewController <UIActionSheetDelegate, ShareToolViewControllerDelegate>
 @property (strong, nonatomic) NSString* archiveName;
@@ -27,12 +27,15 @@
 @property (strong, nonatomic) IBOutlet UIImageView *timeIcon;
 @property (strong, nonatomic) IBOutlet UILabel *mediaFileDes;
 @property (strong, nonatomic) IBOutlet UILabel *seperator;
-@property (strong, nonatomic) IBOutlet UILabel *seperator1;
-@property (strong, nonatomic) IBOutlet UIButton *likeBtn;
+@property (strong, nonatomic) IBOutlet UILabel *seperator1, *seperator2;
+@property (strong, nonatomic) IBOutlet UIImageView *slide;
+@property (strong, nonatomic) IBOutlet UILabel *desTitle;
 @property (strong, nonatomic) IBOutlet UILabel *likeLabel;
 @property (strong, nonatomic) IBOutlet UIButton *shareBtn;
 @property (strong, nonatomic) IBOutlet UILabel *shareLabel;
 @property (strong, nonatomic) IBOutlet UILabel *labelBack;
+@property (strong, nonatomic) IBOutlet LikeBtn *zanBtn;
+
 //for weixin share
 @property (nonatomic, retain)NSString *shareTitle;
 @property (nonatomic, retain)NSString *detailInfo;

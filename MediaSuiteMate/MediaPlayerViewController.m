@@ -11,6 +11,7 @@
 #import "Utils.h"
 #import "ShareView.h"
 #import <AVFoundation/AVFoundation.h>
+#import "LikeBtn.h"
 
 @interface MediaPlayerViewController ()
 
@@ -20,9 +21,11 @@
 @synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl;
 @synthesize player;
 @synthesize streamingURLlist;
-@synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator, seperator1;
-@synthesize likeBtn, likeLabel, shareBtn, shareLabel, likeStatus, likeCount, labelBack;
+@synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator, seperator1, seperator2,desTitle;
+@synthesize likeLabel, shareBtn, shareLabel, likeStatus, likeCount, labelBack;
 @synthesize appDelegate;
+@synthesize slide;
+@synthesize zanBtn;
 
 //for weixin share
 @synthesize shareTitle  = _shareTitle;
@@ -58,7 +61,7 @@
     [self.player prepareToPlay];          //Start preparing the video
     
     CGFloat title_x = 10;
-    CGFloat title_y = player_y + player_h + 15;
+    CGFloat title_y = player_y + player_h + 10;
     CGFloat title_w = (screenWidth - title_x*2)*3/5;
     CGFloat title_h = 25;
     CGRect titleFrame = CGRectMake(title_x, title_y, title_w, title_h);
@@ -79,65 +82,96 @@
     CGRect createTimeFrame = CGRectMake(createTime_x, createTime_y, createTime_w, createTime_h);
     [self.mediaFileCrateTime setFrame:createTimeFrame];
     
-    CGFloat seperator_x = title_x;
-    CGFloat seperator_y = title_y + title_h + 5;
-    CGFloat seperator_w = screenWidth - title_x*2;
+    CGFloat seperator_x = 0;
+    CGFloat seperator_y = title_y + title_h + 10;
+    CGFloat seperator_w = screenWidth;
     CGFloat seperator_h = 1;
     CGRect seperatorFrame = CGRectMake(seperator_x, seperator_y, seperator_w, seperator_h);
     [self.seperator setFrame:seperatorFrame];
+ 
+    CGFloat slide_x = 0;
+    CGFloat slide_y = seperator_y + seperator_h + 5;
+    CGFloat slide_w = 5;
+    CGFloat slide_h = 30;
+    [self.slide setFrame:CGRectMake(slide_x, slide_y, slide_w, slide_h)];
+    [self.slide setImage:[UIImage imageNamed:@"live_tag"]];
     
-    CGFloat description_x = title_x;
-    CGFloat description_y = seperator_y + seperator_h + 5;
+    CGFloat desTitle_y = seperator_y + seperator_h + 10;
+    CGFloat desTitle_h = 20;
+    CGRect desTitleFrame = CGRectMake(10, desTitle_y, 100, desTitle_h);
+    [self.desTitle setFrame:desTitleFrame];
+    [self.desTitle setText:NSLocalizedString(@"media_description_title", nil)];
+    [self.desTitle setFont:[UIFont fontWithName:@"ArialRoundedMTBold" size:18.0]];
+    
+    CGFloat description_x = 10;
+    CGFloat description_y = desTitle_y + desTitle_h + 5;
     CGFloat description_w = screenWidth - title_x*2;
     CGFloat description_h = 30;
     CGRect descriptionFrame = CGRectMake(description_x, description_y, description_w, description_h);
     [self.mediaFileDes setFrame:descriptionFrame];
-    [self.mediaFileDes setText:self.archiveDes];
-    
+    [self.mediaFileDes setFont:[UIFont fontWithName:@"Arial" size:14.0]];
+    [self.mediaFileDes setTextColor:[UIColor grayColor]];
+    if ([self.archiveDes length] == 0) {
+        [self.mediaFileDes setText:NSLocalizedString(@"no_description", nil)];
+    } else {
+        [self.mediaFileDes setText:self.archiveDes];
+    }
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:([fileData.creatTime doubleValue]/ 1000)];
-    [self.mediaFileCrateTime setText:[NSDateFormatter localizedStringFromDate:date
-                                                                   dateStyle:NSDateFormatterShortStyle
-                                                                   timeStyle:NSDateFormatterShortStyle]];
+    [self.mediaFileCrateTime setText:[dateFormatter stringFromDate:date]];
     
-    CGFloat seperator1_x = title_x;
-    CGFloat seperator1_y = screenHeight - 60;
-    CGFloat seperator1_w = screenWidth - title_x*2;
+    CGFloat seperator1_x = 0;
+    CGFloat seperator1_y = screenHeight - 50;
+    CGFloat seperator1_w = screenWidth;
     CGFloat seperator1_h = 1;
     CGRect seperatorFrame1 = CGRectMake(seperator1_x, seperator1_y, seperator1_w, seperator1_h);
     [self.seperator1 setFrame:seperatorFrame1];
     
-    CGFloat likeBtn_x = 50;
-    CGFloat likeBtn_y = screenHeight-50;
-    CGFloat likeBtn_w = 32;
-    CGFloat likeBtn_h = 32;
+    CGFloat likeBtn_x = screenWidth/4 - 32;
+    CGFloat likeBtn_y = screenHeight - 50 + (50-22)/2;
+    CGFloat likeBtn_w = 22;
+    CGFloat likeBtn_h = 22;
     CGRect likeBtnFrame = CGRectMake(likeBtn_x, likeBtn_y, likeBtn_w, likeBtn_h);
-    [likeBtn setFrame:likeBtnFrame];
-    [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_normal.png"] forState:UIControlStateNormal];
-    [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_pressed.png"] forState:UIControlStateHighlighted];
+//    [likeBtn setFrame:likeBtnFrame];
+//    [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_normal.png"] forState:UIControlStateNormal];
+//    [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_pressed.png"] forState:UIControlStateHighlighted];
     
-    CGFloat likeLabel_x = likeBtn_x+likeBtn_w+5;
+    CGFloat likeLabel_x = likeBtn_x+likeBtn_w + 20;
     CGFloat likeLabel_y = likeBtn_y;
-    CGFloat likeLabel_w = 50;
-    CGFloat likeLabel_h = 32;
+    CGFloat likeLabel_w = 30;
+    CGFloat likeLabel_h = 22;
     CGRect likeLabelFrame = CGRectMake(likeLabel_x, likeLabel_y, likeLabel_w, likeLabel_h);
     [self.likeLabel setFrame:likeLabelFrame];
     [self.likeLabel setText:self.likeCount];
+    [self.likeLabel setFont:[UIFont fontWithName:@"ArialMT" size:16]];
     
-    CGFloat shareBtn_x = screenWidth - 50 - 50 - 5 - 32;
-    CGFloat shareBtn_y = likeBtn_y;
-    CGFloat shareBtn_w = 32;
-    CGFloat shareBtn_h = 32;
+    CGFloat seperator2_x = screenWidth/2 - 0.5;
+    CGFloat seperator2_y = seperator1_y + 6;
+    CGFloat seperator2_w = 1;
+    CGFloat seperator2_h = 50 - 6*2;
+    CGRect seperatorFrame2 = CGRectMake(seperator2_x, seperator2_y, seperator2_w, seperator2_h);
+    [self.seperator2 setFrame:seperatorFrame2];
+    
+    CGFloat shareBtn_x = screenWidth/2;
+    CGFloat shareBtn_y = seperator1_y;
+    CGFloat shareBtn_w = screenWidth/2;
+    CGFloat shareBtn_h = 50;
     CGRect shareBtnFrame = CGRectMake(shareBtn_x, shareBtn_y, shareBtn_w, shareBtn_h);
     [self.shareBtn setFrame:shareBtnFrame];
-    [self.shareBtn setBackgroundImage:[UIImage imageNamed:@"icon_share_normal.png"] forState:UIControlStateNormal];
-    [self.shareBtn setBackgroundImage:[UIImage imageNamed:@"icon_share_pressed.png"] forState:UIControlStateHighlighted];
+    [self.shareBtn.imageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.shareBtn setImage:[UIImage imageNamed:@"icon_share_normal.png"] forState:UIControlStateNormal];
+    [self.shareBtn setImage:[UIImage imageNamed:@"icon_share_pressed.png"] forState:UIControlStateHighlighted];
     
-    CGFloat shareLabel_x = shareBtn_x+shareBtn_w+5;
-    CGFloat shareLabel_y = shareBtn_y;
-    CGFloat shareLabel_w = 50;
-    CGFloat shareLabel_h = 32;
-    CGRect shareLabelFrame = CGRectMake(shareLabel_x, shareLabel_y, shareLabel_w, shareLabel_h);
-    [self.shareLabel setFrame:shareLabelFrame];
+    self.zanBtn=[[LikeBtn alloc] init];
+    [self.zanBtn setFrame:likeBtnFrame];
+    [self.view addSubview:zanBtn];
+    [self.zanBtn setType:LikeBtnTypeFirework];
+    
+    [self.zanBtn setClickHandler:^(LikeBtn *zanButton) {
+        [self doLike];
+    }];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(moviePlayerPlaybackStateDidChange:)  name:MPMoviePlayerPlaybackStateDidChangeNotification  object:nil];
@@ -330,10 +364,12 @@
              //LIKE/DISLIKE
              self.likeStatus = [responseObject valueForKey:@"status"];
              if ([self.likeStatus isEqualToString:@"LIKE"]) {
-                 [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_pressed.png"] forState:UIControlStateNormal];
+//                 [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_pressed.png"] forState:UIControlStateNormal];
+                 [self.zanBtn setIsLike:YES];
                  [self.likeLabel setTextColor:[UIColor colorWithRed:221.0f/255.0f green:77.0f/255.0f blue:53.0f/255.0f alpha:1.0f]];
              } else {
-                 [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_normal.png"] forState:UIControlStateNormal];
+//                 [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"icon_like_normal.png"] forState:UIControlStateNormal];
+                 [self.zanBtn setIsLike:NO];
                  [self.likeLabel setTextColor:[UIColor colorWithRed:170.0f/255.0f green:170.0f/255.0f blue:170.0f/255.0f alpha:1.0f]];
              }
          }
@@ -386,52 +422,9 @@
 - (void) startPlay {
     NSString* url = [self.streamingURLlist objectAtIndex:0];
     [self.player setContentURL:[NSURL URLWithString:url]];
-    NSInteger x = [self degressFromVideoFileWithURL:[NSURL URLWithString:url]];
-    NSLog(@"test %ld",x);
-    [self rotateVideoView:self.player degrees:0];
     [self.player play];
 }
 
--(void) rotateVideoView:(MPMoviePlayerViewController *)movePlayerViewController degrees:(NSInteger)degrees {
-    {
-        if(degrees==0||degrees==360) return;
-        if(degrees<0) degrees = (degrees % 360) + 360;
-        if(degrees>360) degrees = degrees % 360;
-        // MPVideoView在iOS8中Tag为1002，不排除苹果以后更改的可能性。参考递归查看View层次结构的lldb命令： (lldb) po [movePlayerViewController.view recursiveDescription]
-        UIView *videoView = [movePlayerViewController.view viewWithTag:1002];
-        if ([videoView isKindOfClass:NSClassFromString(@"MPVideoView")]) {
-            videoView.transform = CGAffineTransformMakeRotation(M_PI * degrees / 180.0);
-            videoView.frame = movePlayerViewController.view.bounds;
-        }
-    }
-}
-
--(NSUInteger)degressFromVideoFileWithURL:(NSURL *)url
-{
-    NSUInteger degress = 0;
-    AVAsset *asset = [AVAsset assetWithURL:url];
-    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-    NSLog(@"%ld",[tracks count]);
-    if([tracks count] > 0) {
-        AVAssetTrack *videoTrack = [tracks objectAtIndex:0];
-        CGAffineTransform t = videoTrack.preferredTransform;
-        NSLog(@"detail %f,%f,%f,%f",t.a,t.b,t.c,t.d);
-        if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
-            // Portrait
-            degress = 90;
-        }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
-            // PortraitUpsideDown
-            degress = 270;
-        }else if(t.a == 1.0 && t.b == 0 && t.c == 0 && t.d == 1.0){
-            // LandscapeRight
-            degress = 0;
-        }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
-            // LandscapeLeft
-            degress = 180;
-        }
-    }
-    return degress;
-}
 /*
 #pragma mark - Navigation
 
