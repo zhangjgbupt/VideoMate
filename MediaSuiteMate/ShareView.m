@@ -94,10 +94,10 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
         for (int i = 0; i < [self.imageArr count]; i++) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.tag = i +1;
-            btn.frame = CGRectMake(Margin/2+2*Margin*i,60, Margin, Margin);
+            btn.frame = CGRectMake(Margin*3/2+2*Margin*i,60, Margin, Margin);
             [btn setBackgroundImage:[UIImage imageNamed:self.imageArr[i]] forState:UIControlStateNormal];
             
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(Margin/2+2*Margin*i, CGRectGetMaxY(btn.frame)+10, Margin, 15)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(Margin*3/2+2*Margin*i, CGRectGetMaxY(btn.frame)+10, Margin, 15)];
             
             label.textAlignment = NSTextAlignmentCenter;
             label.text = self.titleArr[i];
