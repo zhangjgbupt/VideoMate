@@ -145,8 +145,13 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
             NSURL* thumUrl = [NSURL URLWithString:thumUrlString];
             UIImage* thumImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:thumUrl]];
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                [cell.archiveThum setImage:thumImage];
-            });
+                if (thumImage==nil) {
+                    [cell.archiveThum setImage:[UIImage imageNamed:@"image_default_media"]];
+                } else {
+                   [cell.archiveThum setImage:thumImage];
+                }
+            }
+           );
         });
     }
     
@@ -550,7 +555,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         
         [self presentModalViewController: picker animated: YES];
         
-        //[self presentViewController:picker animated:YES completion:NULL];
+        //[self presentViewController:picker animated:YES completion:nil];
     }
 }
 
@@ -570,7 +575,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         //picker.videoMaximumDuration = 300.0f; // 300 seconds
         
-        [self presentViewController:picker animated:YES completion:NULL];
+        [self presentViewController:picker animated:YES completion:nil];
     }
     
 }
@@ -585,7 +590,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
         UISaveVideoAtPathToSavedPhotosAlbum([self.videoURL path], self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
     }
     
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    picker.delegate = nil;
     
     UGCPlaybackViewController*  ugcPlaybackViewController = [[UGCPlaybackViewController alloc]init];
     ugcPlaybackViewController.videoURL = self.videoURL;
@@ -594,7 +600,8 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    picker.delegate = nil;
     
 }
 
