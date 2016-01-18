@@ -6,15 +6,16 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MediaPlayerViewController">
             <connections>
-                <outlet property="likeBtn" destination="2kb-0v-hkl" id="9c9-1S-7oo"/>
+                <outlet property="desTitle" destination="bv7-RZ-kK7" id="mI9-Rq-Tyy"/>
                 <outlet property="likeLabel" destination="7Aw-Em-cl2" id="8ok-DG-w4t"/>
                 <outlet property="mediaFileCrateTime" destination="udB-g4-Y4V" id="78J-pS-NsR"/>
                 <outlet property="mediaFileDes" destination="qUV-gQ-eAd" id="0tI-cj-Acb"/>
                 <outlet property="mediaFileTitle" destination="o02-ag-avP" id="LBe-Pd-Q4n"/>
                 <outlet property="seperator" destination="bTu-Wm-XDR" id="GyE-gE-yEK"/>
                 <outlet property="seperator1" destination="M0j-nK-1u6" id="ElP-uZ-UAX"/>
+                <outlet property="seperator2" destination="p5t-xe-wBH" id="sdN-RZ-dzy"/>
                 <outlet property="shareBtn" destination="XUJ-sZ-0gG" id="RCF-2b-d2d"/>
-                <outlet property="shareLabel" destination="qh7-wI-pkw" id="34E-Cf-Onx"/>
+                <outlet property="slide" destination="jeh-xv-Mzo" id="WNm-P9-ahW"/>
                 <outlet property="timeIcon" destination="9U0-n5-CSH" id="fyW-ds-r4c"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -25,7 +26,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="o02-ag-avP">
-                    <rect key="frame" x="10" y="225" width="157" height="21"/>
+                    <rect key="frame" x="8" y="225" width="157" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -45,35 +46,34 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="2kb-0v-hkl">
                     <rect key="frame" x="49" y="623" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="likeBtnClick:" destination="-1" eventType="touchUpInside" id="Ryt-I3-ylw"/>
-                    </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bTu-Wm-XDR">
                     <rect key="frame" x="0.0" y="254" width="375" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.84850457700000004" green="0.84850457700000004" blue="0.84850457700000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qUV-gQ-eAd">
-                    <rect key="frame" x="8" y="254" width="359" height="110"/>
+                    <rect key="frame" x="8" y="304" width="359" height="110"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="赞" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Aw-Em-cl2">
-                    <rect key="frame" x="83" y="631" width="42" height="21"/>
+                    <rect key="frame" x="87" y="631" width="42" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XUJ-sZ-0gG">
-                    <rect key="frame" x="244" y="626" width="32" height="32"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XUJ-sZ-0gG">
+                    <rect key="frame" x="281" y="634" width="27" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                    <state key="normal" image="icon_share.png"/>
                     <connections>
                         <action selector="toSendView" destination="-1" eventType="touchUpInside" id="9Uq-xE-aMn"/>
                     </connections>
@@ -81,16 +81,28 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="M0j-nK-1u6">
                     <rect key="frame" x="0.0" y="623" width="375" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.84850457700000004" green="0.84850457700000004" blue="0.84850457700000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="分享" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qh7-wI-pkw">
-                    <rect key="frame" x="284" y="631" width="60" height="21"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="jeh-xv-Mzo">
+                    <rect key="frame" x="0.0" y="254" width="8" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bv7-RZ-kK7">
+                    <rect key="frame" x="11" y="257" width="68" height="33"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="p5t-xe-wBH">
+                    <rect key="frame" x="188" y="623" width="1" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -100,6 +112,7 @@
         </view>
     </objects>
     <resources>
+        <image name="icon_share.png" width="27" height="27"/>
         <image name="icon_time.png" width="12" height="12"/>
     </resources>
 </document>
