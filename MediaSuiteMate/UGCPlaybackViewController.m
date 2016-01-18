@@ -237,15 +237,20 @@
     if (![[fileName pathExtension] isEqualToString:@".mp4"]){
         fileName = [fileName stringByAppendingString:@".mp4"];
     }
-    if ([self isNeededTranscode:self.videoURL]) {
-        [self videoFixOrientation:self.videoURL];
-        // show transcoding waiting dialog.
-        self.transcodingPromtView = [FVCustomAlertView showDefaultLoadingAlertOnView:self.view withTitle:NSLocalizedString(@"wait_for_transcoding", nil)];
-    } else {
-        self.progressView.hidden = NO;
-        [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
-    }
     
+//    if ([self isNeededTranscode:self.videoURL]) {
+//        [self videoFixOrientation:self.videoURL];
+//        // show transcoding waiting dialog.
+//        self.transcodingPromtView = [FVCustomAlertView showDefaultLoadingAlertOnView:self.view withTitle:NSLocalizedString(@"wait_for_transcoding", nil)];
+//    } else {
+//        self.progressView.hidden = NO;
+//        [uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
+//    }
+    
+    [self videoFixOrientation:self.videoURL];
+    self.transcodingPromtView = [FVCustomAlertView showDefaultLoadingAlertOnView:self.view withTitle:NSLocalizedString(@"wait_for_transcoding",nil)];
+    
+
     //[uploadMediaFilesHandle upLoadMediaFiles:fileName From:[self.videoURL path]];
 }
 
@@ -404,6 +409,7 @@
 }
 
 -(void) submitNewArchive {
+    [self deleteTempFile:self.videoController.contentURL];
     [self getArchivePeroperty];
 }
 
@@ -415,12 +421,25 @@
 }
 
 -(void) uploadMediaFileFail {
+    [self deleteTempFile:self.videoController.contentURL];
     [[Utils getInstance] invokeAlert:NSLocalizedString(@"info_level_error", nil)
                              message:NSLocalizedString(@"ugc_error", nil)
                             delegate:self];
     
     [self showUploadBtn];
     
+}
+
+-(void) deleteTempFile:(NSURL*) path {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString* pathStr = [path absoluteString];
+    pathStr = [pathStr substringFromIndex:15];
+    if ([fileManager fileExistsAtPath:pathStr]) {
+        NSError *error;
+        if ([fileManager removeItemAtPath:pathStr error:&error] != YES) {
+            NSLog(@"Unable to delete temp recording file: %@", [error localizedDescription]);
+        }
+    }
 }
 
 - (NSString *)escapeUrl:(NSString *)string
@@ -671,18 +690,30 @@
         MainCompositionInst.frameDuration = CMTimeMake(1, 30);
         MainCompositionInst.renderSize = CGSizeMake(width, height);
         
-        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"mergeVideo-%d.mov",arc4random() % 1000]];
+        NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:@"mergeVideo.mp4"];
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error;
+        BOOL fileExists = [fileManager fileExistsAtPath:myPathDocs];
+        
+        if (fileExists)
+        {
+            BOOL success = [fileManager removeItemAtPath:myPathDocs error:&error];
+            if (!success) NSLog(@"Error: %@", [error localizedDescription]);
+            
+        }
+        
         
         NSURL *url = [NSURL fileURLWithPath:myPathDocs];
         self.videoURL = url;
         
-        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset1280x720];
         
         exporter.outputURL=url;
-        exporter.outputFileType = AVFileTypeQuickTimeMovie;
+        exporter.outputFileType = AVFileTypeMPEG4;
         exporter.videoComposition = MainCompositionInst;
         exporter.shouldOptimizeForNetworkUse = YES;
         [exporter exportAsynchronouslyWithCompletionHandler:^

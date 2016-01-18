@@ -119,7 +119,13 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
         case 1:{
             //1、创建分享参数
             NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-            NSArray* imageArray = @[[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.pictureName]]]];
+            UIImage* thumImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.pictureName]]];
+            if (thumImage==nil) {
+                thumImage = [UIImage imageNamed:@"image_default_media"];
+            }
+            
+            NSArray* imageArray = @[thumImage];
+            //NSArray* imageArray = @[[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.pictureName]]]];
             if (imageArray)
             {
                 [shareParams SSDKSetupShareParamsByText:self.title
