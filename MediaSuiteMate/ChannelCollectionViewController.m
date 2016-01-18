@@ -45,9 +45,10 @@ static NSString * const reuseChannelIdentifier = @"channelCell";
                                                           target:self
                                                           action:@selector(switchChannelListDataSource)];
     
-    self.navigationItem.rightBarButtonItem = channelFollowButton;
-    self.navigationItem.leftBarButtonItem = channelListSwitchButton;
-    
+    if (!appDelegate.isAnonymous) {
+        self.navigationItem.rightBarButtonItem = channelFollowButton;
+        self.navigationItem.leftBarButtonItem = channelListSwitchButton;
+    }
     
     NSMutableArray *childViewControllers = [[NSMutableArray alloc] initWithArray: appDelegate.navController.viewControllers];
     if ([[childViewControllers objectAtIndex:0] isKindOfClass:[LoginViewController class]]) {

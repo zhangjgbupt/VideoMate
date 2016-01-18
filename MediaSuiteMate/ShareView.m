@@ -142,7 +142,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
                                                                             delegate:nil
                                                                    cancelButtonTitle:@"确定"
                                                                    otherButtonTitles:nil];
-                         [alertView show];
+                         //[alertView show];
                          break;
                      }
                      case SSDKResponseStateFail:
@@ -152,7 +152,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
                                                                             delegate:nil
                                                                    cancelButtonTitle:@"确定"
                                                                    otherButtonTitles:nil];
-                         [alertView show];
+                         //[alertView show];
                          break;
                      }
                      case SSDKResponseStateCancel:
@@ -162,7 +162,7 @@ CG_INLINE void AlertLog (NSString *titleStr,NSString *message,NSString *button1,
                                                                             delegate:nil
                                                                    cancelButtonTitle:@"确定"
                                                                    otherButtonTitles:nil];
-                         [alertView show];
+                         //[alertView show];
                          break;
                      }
                      default:
