@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+#import <StoreKit/StoreKit.h>
 
-@interface SettingViewController : UIViewController
-@property (strong, nonatomic) IBOutlet UIButton *logoutBtn;
-@property (strong, nonatomic) IBOutlet UILabel *appName;
-@property (strong, nonatomic) IBOutlet UILabel *serverAddress;
-@property (strong, nonatomic) IBOutlet UILabel *userName;
-//@property (strong, nonatomic) IBOutlet UIImageView *setttingAnimationImgView;
-@property (strong, nonatomic) IBOutlet UIImageView *appicon;
+@interface SettingViewController : UIViewController <SKStoreProductViewControllerDelegate>
+@property (strong, nonatomic) IBOutlet UIButton *logoutBtn, *mark, *about;
+@property (strong, nonatomic) IBOutlet UILabel *serverLabel, *serverTitle, *seperator1, *seperator2, *desLabel, *versionTitle, *seperator3, *seperator4, *seperator5, *seperator6;
 
-- (IBAction)doLogout:(id)sender;
+@property Boolean isLogin;
+
 @end

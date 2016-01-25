@@ -30,7 +30,7 @@
 
 #import <MOBFoundation/MOBFoundation.h>
 
-#define LOG2FILE
+//#define LOG2FILE
 
 @interface AppDelegate ()
 

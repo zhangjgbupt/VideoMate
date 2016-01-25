@@ -245,7 +245,15 @@
 		A5E84C801C24034600D70312 /* ShareSDKInterfaceAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E84C6A1C24034600D70312 /* ShareSDKInterfaceAdapter.framework */; };
 		A5E84C811C24034600D70312 /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A5E84C6B1C24034600D70312 /* ShareSDKUI.bundle */; };
 		A5E84C821C24034600D70312 /* ShareSDKUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E84C6C1C24034600D70312 /* ShareSDKUI.framework */; };
+		A5EF72511C4792E20047AE69 /* LikeBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EF72501C4792E20047AE69 /* LikeBtn.m */; };
+		A5EF72531C4792EC0047AE69 /* EffectImage-red.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EF72521C4792EC0047AE69 /* EffectImage-red.png */; };
 		A5F109351C0DA2B000736C89 /* LiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F109331C0DA2B000736C89 /* LiveViewController.m */; };
+		A5F2865D1C54FBC600AAD146 /* SettingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F2865C1C54FBC600AAD146 /* SettingLabel.m */; };
+		A5F286631C55060A00AAD146 /* icon_arrow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F286611C55060A00AAD146 /* icon_arrow@3x.png */; };
+		A5F286641C55060A00AAD146 /* setting_login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F286621C55060A00AAD146 /* setting_login@3x.png */; };
+		A5F286671C55061A00AAD146 /* icon_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F286651C55061A00AAD146 /* icon_arrow@2x.png */; };
+		A5F286681C55061A00AAD146 /* setting_login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F286661C55061A00AAD146 /* setting_login@2x.png */; };
+		A5F2866A1C5523DA00AAD146 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5F286691C5523DA00AAD146 /* StoreKit.framework */; };
 		A5F4C6F61C0EBAEC00FD06C6 /* LiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5F4C6F51C0EBAEC00FD06C6 /* LiveViewController.xib */; };
 		A5F4C6FE1C0EFFC500FD06C6 /* LiveData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F4C6FD1C0EFFC500FD06C6 /* LiveData.m */; };
 		A5F4C7021C103F2200FD06C6 /* LiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F4C7001C103F2200FD06C6 /* LiveTableViewCell.m */; };
@@ -561,8 +569,18 @@
 		A5E84C6A1C24034600D70312 /* ShareSDKInterfaceAdapter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKInterfaceAdapter.framework; sourceTree = "<group>"; };
 		A5E84C6B1C24034600D70312 /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
 		A5E84C6C1C24034600D70312 /* ShareSDKUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKUI.framework; sourceTree = "<group>"; };
+		A5EF724F1C4792E20047AE69 /* LikeBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeBtn.h; sourceTree = "<group>"; };
+		A5EF72501C4792E20047AE69 /* LikeBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeBtn.m; sourceTree = "<group>"; };
+		A5EF72521C4792EC0047AE69 /* EffectImage-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EffectImage-red.png"; sourceTree = "<group>"; };
 		A5F109321C0DA2B000736C89 /* LiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveViewController.h; sourceTree = "<group>"; };
 		A5F109331C0DA2B000736C89 /* LiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveViewController.m; sourceTree = "<group>"; };
+		A5F2865B1C54FBC600AAD146 /* SettingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingLabel.h; sourceTree = "<group>"; };
+		A5F2865C1C54FBC600AAD146 /* SettingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingLabel.m; sourceTree = "<group>"; };
+		A5F286611C55060A00AAD146 /* icon_arrow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_arrow@3x.png"; sourceTree = "<group>"; };
+		A5F286621C55060A00AAD146 /* setting_login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_login@3x.png"; sourceTree = "<group>"; };
+		A5F286651C55061A00AAD146 /* icon_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_arrow@2x.png"; sourceTree = "<group>"; };
+		A5F286661C55061A00AAD146 /* setting_login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_login@2x.png"; sourceTree = "<group>"; };
+		A5F286691C5523DA00AAD146 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A5F4C6F51C0EBAEC00FD06C6 /* LiveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveViewController.xib; sourceTree = "<group>"; };
 		A5F4C6FC1C0EFFC500FD06C6 /* LiveData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveData.h; sourceTree = "<group>"; };
 		A5F4C6FD1C0EFFC500FD06C6 /* LiveData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveData.m; sourceTree = "<group>"; };
@@ -593,6 +611,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5F2866A1C5523DA00AAD146 /* StoreKit.framework in Frameworks */,
 				6547AECB1C3CB9D400374466 /* Photos.framework in Frameworks */,
 				656367FA1BD4DF9200917DB2 /* QuartzCore.framework in Frameworks */,
 				6547AEC91C3CB90600374466 /* MobileCoreServices.framework in Frameworks */,
@@ -629,6 +648,7 @@
 		39CC2FD0B433B1D956B9E69E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A5F286691C5523DA00AAD146 /* StoreKit.framework */,
 				6547AECA1C3CB9D400374466 /* Photos.framework */,
 				6547AEC81C3CB90600374466 /* MobileCoreServices.framework */,
 				6547AEC61C3CB8F800374466 /* MediaPlayer.framework */,
@@ -689,6 +709,8 @@
 		6520B7EC1BCF3BA3009E4B48 /* MediaSuiteMate */ = {
 			isa = PBXGroup;
 			children = (
+				A5EF724F1C4792E20047AE69 /* LikeBtn.h */,
+				A5EF72501C4792E20047AE69 /* LikeBtn.m */,
 				65309E5E1C43C301001E9C68 /* ASPopUpView.h */,
 				65309E5F1C43C301001E9C68 /* ASPopUpView.m */,
 				65309E601C43C301001E9C68 /* ASProgressPopUpView.h */,
@@ -724,6 +746,8 @@
 				65D0B35E1BD64B540066138A /* MediaPlayerViewController.h */,
 				65D0B35F1BD64B540066138A /* MediaPlayerViewController.m */,
 				65D0B3601BD64B540066138A /* MediaPlayerViewController.xib */,
+				A5F2865B1C54FBC600AAD146 /* SettingLabel.h */,
+				A5F2865C1C54FBC600AAD146 /* SettingLabel.m */,
 				654AEACE1BCF82C000921978 /* SettingViewController.h */,
 				654AEACF1BCF82C000921978 /* SettingViewController.m */,
 				654AEAD01BCF82C000921978 /* SettingViewController.xib */,
@@ -835,6 +859,7 @@
 		654AEA911BCF471600921978 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A5EF72521C4792EC0047AE69 /* EffectImage-red.png */,
 				A5FF60241C2805C80030B1DF /* icon_friend.png */,
 				A5FF60251C2805C80030B1DF /* icon_qq.png */,
 				A5FF60261C2805C80030B1DF /* icon_wechat.png */,
@@ -894,6 +919,8 @@
 		65E728111BD1127E00B16E78 /* image @3x */ = {
 			isa = PBXGroup;
 			children = (
+				A5F286611C55060A00AAD146 /* icon_arrow@3x.png */,
+				A5F286621C55060A00AAD146 /* setting_login@3x.png */,
 				65B22ABB1C3F89C70067066A /* loading_01@3x.png */,
 				65B22ABC1C3F89C70067066A /* loading_02@3x.png */,
 				65B22ABD1C3F89C70067066A /* loading_03@3x.png */,
@@ -972,6 +999,8 @@
 		65E7281C1BD1127E00B16E78 /* images @2x */ = {
 			isa = PBXGroup;
 			children = (
+				A5F286651C55061A00AAD146 /* icon_arrow@2x.png */,
+				A5F286661C55061A00AAD146 /* setting_login@2x.png */,
 				65B22ACB1C3F89DB0067066A /* loading_01@2x.png */,
 				65B22ACC1C3F89DB0067066A /* loading_02@2x.png */,
 				65B22ACD1C3F89DB0067066A /* loading_03@2x.png */,
@@ -1140,7 +1169,7 @@
 				TargetAttributes = {
 					6520B7E91BCF3BA3009E4B48 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = W83UZNFYXX;
+						DevelopmentTeam = X7CJHXZPVR;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1220,6 +1249,7 @@
 				65B22AD81C3F89DC0067066A /* loading_06@2x.png in Resources */,
 				6520B7FD1BCF3BA3009E4B48 /* Assets.xcassets in Resources */,
 				65B22AD51C3F89DC0067066A /* loading_03@2x.png in Resources */,
+				A5F286681C55061A00AAD146 /* setting_login@2x.png in Resources */,
 				65D0B3A81BDA0BE40066138A /* icon_username@3x.png in Resources */,
 				A5F4C7081C118E4500FD06C6 /* LivePlayerViewController.xib in Resources */,
 				65BDB23A1C069DA700E0350E /* image_setting@3x.png in Resources */,
@@ -1248,6 +1278,7 @@
 				65D0B3621BD64B540066138A /* MediaPlayerViewController.xib in Resources */,
 				65D0B38C1BD89E050066138A /* pop_time_bg@3x.png in Resources */,
 				654AB1A31BE8940E00D507AE /* icon_download_pressed@3x.png in Resources */,
+				A5F286671C55061A00AAD146 /* icon_arrow@2x.png in Resources */,
 				65D0B3781BD89BEC0066138A /* ChannelFollowViewCell.xib in Resources */,
 				65BDB2461C083E6200E0350E /* image_setting03@2x.png in Resources */,
 				654AEAAC1BCF471600921978 /* navigationbar_background_tall.png in Resources */,
@@ -1269,6 +1300,7 @@
 				65D0B3C11BDA126F0066138A /* 120x120.png in Resources */,
 				65E7282A1BD1127E00B16E78 /* icon_home_pressed@3x.png in Resources */,
 				65D0B3961BD8DDA70066138A /* icon_time@2x.png in Resources */,
+				A5F286631C55060A00AAD146 /* icon_arrow@3x.png in Resources */,
 				65D0B37F1BD89DF00066138A /* btn_followed_pressed@2x.png in Resources */,
 				65D0B3CC1BDA2B860066138A /* icon_mymedia_pressed@2x.png in Resources */,
 				65D0B3CA1BDA2B860066138A /* icon_channel_pressed@2x.png in Resources */,
@@ -1289,6 +1321,7 @@
 				65D0B3DA1BDA2B9E0066138A /* image_default_media@3x.png in Resources */,
 				652B887B1BE0A3660092EAB8 /* icon_media@3x.png in Resources */,
 				65BDB2391C069DA700E0350E /* image_media@3x.png in Resources */,
+				A5EF72531C4792EC0047AE69 /* EffectImage-red.png in Resources */,
 				654AB1BD1BE9E7E000D507AE /* checkbox_Selected@2x.png in Resources */,
 				A5E84C811C24034600D70312 /* ShareSDKUI.bundle in Resources */,
 				65D0B39C1BD9CDEF0066138A /* MyMediaViewController.xib in Resources */,
@@ -1335,6 +1368,7 @@
 				A5FBBDA31C1ABC6800523B47 /* no_recommend_live@2x.png in Resources */,
 				65D0B3821BD89DF00066138A /* pop_time_bg@2x.png in Resources */,
 				65E728371BD1127E00B16E78 /* icon_upload_normal@2x.png in Resources */,
+				A5F286641C55060A00AAD146 /* setting_login@3x.png in Resources */,
 				654AB1A51BE8940E00D507AE /* icon_like_pressed@3x.png in Resources */,
 				654AEAD71BCF832000921978 /* FavouriteChannelTableViewController.xib in Resources */,
 				652B88A11BE0F1950092EAB8 /* sdRefeshView_arrow@2x.png in Resources */,
@@ -1444,6 +1478,7 @@
 				654AEADB1BCF835700921978 /* LoginViewController.m in Sources */,
 				65D0B35A1BD6287C0066138A /* ArchiveData.m in Sources */,
 				652B882E1BDF57410092EAB8 /* MediaPathData.m in Sources */,
+				A5EF72511C4792E20047AE69 /* LikeBtn.m in Sources */,
 				654AEA821BCF45DD00921978 /* RDVTabBar.m in Sources */,
 				A5F4C7021C103F2200FD06C6 /* LiveTableViewCell.m in Sources */,
 				652B88A21BE0F1950092EAB8 /* SDRefreshFooterView.m in Sources */,
@@ -1451,6 +1486,7 @@
 				A5F4C7071C118E4500FD06C6 /* LivePlayerViewController.m in Sources */,
 				654AEB331BD0A17E00921978 /* GlobalData.m in Sources */,
 				6520B7EF1BCF3BA3009E4B48 /* main.m in Sources */,
+				A5F2865D1C54FBC600AAD146 /* SettingLabel.m in Sources */,
 				652B88A51BE0F1950092EAB8 /* UIView+SDExtension.m in Sources */,
 				6582DB381BF0914200A052F5 /* Utils.m in Sources */,
 				654AEA841BCF45DD00921978 /* RDVTabBarItem.m in Sources */,
@@ -1611,7 +1647,7 @@
 					"-licucore",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chris.VideoMate;
 				PRODUCT_NAME = VideoMate;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1655,7 +1691,7 @@
 					"-licucore",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chris.VideoMate;
 				PRODUCT_NAME = VideoMate;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
