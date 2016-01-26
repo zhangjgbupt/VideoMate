@@ -98,10 +98,10 @@
     [GeTuiSdk startSdkWithAppId:kGtAppId appKey:kGtAppKey appSecret:kGtAppSecret delegate:self];
     
     // 注册APNS
-    [self registerUserNotification];
+    //[self registerUserNotification];
     
     // 处理远程通知启动APP
-    [self receiveNotificationByLaunchingOptions:launchOptions];
+    //[self receiveNotificationByLaunchingOptions:launchOptions];
     
 //    if (![WXApi registerApp:@"wxd83e3fe2fa3784ea"]) {
 //        NSLog(@"Failed to register with Weixin!");
@@ -578,23 +578,6 @@
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }
-
-//- (BOOL)application:(UIApplication*)application handleOpenURL:(nonnull NSURL *)url {
-//    return [WXApi handleOpenURL:url delegate:self];
-//}
-//
-//- (BOOL)application:(UIApplication*)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
-//    return [WXApi handleOpenURL:url delegate:self];
-//}
-
-//#pragma Weixin delegate
-//- (void) onReq:(BaseReq *)req {
-//    NSLog(@"on Request");
-//}
-//
-//- (void) onResp:(BaseResp *)resp {
-//    NSLog(@"on Response");
-//}
 
 #pragma mark - Core Data stack
 

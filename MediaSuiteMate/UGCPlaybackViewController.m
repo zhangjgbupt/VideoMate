@@ -69,6 +69,7 @@
     [self.videoController.view setFrame:CGRectMake (player_x, player_y, player_w, player_h)];
     [self.view addSubview:self.videoController.view];
     [self.videoController play];
+    [self.videoController setFullscreen:NO animated:NO];
 
     CGFloat progress_x = player_x;
     CGFloat progress_y = player_y+player_h-1;
@@ -771,7 +772,7 @@
         [self.uploadRate setBackgroundColor:[UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0 alpha:1.0f]];
     }
     [self.uploadRate setText:uploadMediaFilesHandle.progressValueSize];
-    NSString* progressValue = [NSString stringWithFormat:@"%d%%", (int)(uploadMediaFilesHandle.progressValue*100)];
+    NSString* progressValue = [NSString stringWithFormat:@"%3d%% ", (int)(uploadMediaFilesHandle.progressValue*100)];
     return progressValue;
 }
 
