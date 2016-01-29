@@ -165,6 +165,10 @@
     [self.shareBtn.imageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.shareBtn setImage:[UIImage imageNamed:@"icon_share_normal.png"] forState:UIControlStateNormal];
     [self.shareBtn setImage:[UIImage imageNamed:@"icon_share_pressed.png"] forState:UIControlStateHighlighted];
+    [self.shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+    [self.shareBtn setTitleColor:[UIColor colorWithRed:139.0/255 green:139.0/255 blue:139.0/255 alpha:1] forState:UIControlStateNormal];
+    [self.shareBtn setTitleColor:[UIColor colorWithRed:221.0/255 green:77.0/255 blue:53.0/255 alpha:1] forState:UIControlStateHighlighted];
+    self.shareBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
     
     self.zanBtn=[[LikeBtn alloc] init];
     [self.zanBtn setFrame:likeBtnFrame];
@@ -291,9 +295,10 @@
     NSString *detailInfo = self.archiveDes;
     NSString *webUrl=[[appDelegate.svrAddr stringByAppendingString:@"/userportal/video?v="] stringByAppendingString:self.archiveId];
     webUrl = [NSString stringWithFormat:@"http://%@", webUrl ];
+    NSString *encodeUrl = [webUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     
     ShareView *view = [[ShareView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 160, self.view.frame.size.width, 160)];
-    view.shareUrl = webUrl;
+    view.shareUrl = [NSString stringWithFormat:@"http://www.huicom.cn/hst-wechat/wechatloginauth?msurl=%@", encodeUrl];;
     view.title = title;
     view.message = detailInfo;
     view.pictureName = imageURL;

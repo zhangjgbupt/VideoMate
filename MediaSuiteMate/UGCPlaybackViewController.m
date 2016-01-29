@@ -103,6 +103,7 @@
     CGFloat title_w = player_w-10;
     CGFloat title_h = 40;
     [self.textMediaFileName setFrame:CGRectMake(title_x, title_y, title_w, title_h)];
+    textMediaFileName.tintColor = [UIColor colorWithRed:221.0/255 green:77.0/255 blue:53.0/255 alpha:1];
     [self.textMediaFileName setPlaceholder:NSLocalizedString(@"file_name_label_title", nil)];
     
     CGFloat seperator_1_x = 0;
@@ -128,13 +129,14 @@
     CGFloat description_y = seperator_2_y + seperator_2_h;
     CGFloat description_w = title_w;
     CGFloat description_h = 80;
+    self.textDescription.tintColor = [UIColor colorWithRed:221.0/255 green:77.0/255 blue:53.0/255 alpha:1];
     [self.textDescription setFrame:CGRectMake(description_x, description_y, description_w, description_h)];
     
     placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.textDescription.frame.size.width - 20.0, 34.0)];
     [placeholderLabel setText:NSLocalizedString(@"description_label_title", nil)];
     [placeholderLabel setBackgroundColor:[UIColor clearColor]];
-    [placeholderLabel setTextColor:[UIColor lightGrayColor]];
-    [placeholderLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    [placeholderLabel setTextColor:[UIColor colorWithRed:139.0/255 green:139.0/255 blue:139.0/255 alpha:1]];
+    [placeholderLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.textDescription addSubview:placeholderLabel];
     
     CGFloat upload_x = 40;

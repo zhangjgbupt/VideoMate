@@ -118,7 +118,7 @@ static NSString * const reuseArchiveIdentifier = @"ArchiveCell";
 - (void)viewWillAppear:(BOOL)animated {
     [appDelegate startNetworkConnectionMonitor];
     [appDelegate setShouldRotate:NO];
-    //[self getMyArchives];
+    [self getContributedChannels];
     [appDelegate.tabBarController setTabBarHidden:NO];
     [super viewWillAppear:YES];
 }

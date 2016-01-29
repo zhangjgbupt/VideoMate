@@ -61,11 +61,11 @@
 //upload media page
 "file_name_label_title"="FileName:";
 "description_label_title"="Description:";
-"channel_label_title"="Channels:";
+"channel_label_title"="Channels";
 "channel_select_title"="Select Channels";
 "upload_btn_title"="UPLOAD";
 "selected_channel"="Channels";
-"wait_for_transcoding"="In transcoding...";
+"wait_for_transcoding"="Transcoding...";
 
 //media slide menu
 "slide_share"=" Share ";

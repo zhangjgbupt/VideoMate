@@ -62,7 +62,7 @@
 //upload media page
 "file_name_label_title"="标题:";
 "description_label_title"="说明:";
-"channel_label_title"="频道:";
+"channel_label_title"="频道";
 "channel_select_title"="选择频道";
 "upload_btn_title"="上传文件";
 "selected_channel"="频道";
