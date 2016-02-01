@@ -298,7 +298,7 @@
     NSString *encodeUrl = [webUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     
     ShareView *view = [[ShareView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 160, self.view.frame.size.width, 160)];
-    view.shareUrl = [NSString stringWithFormat:@"http://www.huicom.cn/hst-wechat/wechatloginauth?msurl=%@", encodeUrl];;
+    view.shareUrl = [NSString stringWithFormat:@"http://www.huicom.cn/hst-wechat/wechatloginauth?msurl=%@", encodeUrl];
     view.title = title;
     view.message = detailInfo;
     view.pictureName = imageURL;
