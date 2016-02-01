@@ -18,7 +18,7 @@
 @end
 
 @implementation MediaPlayerViewController
-@synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl,createTime;
+@synthesize episodeFiles, archiveName, archiveDes, archiveId, thumUrl,createTime, isCanAnonymousAccess;
 @synthesize player;
 @synthesize streamingURLlist;
 @synthesize mediaFileCrateTime, mediaFileTitle, mediaFileDes, timeIcon, seperator, seperator1, seperator2,desTitle;
@@ -235,6 +235,7 @@
     ArchiveFileData* file = [self.episodeFiles objectAtIndex:0];
     [self getStreamingURL:file.archiveId withFileId:file.fileId];
     [self getLikeStatus];
+    [self getAnonymousAccessPermission];
     [super viewWillAppear:YES];
 }
 
@@ -296,9 +297,16 @@
     NSString *webUrl=[[appDelegate.svrAddr stringByAppendingString:@"/userportal/video?v="] stringByAppendingString:self.archiveId];
     webUrl = [NSString stringWithFormat:@"http://%@", webUrl ];
     NSString *encodeUrl = [webUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+    NSString* huicomUrl =[NSString stringWithFormat:@"http://www.huicom.cn/hst-wechat/wechatloginauth?msurl=%@", encodeUrl];
     
+    NSString* shareUrl = nil;
+    if (self.isCanAnonymousAccess) {
+        shareUrl = webUrl;
+    } else {
+        shareUrl = huicomUrl;
+    }
     ShareView *view = [[ShareView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 160, self.view.frame.size.width, 160)];
-    view.shareUrl = [NSString stringWithFormat:@"http://www.huicom.cn/hst-wechat/wechatloginauth?msurl=%@", encodeUrl];
+    view.shareUrl = shareUrl;
     view.title = title;
     view.message = detailInfo;
     view.pictureName = imageURL;
@@ -384,6 +392,32 @@
          failure:^(AFHTTPRequestOperation* task, NSError* error){
              NSLog(@"Get like status fail!");
              NSLog(@"Error: %@", error.description);
+         }];
+}
+
+-(void) getAnonymousAccessPermission {
+    NSString* requestStr = [NSString stringWithFormat:@"http://%@/userportal/api/rest/content/archives/%@/access", appDelegate.svrAddr, self.archiveId];
+    
+    NSString* auth = [NSString stringWithFormat:@"Bearer anonymous"];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/vnd.plcm.plcm-content-archive+json"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-archive+json" forHTTPHeaderField:@"Accept"];
+    [manager.requestSerializer setValue:@"application/vnd.plcm.plcm-content-archive+json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:auth forHTTPHeaderField:@"Authorization"];
+    [manager GET:requestStr parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSString* isCanAccess = [responseObject valueForKey:@"canAccess"];
+             isCanAnonymousAccess = [isCanAccess boolValue];
+        }
+         failure:^(AFHTTPRequestOperation* task, NSError* error){
+             NSLog(@"get Anonymous Access Permission fail!");
+             NSLog(@"Error: %@", error.description);
+             isCanAnonymousAccess = NO;
          }];
 }
 

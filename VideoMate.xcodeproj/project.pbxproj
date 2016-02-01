@@ -1169,7 +1169,7 @@
 				TargetAttributes = {
 					6520B7E91BCF3BA3009E4B48 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = X7CJHXZPVR;
+						DevelopmentTeam = W83UZNFYXX;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1647,7 +1647,7 @@
 					"-licucore",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chris.VideoMate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
 				PRODUCT_NAME = VideoMate;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1691,7 +1691,7 @@
 					"-licucore",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chris.VideoMate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.derek.VideoMate;
 				PRODUCT_NAME = VideoMate;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

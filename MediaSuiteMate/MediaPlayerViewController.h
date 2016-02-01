@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSMutableArray* episodeFiles;
 @property (nonatomic, retain) MPMoviePlayerController *player;
 @property (strong, nonatomic) NSMutableArray* streamingURLlist;
+@property (nonatomic) BOOL isCanAnonymousAccess;
 @property (strong, nonatomic) IBOutlet UILabel *mediaFileTitle;
 @property (strong, nonatomic) IBOutlet UILabel *mediaFileCrateTime;
 @property (strong, nonatomic) IBOutlet UIImageView *timeIcon;
